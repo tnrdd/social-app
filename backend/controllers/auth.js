@@ -9,6 +9,22 @@ require("dotenv").config();
 
 const salt = parseInt(process.env.SALT);
 
+exports.auth = (req, res, next) => {
+  const token = req.cookies.accessToken;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
+
 exports.login = (req, res, next) => {
   User.findOne({ username: req.body.username }, (err, user) => {
     if (err) {
@@ -22,7 +38,7 @@ exports.login = (req, res, next) => {
           res
             .cookie("accessToken", token)
             .status(200)
-            .json({ message: "success", token: token });
+            .json({ message: "success" });
         } else {
           res.json({ message: "Incorrect password" });
         }

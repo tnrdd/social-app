@@ -28,13 +28,13 @@ const cookieOptions = {
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(cookieParser(cookieOptions));
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
 app.use(cors());
-app.use(express.json());
 app.use("/login", loginRouter);
 
 app.listen(port, () => console.log(`server listening on port ${port}`));
