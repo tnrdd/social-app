@@ -5,8 +5,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
-const loginRouter = require("./routes/login")
-const signupRouter = require("./routes/signup")
+const apiRouter = require("./routes/api")
 
 require("dotenv").config();
 
@@ -36,7 +35,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cors());
-app.use("/login", loginRouter);
-app.use("/signup", signupRouter);
+app.use("/api", apiRouter);
 
 app.listen(port, () => console.log(`server listening on port ${port}`));
