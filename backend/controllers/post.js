@@ -39,3 +39,29 @@ exports.editPost = (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+exports.deletePost = async (req, res, next) => {
+  if (req.user) {
+    try {
+      const post = await Post.findOne({
+        _id: mongoose.Types.ObjectId(req.body.id),
+      });
+      const comments = Comment.deleteMany({
+        _id: { $in: post.comments },
+      });
+
+      const likes = Like.deleteMany({
+        _id: { $in: post.likes },
+      });
+
+      await Promise.all([comments, likes]);
+
+      await Post.deleteOne(post._id);
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.sendStatus(401);
+  }
+};

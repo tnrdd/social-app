@@ -6,8 +6,8 @@ const postController = require("../controllers/post");
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
-router.post("/post", postController.post);
-router.put("/post", postController.editPost);
-router.delete("/post", postController.deletePost);
+router.post("/post", authController.auth, postController.post);
+router.put("/post", authController.auth, postController.editPost);
+router.delete("/post", authController.auth, postController.deletePost);
 
 module.exports = router;
