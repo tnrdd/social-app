@@ -77,7 +77,7 @@ exports.signup = [
         if (err) {
           return next(err);
         }
-        res.status(200).json({ message: "success" });
+        res.status(200);
       });
     });
   },
@@ -93,10 +93,7 @@ exports.login = (req, res, next) => {
           next(err);
         } else if (result) {
           const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
-          res
-            .cookie("accessToken", token)
-            .status(200)
-            .json({ message: "success" });
+          res.cookie("accessToken", token).status(200);
         } else {
           res.json({ message: "Incorrect password" });
         }
