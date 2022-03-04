@@ -65,7 +65,7 @@ exports.signup = [
 
     bcrypt.hash(req.body.password, salt, async (err, hash) => {
       if (err) {
-        next(err);
+        return next(err);
       }
 
       const user = await new User({
@@ -77,7 +77,7 @@ exports.signup = [
         if (err) {
           return next(err);
         }
-        res.status(200);
+        res.sendStatus(200);
       });
     });
   },

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const Post = require("../models/post");
 const User = require("../models/user");
+const Comment = require("../models/comment");
+const Like = require("../models/like");
 
 exports.post = (req, res, next) => {
   if (req.user) {
@@ -14,10 +16,10 @@ exports.post = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.status(200);
+      res.sendStatus(200);
     });
   } else {
-    res.status(401);
+    res.sendStatus(401);
   }
 };
 
@@ -30,10 +32,10 @@ exports.editPost = (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.status(200);
+        res.sendStatus(200);
       }
     );
   } else {
-    res.status(401);
+    res.sendStatus(401);
   }
 };
