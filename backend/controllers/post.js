@@ -5,19 +5,18 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
-exports.post = (req, res, next) => {
+exports.post = async (req, res, next) => {
   if (req.user) {
-    const post = new Post({
-      username: req.user,
-      text: req.body.text,
-    });
-
-    post.save((err) => {
-      if (err) {
-        return next(err);
-      }
+    try {
+      const user = await User.findOne({username: req.user});
+      await Post.create({
+        user: user._id,
+        text: req.body.text,
+      });
       res.sendStatus(200);
-    });
+    } catch (err) {
+      next(err);
+    }
   } else {
     res.sendStatus(401);
   }

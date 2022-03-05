@@ -7,7 +7,7 @@ const Post = mongoose.model(
   new Schema({
     text: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
-    username: { type: String, required: true },
+    user: { type: Schema.ObjectId, ref: "User" },
     comments: [{ type: Schema.ObjectId, ref: "Comment" }],
     likes: [{ type: Schema.ObjectId, ref: "Like" }],
   })
