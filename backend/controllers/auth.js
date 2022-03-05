@@ -28,18 +28,16 @@ exports.auth = (req, res, next) => {
 exports.signup = [
   body("username", "Insert a valid username (at least 4 characters)")
     .isLength({ min: 4 })
+    .bail()
     .trim()
     .escape()
-    .custom(({ req }) => {
-      User.exists({ username: req.body.username }, (err, exists) => {
-        if (err) {
-          next(err);
-        } else if (!exists) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+    .custom(async ({ req }) => {
+      const exists = await User.exists({ username: req.body.username });
+      if (!exists) {
+        return true;
+      } else {
+        return false;
+      }
     })
     .withMessage("This username is not avaible"),
   body("password", "Insert a valid password (at least 8 character and a number")
@@ -57,50 +55,43 @@ exports.signup = [
       }
     }),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    bcrypt.hash(req.body.password, salt, async (err, hash) => {
-      if (err) {
-        return next(err);
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
 
-      const user = await new User({
+      const hash = await bcrypt.hash(req.body.password, salt);
+
+      await User.create({
         username: req.body.username,
         password: hash,
       });
 
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        res.sendStatus(200);
-      });
-    });
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
   },
 ];
 
-exports.login = (req, res, next) => {
-  User.findOne({ username: req.body.username }, (err, user) => {
-    if (err) {
-      next(err);
-    } else if (user) {
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (err) {
-          next(err);
-        } else if (result) {
-          const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
-          res.cookie("accessToken", token).status(200).json({ i: token });
-          //res.cookie("accessToken", token).sendStatus(200);
-        } else {
-          res.json({ message: "Incorrect password" });
-        }
-      });
+exports.login = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (user) {
+      const result = await bcrypt.compare(req.body.password, user.password);
+      if (result) {
+        const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
+        //res.cookie("accessToken", token).status(200).json({ accessToken: token });
+        res.cookie("accessToken", token).sendStatus(200);
+      } else {
+        res.json({ message: "Incorrect password" });
+      }
     } else {
       res.json({ message: "Incorrect username" });
     }
-  });
+  } catch (err) {
+    next(err);
+  }
 };
