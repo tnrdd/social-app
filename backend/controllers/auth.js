@@ -31,13 +31,20 @@ exports.signup = [
     .bail()
     .trim()
     .escape()
-    .custom(async ({ req }) => {
-      const exists = await User.exists({ username: req.body.username });
-      if (!exists) {
-        return true;
-      } else {
-        return false;
-      }
+    .custom(({ req }) => {
+      const exists = User.exists(
+        { username: req.body.username },
+        (err, exists) => {
+          if (err) {
+            next(err);
+          }
+          if (!exists) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      );
     })
     .withMessage("This username is not avaible"),
   body("password", "Insert a valid password (at least 8 character and a number")
@@ -86,10 +93,10 @@ exports.login = async (req, res, next) => {
         //res.cookie("accessToken", token).status(200).json({ accessToken: token });
         res.cookie("accessToken", token).sendStatus(200);
       } else {
-        res.json({ message: "Incorrect password" });
+        res.status(401).json({ message: "Incorrect password" });
       }
     } else {
-      res.json({ message: "Incorrect username" });
+      res.status(401).json({ message: "Incorrect username" });
     }
   } catch (err) {
     next(err);
