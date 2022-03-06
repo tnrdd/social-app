@@ -158,6 +158,36 @@ describe("Api", () => {
     expect(200);
   });
 
+  it("Delete like on post", async () => {
+    const post = await Post.findOne();
+    await request(app)
+      .delete("/api/like")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: post._id.toString(),
+      });
+    expect(200);
+  });
+
+  it("Delete like on comment", async () => {
+    const comment = await Comment.findOne();
+    await request(app)
+      .delete("/api/like")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: comment._id.toString(),
+      });
+    expect(200);
+  });
+
   it("Delete comment", async () => {
     const comment = await Comment.findOne();
     await request(app)

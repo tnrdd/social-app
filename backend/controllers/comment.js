@@ -12,7 +12,7 @@ exports.comment = async (req, res, next) => {
       const comment = await Comment.create({
         user: user._id,
         text: req.body.text,
-        post: mongoose.Types.ObjectId(req.body.id)
+        post: mongoose.Types.ObjectId(req.body.id),
       });
       await Post.updateOne(
         { _id: comment.post },
@@ -52,7 +52,7 @@ exports.deleteComment = async (req, res, next) => {
       });
 
       const post = Post.updateOne(
-        { _id: {$in: comment.post}},
+        { _id: { $in: comment.post } },
         { pull: { comments: comment._id } }
       );
 

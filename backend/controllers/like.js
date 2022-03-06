@@ -34,43 +34,29 @@ exports.like = async (req, res, next) => {
     res.sendStatus(401);
   }
 };
-/*
-exports.editComment = (req, res, next) => {
-  if (req.user) {
-    Post.findByIdAndUpdate(
-      mongoose.Types.ObjectId(req.body.id),
-      { text: req.body.text },
-      (err, post) => {
-        if (err) {
-          return next(err);
-        }
-        res.sendStatus(200);
-      }
-    );
-  } else {
-    res.sendStatus(401);
-  }
-};
 
-exports.deleteComment = async (req, res, next) => {
+exports.deleteLike = async (req, res, next) => {
   if (req.user) {
     try {
-      const comment = await Comment.findOne({
+      const like = await Like.findOne({
         _id: mongoose.Types.ObjectId(req.body.id),
       });
 
-      const post = Post.updateOne(
-        { _id: {$in: comment.post}},
-        { pull: { comments: comment._id } }
-      );
+      const isPost = await Post.exists({ _id: { $in: like.post } });
 
-      const likes = Like.deleteMany({
-        _id: { $in: comment.likes },
-      });
-
-      await Promise.all([post, likes]);
-
-      await Comment.deleteOne(comment._id);
+      if (isPost) {
+        await Post.updateOne(
+          { _id: { $in: like.post } },
+          { pull: { likes: like._id } }
+        );
+      } else {
+        await Comment.updateOne(
+          { _id: { $in: like.comment } },
+          { pull: { likes: like._id } }
+        );
+      }
+      
+      await Like.deleteOne(like._id);
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -78,4 +64,4 @@ exports.deleteComment = async (req, res, next) => {
   } else {
     res.sendStatus(401);
   }
-};*/
+};

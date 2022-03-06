@@ -15,5 +15,6 @@ router.post("/comment", authController.auth, commentController.comment);
 router.put("/comment", authController.auth, commentController.editComment);
 router.delete("/comment", authController.auth, commentController.deleteComment);
 router.post("/like", authController.auth, likeController.like);
+router.delete("/like", authController.auth, likeController.deleteLike);
 
 module.exports = router;
