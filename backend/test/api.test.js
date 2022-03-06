@@ -96,6 +96,21 @@ describe("Api", () => {
     expect(200);
   });
 
+  it("New like on post", async () => {
+    const post = await Post.findOne();
+    await request(app)
+      .post("/api/like")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: post._id.toString(),
+      });
+    expect(200);
+  });
+
   it("New comment", async () => {
     const post = await Post.findOne();
     await request(app)
@@ -108,6 +123,21 @@ describe("Api", () => {
       .send({
         id: post._id.toString(),
         text: "test",
+      });
+    expect(200);
+  });
+
+  it("New like on comment", async () => {
+    const comment = await Comment.findOne();
+    await request(app)
+      .post("/api/like")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: comment._id.toString(),
       });
     expect(200);
   });
@@ -131,7 +161,7 @@ describe("Api", () => {
   it("Delete comment", async () => {
     const comment = await Comment.findOne();
     await request(app)
-      .put("/api/comment")
+      .delete("/api/comment")
       .set(
         "Cookie",
         "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
@@ -139,7 +169,6 @@ describe("Api", () => {
       .type("form")
       .send({
         id: comment._id.toString(),
-        text: "test edit",
       });
     expect(200);
   });

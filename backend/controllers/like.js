@@ -5,19 +5,27 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
-exports.comment = async (req, res, next) => {
+exports.like = async (req, res, next) => {
   if (req.user) {
     try {
       const user = await User.findOne({ username: req.user });
-      const comment = await Comment.create({
+      const like = await Like.create({
         user: user._id,
-        text: req.body.text,
-        post: mongoose.Types.ObjectId(req.body.id)
       });
-      await Post.updateOne(
-        { _id: comment.post },
-        { push: { comments: comment._id } }
-      );
+
+      const isPost = await Post.exists({ _id: req.body.id });
+
+      if (isPost) {
+        await Post.updateOne(
+          { _id: req.body.id },
+          { push: { likes: like._id } }
+        );
+      } else {
+        await Comment.updateOne(
+          { _id: req.body.id },
+          { push: { likes: like._id } }
+        );
+      }
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -26,13 +34,13 @@ exports.comment = async (req, res, next) => {
     res.sendStatus(401);
   }
 };
-
+/*
 exports.editComment = (req, res, next) => {
   if (req.user) {
-    Comment.findByIdAndUpdate(
+    Post.findByIdAndUpdate(
       mongoose.Types.ObjectId(req.body.id),
       { text: req.body.text },
-      (err, comment) => {
+      (err, post) => {
         if (err) {
           return next(err);
         }
@@ -70,4 +78,4 @@ exports.deleteComment = async (req, res, next) => {
   } else {
     res.sendStatus(401);
   }
-};
+};*/

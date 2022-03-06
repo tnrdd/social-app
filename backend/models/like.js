@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const Like = mongoose.model(
   "Like",
   new Schema({
-    username: { type: String, required: true },
+    user: { type: Schema.ObjectId , ref: "User" },
   })
 );
 
