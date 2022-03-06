@@ -99,7 +99,7 @@ describe("Api", () => {
   it("New comment", async () => {
     const post = await Post.findOne();
     await request(app)
-      .delete("/api/comment")
+      .post("/api/comment")
       .set(
         "Cookie",
         "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
@@ -108,6 +108,38 @@ describe("Api", () => {
       .send({
         id: post._id.toString(),
         text: "test",
+      });
+    expect(200);
+  });
+
+  it("Edit comment", async () => {
+    const comment = await Comment.findOne();
+    await request(app)
+      .put("/api/comment")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: comment._id.toString(),
+        text: "test edit",
+      });
+    expect(200);
+  });
+
+  it("Delete comment", async () => {
+    const comment = await Comment.findOne();
+    await request(app)
+      .put("/api/comment")
+      .set(
+        "Cookie",
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+      )
+      .type("form")
+      .send({
+        id: comment._id.toString(),
+        text: "test edit",
       });
     expect(200);
   });
