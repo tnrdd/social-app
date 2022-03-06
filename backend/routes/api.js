@@ -8,6 +8,7 @@ const likeController = require("../controllers/like");
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
+router.get("/post", postController.posts);
 router.post("/post", authController.auth, postController.post);
 router.put("/post", authController.auth, postController.editPost);
 router.delete("/post", authController.auth, postController.deletePost);

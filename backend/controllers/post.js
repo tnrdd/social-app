@@ -8,7 +8,7 @@ const Like = require("../models/like");
 exports.post = async (req, res, next) => {
   if (req.user) {
     try {
-      const user = await User.findOne({username: req.user});
+      const user = await User.findOne({ username: req.user });
       await Post.create({
         user: user._id,
         text: req.body.text,
@@ -62,5 +62,17 @@ exports.deletePost = async (req, res, next) => {
     }
   } else {
     res.sendStatus(401);
+  }
+};
+
+exports.posts = async (req, res, next) => {
+  try {
+    const posts = await Post.find()
+      .sort({ updatedAt: -1 })
+      .populate("user comments likes", "username")
+      .lean();
+    res.status(200).json(posts);
+  } catch (err) {
+    next(err);
   }
 };
