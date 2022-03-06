@@ -7,7 +7,7 @@ const Comment = mongoose.model(
   new Schema({
     text: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
-    username: { type: String, required: true },
+    user: { type: Schema.ObjectId, ref: "User" },
     likes: [{ type: Schema.ObjectId, ref: "Like" }],
   })
 );
