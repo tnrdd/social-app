@@ -74,11 +74,10 @@ exports.deleteComment = async (req, res, next) => {
 
 exports.comments = async (req, res, next) => {
   try {
-    const post = await Post.findOne({
-      _id: mongoose.Types.ObjectId(req.query.id),
-    });
-    const comments = await Comment.find({post:post._id})
-      .sort({ updatedAt: -1 })
+    const comments = await Comment.find({
+      post: mongoose.Types.ObjectId(req.query.id),
+    })
+      .sort({ createdAt: -1 })
       .populate()
       .lean();
     res.status(200).json(comments);

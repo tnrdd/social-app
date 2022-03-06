@@ -68,7 +68,7 @@ exports.deletePost = async (req, res, next) => {
 exports.posts = async (req, res, next) => {
   try {
     const posts = await Post.find()
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .populate("user comments likes", "username")
       .lean();
     res.status(200).json(posts);

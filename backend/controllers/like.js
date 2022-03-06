@@ -20,11 +20,13 @@ exports.like = async (req, res, next) => {
           { _id: req.body.id },
           { push: { likes: like._id } }
         );
+        await like.updateOne({ post: mongoose.Types.ObjectId(req.body.id) });
       } else {
         await Comment.updateOne(
           { _id: req.body.id },
           { push: { likes: like._id } }
         );
+        await like.updateOne({ post: mongoose.Types.ObjectId(req.body.id) });
       }
       res.sendStatus(200);
     } catch (err) {
@@ -55,7 +57,7 @@ exports.deleteLike = async (req, res, next) => {
           { pull: { likes: like._id } }
         );
       }
-      
+
       await Like.deleteOne(like._id);
       res.sendStatus(200);
     } catch (err) {
@@ -63,5 +65,28 @@ exports.deleteLike = async (req, res, next) => {
     }
   } else {
     res.sendStatus(401);
+  }
+};
+
+exports.likes = async (req, res, next) => {
+  try {
+    let likes;
+    const isPost = await Post.exists({
+      _id: mongoose.Types.ObjectId(req.query.id),
+    });
+    if (isPost) {
+      likes = await Like.find({ post: mongoose.Types.ObjectId(req.query.id) })
+        .populate("user", "username")
+        .lean();
+    } else {
+      likes = await Like.find({
+        comment: mongoose.Types.ObjectId(req.query.id),
+      })
+        .populate("user", "username")
+        .lean();
+    }
+    res.status(200).json(likes);
+  } catch (err) {
+    next(err);
   }
 };
