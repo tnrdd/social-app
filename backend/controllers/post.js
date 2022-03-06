@@ -25,7 +25,7 @@ exports.post = async (req, res, next) => {
 exports.editPost = (req, res, next) => {
   if (req.user) {
     Post.findByIdAndUpdate(
-      mongoose.Types.ObjectId(req.body.id),
+      req.body.id,
       { text: req.body.text },
       (err, post) => {
         if (err) {
@@ -43,7 +43,7 @@ exports.deletePost = async (req, res, next) => {
   if (req.user) {
     try {
       const post = await Post.findOne({
-        _id: mongoose.Types.ObjectId(req.body.id),
+        _id: req.body.id,
       });
       const comments = Comment.deleteMany({
         _id: { $in: post.comments },

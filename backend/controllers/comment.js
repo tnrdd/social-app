@@ -12,7 +12,7 @@ exports.comment = async (req, res, next) => {
       const comment = await Comment.create({
         user: user._id,
         text: req.body.text,
-        post: mongoose.Types.ObjectId(req.body.id),
+        post: req.body.id,
       });
       await Post.updateOne(
         { _id: comment.post },
@@ -30,7 +30,7 @@ exports.comment = async (req, res, next) => {
 exports.editComment = (req, res, next) => {
   if (req.user) {
     Comment.findByIdAndUpdate(
-      mongoose.Types.ObjectId(req.body.id),
+      req.body.id,
       { text: req.body.text },
       (err, comment) => {
         if (err) {
@@ -48,7 +48,7 @@ exports.deleteComment = async (req, res, next) => {
   if (req.user) {
     try {
       const comment = await Comment.findOne({
-        _id: mongoose.Types.ObjectId(req.body.id),
+        _id: req.body.id,
       });
 
       const post = Post.updateOne(
@@ -75,7 +75,7 @@ exports.deleteComment = async (req, res, next) => {
 exports.comments = async (req, res, next) => {
   try {
     const comments = await Comment.find({
-      post: mongoose.Types.ObjectId(req.query.id),
+      post: req.query.id,
     })
       .sort({ createdAt: -1 })
       .populate()
