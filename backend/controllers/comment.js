@@ -71,3 +71,18 @@ exports.deleteComment = async (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+exports.comments = async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      _id: mongoose.Types.ObjectId(req.query.id),
+    });
+    const comments = await Comment.find({post:post._id})
+      .sort({ updatedAt: -1 })
+      .populate()
+      .lean();
+    res.status(200).json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
