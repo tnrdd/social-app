@@ -23,3 +23,34 @@ exports.profile = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteProfile = async (req, res, next) => {
+  if (req.user) {
+    try {
+      const user = await User.findOne({
+        username: req.user,
+      });
+
+      const posts = Post.deleteMany({
+        _id: { $in: user.posts },
+      });
+
+      const comments = Comment.deleteMany({
+        _id: { $in: user.comments },
+      });
+
+      const likes = Like.deleteMany({
+        _id: { $in: user.likes },
+      });
+
+      await Promise.all([posts, comments, likes]);
+
+      await user.delete();
+      res.sendStatus(200)
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    sendStatus(401);
+  }
+};
