@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { body, validationResult } = require("express-validator");
 
 const Post = require("../models/post");
 const User = require("../models/user");
@@ -54,6 +55,52 @@ exports.deleteProfile = async (req, res, next) => {
     sendStatus(401);
   }
 };
+
+exports.editProfile = [
+  body("username", "Insert a valid username (at least 4 characters)")
+    .isLength({ min: 4 })
+    .bail()
+    .trim()
+    .escape()
+    .custom(({ req }) => {
+      const exists = User.exists(
+        { username: req.body.username },
+        (err, exists) => {
+          if (err) {
+            next(err);
+          }
+          if (!exists) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      );
+    })
+    .withMessage("This username is not avaible"),
+
+  async (req, res, next) => {
+    if (req.user) {
+      try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(422).json({ errors: errors.array() });
+        }
+
+        await User.findOneAndUpdate(
+          { username: req.user },
+          { username: req.body.username }
+        );
+
+        res.sendStatus(200);
+      } catch (err) {
+        next(err);
+      }
+    } else {
+      res.sendStatus(401);
+    }
+  },
+];
 
 exports.follow = async (req, res, next) => {
   if (req.user) {
