@@ -21,5 +21,6 @@ router.put("/comment", authController.auth, commentController.editComment);
 router.delete("/post", authController.auth, postController.deletePost);
 router.delete("/comment", authController.auth, commentController.deleteComment);
 router.delete("/like", authController.auth, likeController.deleteLike);
+router.delete("/profile", authController.auth, profileController.deleteProfile);
 
 module.exports = router;
