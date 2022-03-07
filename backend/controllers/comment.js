@@ -16,7 +16,7 @@ exports.comment = async (req, res, next) => {
       });
       await Post.updateOne(
         { _id: comment.post },
-        { push: { comments: comment._id } }
+        { $push: { comments: comment._id } }
       );
       res.sendStatus(200);
     } catch (err) {
@@ -53,7 +53,7 @@ exports.deleteComment = async (req, res, next) => {
 
       const post = Post.updateOne(
         { _id: { $in: comment.post } },
-        { pull: { comments: comment._id } }
+        { $pull: { comments: comment._id } }
       );
 
       const likes = Like.deleteMany({

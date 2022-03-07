@@ -12,7 +12,7 @@ exports.profile = async (req, res, next) => {
       "username followers following posts"
     )
       .sort({ createdAt: -1 })
-      .populate("followers following posts")
+      .populate("posts")
       .lean();
     if (profile) {
       res.status(200).json(profile);
@@ -46,11 +46,39 @@ exports.deleteProfile = async (req, res, next) => {
       await Promise.all([posts, comments, likes]);
 
       await user.delete();
-      res.sendStatus(200)
+      res.sendStatus(200);
     } catch (err) {
       next(err);
     }
   } else {
     sendStatus(401);
+  }
+};
+
+exports.follow = async (req, res, next) => {
+  if (req.user) {
+    try {
+      const user = await User.findOne({
+        username: req.user,
+      });
+
+      const followed = User.updateOne(
+        { _id: req.body.id },
+        { $push: { followers: user._id } }
+      );
+
+      const follower = User.updateOne(
+        { _id: user._id },
+        { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
+      );
+
+      await Promise.all([followed, follower]);
+
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.sendStatus(401);
   }
 };

@@ -23,7 +23,7 @@ exports.like = async (req, res, next) => {
         if (!exists) {
           await Post.updateOne(
             { _id: req.body.id },
-            { push: { likes: like._id } }
+            { $push: { likes: like._id } }
           );
           await like.updateOne({ post: req.body.id });
         } else {
@@ -38,7 +38,7 @@ exports.like = async (req, res, next) => {
         if (!exists) {
           await Comment.updateOne(
             { _id: req.body.id },
-            { push: { likes: like._id } }
+            { $push: { likes: like._id } }
           );
           await like.updateOne({ post: req.body.id });
         } else {
@@ -67,12 +67,12 @@ exports.deleteLike = async (req, res, next) => {
       if (isPost) {
         await Post.updateOne(
           { _id: { $in: like.post } },
-          { pull: { likes: like._id } }
+          { $pull: { likes: like._id } }
         );
       } else {
         await Comment.updateOne(
           { _id: { $in: like.comment } },
-          { pull: { likes: like._id } }
+          { $pull: { likes: like._id } }
         );
       }
 

@@ -16,6 +16,7 @@ router.post("/login", authController.login);
 router.post("/post", authController.auth, postController.post);
 router.post("/comment", authController.auth, commentController.comment);
 router.post("/like", authController.auth, likeController.like);
+router.post("/follow", authController.auth, profileController.follow);
 router.put("/post", authController.auth, postController.editPost);
 router.put("/comment", authController.auth, commentController.editComment);
 router.delete("/post", authController.auth, postController.deletePost);
