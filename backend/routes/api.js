@@ -7,7 +7,7 @@ const commentController = require("../controllers/comment");
 const likeController = require("../controllers/like");
 const profileController = require("../controllers/profile");
 
-router.get("/post", postController.posts);
+router.get("/post", authController.auth, postController.posts);
 router.get("/comment", commentController.comments);
 router.get("/like", likeController.likes);
 router.get("/profile", profileController.profile);
