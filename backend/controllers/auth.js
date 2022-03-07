@@ -102,3 +102,46 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.changePassword = [
+  body("password", "Insert a valid password (at least 8 character and a number")
+    .isLength({ min: 8 })
+    .trim()
+    .escape(),
+  body("confirmation", "Password and confirmation do not match")
+    .trim()
+    .escape()
+    .custom((confirmation, { req }) => {
+      if (confirmation === req.body.password) {
+        return true;
+      } else {
+        return false;
+      }
+    }),
+
+  async (req, res, next) => {
+    try {
+      if (req.user) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(422).json({ errors: errors.array() });
+        }
+
+        const hash = await bcrypt.hash(req.body.password, salt);
+
+        await User.findOneAndUpdate(
+          { username: req.user },
+          {
+            password: hash,
+          }
+        );
+
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(401);
+      }
+    } catch (err) {
+      next(err);
+    }
+  },
+];
