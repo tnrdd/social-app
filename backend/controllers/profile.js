@@ -82,3 +82,39 @@ exports.follow = async (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+exports.following = async (req, res, next) => {
+  try {
+    const following = await User.findOne(
+      { username: req.query.username },
+      "following"
+    )
+      .populate("following", "username")
+      .lean();
+    if (following) {
+      res.status(200).json(following);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.followers = async (req, res, next) => {
+  try {
+    const followers = await User.findOne(
+      { username: req.query.username },
+      "followers"
+    )
+      .populate("followers", "username")
+      .lean();
+    if (followers) {
+      res.status(200).json(followers);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
