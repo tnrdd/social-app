@@ -8,6 +8,7 @@ const User = mongoose.model(
     {
       username: { type: String, required: true },
       password: { type: String, required: false },
+      followers: [{ type: Schema.ObjectId, ref: "User" }],
       following: [{ type: Schema.ObjectId, ref: "User" }],
       posts: [{ type: Schema.ObjectId, ref: "Post" }],
       comments: [{ type: Schema.ObjectId, ref: "Comment" }],
