@@ -76,6 +76,7 @@ exports.posts = async (req, res, next) => {
                   likes: true,
                   createdAt: true,
                   "user.username": true,
+                  "user.avatar": true,
                 },
               },
               { $sort: { createdAt: -1 } },
@@ -88,7 +89,7 @@ exports.posts = async (req, res, next) => {
     } else {
       const posts = await Post.find()
         .sort({ createdAt: -1 })
-        .populate("user", "username")
+        .populate("user", "username avatar")
         .lean();
       res.status(200).json(posts);
     }

@@ -86,13 +86,13 @@ exports.likes = async (req, res, next) => {
     });
     if (isPost) {
       likes = await Like.find({ post: req.query.id })
-        .populate("user", "username")
+        .populate("user", "username avatar")
         .lean();
     } else {
       likes = await Like.find({
         comment: req.query.id,
       })
-        .populate("user", "username")
+        .populate("user", "username avatar")
         .lean();
     }
     res.status(200).json(likes);

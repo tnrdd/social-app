@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path")
+
 const authController = require("../controllers/auth");
 const postController = require("../controllers/post");
 const commentController = require("../controllers/comment");
@@ -19,6 +19,7 @@ router.post("/post", authController.auth, postController.post);
 router.post("/comment", authController.auth, commentController.comment);
 router.post("/like", authController.auth, likeController.like);
 router.post("/follow", authController.auth, profileController.follow);
+router.post("/avatar", authController.auth, profileController.uploadAvatar, profileController.processAvatar);
 router.put("/post", authController.auth, postController.editPost);
 router.put("/comment", authController.auth, commentController.editComment);
 router.put("/profile", authController.auth, profileController.editProfile);
@@ -27,5 +28,5 @@ router.delete("/post", authController.auth, postController.deletePost);
 router.delete("/comment", authController.auth, commentController.deleteComment);
 router.delete("/like", authController.auth, likeController.deleteLike);
 router.delete("/profile", authController.auth, profileController.deleteProfile);
-router.get("/public", (req,res,next)=>res.sendFile(path.resolve(__dirname,"../public/t.txt")))
+
 module.exports = router;

@@ -1,16 +1,50 @@
 const mongoose = require("mongoose");
-const { body, validationResult } = require("express-validator");
+const multer = require("multer");
+const sharp = require("sharp");
 
 const Post = require("../models/post");
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
+const { body, validationResult } = require("express-validator");
+
+const multerStorage = multer.memoryStorage();
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image")) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  },
+});
+
+exports.uploadAvatar = upload.single("avatar");
+exports.processAvatar = async (req, res, next) => {
+  if (!req.file) {
+    return res.sendStatus(400);
+  }
+
+  const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize({ width: 300, height: 300 })
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`./public/avatars/${filename}`);
+
+  await User.updateOne({ username: req.user }, { avatar: filename });
+
+  res.sendStatus(200);
+};
+
 exports.profile = async (req, res, next) => {
   try {
     const profile = await User.findOne(
       { username: req.query.username },
-      "username followers following posts"
+      "username avatar followers following posts"
     )
       .sort({ createdAt: -1 })
       .populate("posts")
@@ -124,7 +158,7 @@ exports.following = async (req, res, next) => {
       { username: req.query.username },
       "following"
     )
-      .populate("following", "username")
+      .populate("following", "username avatar")
       .lean();
     if (following) {
       res.status(200).json(following);
@@ -142,7 +176,7 @@ exports.followers = async (req, res, next) => {
       { username: req.query.username },
       "followers"
     )
-      .populate("followers", "username")
+      .populate("followers", "username avatar")
       .lean();
     if (followers) {
       res.status(200).json(followers);

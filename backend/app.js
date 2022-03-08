@@ -2,10 +2,11 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
-const apiRouter = require("./routes/api")
+const apiRouter = require("./routes/api");
 
 require("dotenv").config();
 
@@ -26,7 +27,15 @@ const cookieOptions = {
 };
 
 const app = express();
-
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: false,
+    directives: {
+      defaultSrc: ["'self'"],
+    },
+  })
+);
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser(cookieOptions));
