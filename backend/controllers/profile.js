@@ -26,33 +26,29 @@ exports.profile = async (req, res, next) => {
 };
 
 exports.deleteProfile = async (req, res, next) => {
-  if (req.user) {
-    try {
-      const user = await User.findOne({
-        username: req.user,
-      });
+  try {
+    const user = await User.findOne({
+      username: req.user,
+    });
 
-      const posts = Post.deleteMany({
-        _id: { $in: user.posts },
-      });
+    const posts = Post.deleteMany({
+      _id: { $in: user.posts },
+    });
 
-      const comments = Comment.deleteMany({
-        _id: { $in: user.comments },
-      });
+    const comments = Comment.deleteMany({
+      _id: { $in: user.comments },
+    });
 
-      const likes = Like.deleteMany({
-        _id: { $in: user.likes },
-      });
+    const likes = Like.deleteMany({
+      _id: { $in: user.likes },
+    });
 
-      await Promise.all([posts, comments, likes]);
+    await Promise.all([posts, comments, likes]);
 
-      await user.delete();
-      res.sendStatus(200);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    sendStatus(401);
+    await user.delete();
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -80,53 +76,45 @@ exports.editProfile = [
     .withMessage("This username is not avaible"),
 
   async (req, res, next) => {
-    if (req.user) {
-      try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(422).json({ errors: errors.array() });
-        }
-
-        await User.findOneAndUpdate(
-          { username: req.user },
-          { username: req.body.username }
-        );
-
-        res.sendStatus(200);
-      } catch (err) {
-        next(err);
-      }
-    } else {
-      res.sendStatus(401);
-    }
-  },
-];
-
-exports.follow = async (req, res, next) => {
-  if (req.user) {
     try {
-      const user = await User.findOne({
-        username: req.user,
-      });
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
 
-      const followed = User.updateOne(
-        { _id: req.body.id },
-        { $push: { followers: user._id } }
+      await User.findOneAndUpdate(
+        { username: req.user },
+        { username: req.body.username }
       );
-
-      const follower = User.updateOne(
-        { _id: user._id },
-        { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
-      );
-
-      await Promise.all([followed, follower]);
 
       res.sendStatus(200);
     } catch (err) {
       next(err);
     }
-  } else {
-    res.sendStatus(401);
+  },
+];
+
+exports.follow = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      username: req.user,
+    });
+
+    const followed = User.updateOne(
+      { _id: req.body.id },
+      { $push: { followers: user._id } }
+    );
+
+    const follower = User.updateOne(
+      { _id: user._id },
+      { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
+    );
+
+    await Promise.all([followed, follower]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
   }
 };
 

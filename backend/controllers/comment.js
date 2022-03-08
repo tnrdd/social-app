@@ -6,69 +6,57 @@ const Comment = require("../models/comment");
 const Like = require("../models/like");
 
 exports.comment = async (req, res, next) => {
-  if (req.user) {
-    try {
-      const user = await User.findOne({ username: req.user });
-      const comment = await Comment.create({
-        user: user._id,
-        text: req.body.text,
-        post: req.body.id,
-      });
-      await Post.updateOne(
-        { _id: comment.post },
-        { $push: { comments: comment._id } }
-      );
-      res.sendStatus(200);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    res.sendStatus(401);
+  try {
+    const user = await User.findOne({ username: req.user });
+    const comment = await Comment.create({
+      user: user._id,
+      text: req.body.text,
+      post: req.body.id,
+    });
+    await Post.updateOne(
+      { _id: comment.post },
+      { $push: { comments: comment._id } }
+    );
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
   }
 };
 
 exports.editComment = (req, res, next) => {
-  if (req.user) {
-    Comment.findByIdAndUpdate(
-      req.body.id,
-      { text: req.body.text },
-      (err, comment) => {
-        if (err) {
-          return next(err);
-        }
-        res.sendStatus(200);
+  Comment.findByIdAndUpdate(
+    req.body.id,
+    { text: req.body.text },
+    (err, comment) => {
+      if (err) {
+        return next(err);
       }
-    );
-  } else {
-    res.sendStatus(401);
-  }
+      res.sendStatus(200);
+    }
+  );
 };
 
 exports.deleteComment = async (req, res, next) => {
-  if (req.user) {
-    try {
-      const comment = await Comment.findOne({
-        _id: req.body.id,
-      });
+  try {
+    const comment = await Comment.findOne({
+      _id: req.body.id,
+    });
 
-      const post = Post.updateOne(
-        { _id: { $in: comment.post } },
-        { $pull: { comments: comment._id } }
-      );
+    const post = Post.updateOne(
+      { _id: { $in: comment.post } },
+      { $pull: { comments: comment._id } }
+    );
 
-      const likes = Like.deleteMany({
-        _id: { $in: comment.likes },
-      });
+    const likes = Like.deleteMany({
+      _id: { $in: comment.likes },
+    });
 
-      await Promise.all([post, likes]);
+    await Promise.all([post, likes]);
 
-      await Comment.deleteOne(comment._id);
-      res.sendStatus(200);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    res.sendStatus(401);
+    await Comment.deleteOne(comment._id);
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
   }
 };
 

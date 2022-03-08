@@ -21,7 +21,7 @@ exports.auth = (req, res, next) => {
       next();
     });
   } else {
-    next();
+    res.sendStatus(401);
   }
 };
 
