@@ -13,6 +13,7 @@ router.get("/like", likeController.likes);
 router.get("/profile", profileController.profile);
 router.get("/following", profileController.following);
 router.get("/followers", profileController.followers);
+router.get("/logout", authController.auth, authController.logout);
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/post", authController.auth, postController.post);

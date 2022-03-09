@@ -103,6 +103,10 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.logout = (req, res) => {
+  res.clearCookie("accessToken").sendStatus(200);
+};
+
 exports.changePassword = [
   body("password", "Insert a valid password (at least 8 character and a number")
     .isLength({ min: 8 })
