@@ -27,7 +27,9 @@ exports.auth = (req, res, next) => {
 
 exports.signup = [
   body("username", "Insert a valid username (at least 4 characters)")
+    .isString()
     .isLength({ min: 4 })
+    .isLength({ max: 32 })
     .bail()
     .trim()
     .escape()
@@ -47,10 +49,23 @@ exports.signup = [
     "password",
     "Insert a valid password (at least 8 character and a number)"
   )
+    .isString()
     .isLength({ min: 8 })
+    .isLength({ max: 32 })
+    .not()
+    .isLowercase()
+    .not()
+    .isUppercase()
+    .not()
+    .isNumeric()
+    .not()
+    .isAlpha()
     .trim()
     .escape(),
   body("confirmation", "Password and confirmation do not match")
+    .isString()
+    .isLength({ min: 8 })
+    .isLength({ max: 32 })
     .trim()
     .escape()
     .custom((confirmation, { req }) => {
@@ -82,25 +97,48 @@ exports.signup = [
   },
 ];
 
-exports.login = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ username: req.body.username });
-    if (user) {
-      const result = await bcrypt.compare(req.body.password, user.password);
-      if (result) {
-        const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
-        //res.cookie("accessToken", token).status(200).json({ accessToken: token });
-        res.cookie("accessToken", token).sendStatus(200);
-      } else {
-        res.status(401).json({ message: "Incorrect password" });
+exports.login = [
+  body("username", "Insert a valid username (at least 4 characters)")
+    .isString()
+    .isLength({ min: 4 })
+    .isLength({ max: 32 })
+    .bail()
+    .trim()
+    .escape(),
+  body(
+    "password",
+    "Insert a valid password (at least 8 character and a number)"
+  )
+    .isString()
+    .isLength({ min: 8 })
+    .isLength({ max: 32 })
+    .trim()
+    .escape(),
+
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
-    } else {
-      res.status(401).json({ message: "Incorrect username" });
+      const user = await User.findOne({ username: req.body.username });
+      if (user) {
+        const result = await bcrypt.compare(req.body.password, user.password);
+        if (result) {
+          const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
+          //res.cookie("accessToken", token).status(200).json({ accessToken: token });
+          res.cookie("accessToken", token).sendStatus(200);
+        } else {
+          res.status(401).json({ message: "Incorrect password" });
+        }
+      } else {
+        res.status(401).json({ message: "Incorrect username" });
+      }
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
-  }
-};
+  },
+];
 
 exports.logout = (req, res) => {
   res.clearCookie("accessToken").sendStatus(200);
@@ -108,10 +146,23 @@ exports.logout = (req, res) => {
 
 exports.changePassword = [
   body("password", "Insert a valid password (at least 8 character and a number")
+    .isString()
     .isLength({ min: 8 })
+    .isLength({ max: 32 })
+    .not()
+    .isLowercase()
+    .not()
+    .isUppercase()
+    .not()
+    .isNumeric()
+    .not()
+    .isAlpha()
     .trim()
     .escape(),
   body("confirmation", "Password and confirmation do not match")
+    .isString()
+    .isLength({ min: 8 })
+    .isLength({ max: 32 })
     .trim()
     .escape()
     .custom((confirmation, { req }) => {
