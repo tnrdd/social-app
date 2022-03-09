@@ -31,23 +31,22 @@ exports.signup = [
     .bail()
     .trim()
     .escape()
-    .custom(({ req }) => {
-      const exists = User.exists(
-        { username: req.body.username },
-        (err, exists) => {
-          if (err) {
-            next(err);
+    .custom((username) => {
+      return User.exists({ username: username })
+        .then((exists) => {
+          if (exists) {
+            return Promise.reject();
           }
-          if (!exists) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      );
+        })
+        .catch((err) => {
+          next(err);
+        });
     })
     .withMessage("This username is not avaible"),
-  body("password", "Insert a valid password (at least 8 character and a number")
+  body(
+    "password",
+    "Insert a valid password (at least 8 character and a number)"
+  )
     .isLength({ min: 8 })
     .trim()
     .escape(),
