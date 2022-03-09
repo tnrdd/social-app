@@ -5,3 +5,31 @@ body {
   justify-content: center;
   font-family: Calibri, Arial, Courier;
 }
+
+header{
+  width: 100vw;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  margin-left:100px;
+}
+
+nav {
+  width:20vw;
+  display:flex;
+  justify-content: right;
+  gap:20px;
+  margin:auto;
+}
+
+#sign-up {
+  width: 400px;
+  height: auto;
+  display:flex;
+  flex-direction: column;
+  margin:auto;
+}
+button{
+width:100px;
+margin:auto;
+}
