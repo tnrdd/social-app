@@ -22,7 +22,7 @@ nav {
   margin:auto;
 }
 
-#sign-up {
+#signup-form, #login-form{
   width: 400px;
   height: auto;
   display:flex;

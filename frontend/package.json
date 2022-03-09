@@ -1,10 +1,10 @@
 {
-  "name": "idea",
+  "name": "social-media-app",
   "version": "1.0.0",
   "description": "Social media app",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "watch": "webpack --watch",
     "build": "mkdir -p ./dist & webpack --mode production"
   },

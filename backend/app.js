@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -26,6 +25,11 @@ const cookieOptions = {
   sameSite: true,
 };
 
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
 const app = express();
 app.use(
   helmet.contentSecurityPolicy({
@@ -39,11 +43,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser(cookieOptions));
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  next();
-});
-app.use(cors());
+app.use(cors(corsOptions));
 app.use("/api", apiRouter);
 
 app.listen(port, () => console.log(`server listening on port ${port}`));

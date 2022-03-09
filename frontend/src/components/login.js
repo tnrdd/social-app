@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Login(props) {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    confirmation: "",
   });
 
   const navigate = useNavigate();
 
   React.useEffect(() => {
     if (success) {
-      navigate("/login");
+      props.setIsLoggedIn(true);
+      navigate("/");
     }
   });
 
@@ -24,8 +24,9 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://127.0.0.1:3000/api/signup", {
+    fetch("http://127.0.0.1:3000/api/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
@@ -35,16 +36,18 @@ function Signup() {
         setSuccess(true);
       } else {
         Promise.resolve(res.json()).then((result) => {
-          setErrors(result.errors);
+          if (result) {
+            setErrors(result.errors);
+          }
         });
       }
     });
   };
 
   return (
-    <div id="signup">
-      <h4>Signup</h4>
-      <form id="signup-form" onSubmit={handleSubmit}>
+    <div id="login">
+      <h4>Log in</h4>
+      <form id="login-form" onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"
@@ -59,14 +62,7 @@ function Signup() {
           value={formData.password}
           onChange={handleChange}
         />
-        <input
-          type="password"
-          name="confirmation"
-          placeholder="Password confirmation"
-          value={formData.confirmation}
-          onChange={handleChange}
-        />
-        <button>Sign Up</button>
+        <button>Log in</button>
       </form>
       {errors.length > 0 ? (
         <div id="validation-errors">
@@ -79,4 +75,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

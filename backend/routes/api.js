@@ -7,6 +7,7 @@ const commentController = require("../controllers/comment");
 const likeController = require("../controllers/like");
 const profileController = require("../controllers/profile");
 
+router.get("/", authController.auth, (req, res) => res.sendStatus(200));
 router.get("/post", authController.auth, postController.posts);
 router.get("/comment", commentController.comments);
 router.get("/like", likeController.likes);
@@ -20,7 +21,12 @@ router.post("/post", authController.auth, postController.post);
 router.post("/comment", authController.auth, commentController.comment);
 router.post("/like", authController.auth, likeController.like);
 router.post("/follow", authController.auth, profileController.follow);
-router.post("/avatar", authController.auth, profileController.uploadAvatar, profileController.processAvatar);
+router.post(
+  "/avatar",
+  authController.auth,
+  profileController.uploadAvatar,
+  profileController.processAvatar
+);
 router.put("/post", authController.auth, postController.editPost);
 router.put("/comment", authController.auth, commentController.editComment);
 router.put("/profile", authController.auth, profileController.editProfile);

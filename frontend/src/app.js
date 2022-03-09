@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 import Signup from "./components/signup";
+import Login from "./components/login";
 
 import "./styles/style.css";
 
@@ -11,18 +12,23 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const cookie = document.cookie.split(";");
-    if (cookie.includes("accessToken")) {
-      setIsLoggedIn(true);
-    }
-  });
+    fetch("http://127.0.0.1:3000/api/", { credentials: "include" }).then(
+      (res) => {
+        if (res.ok) {
+          setIsLoggedIn(true);
+        }
+      }
+    );
+  }, []);
 
   const handleLogOut = () => {
-    fetch("http//:127.0.0.1:3000/api/logout").then((res) => {
-      if (res.ok) {
-        setIsLoggedIn(false);
+    fetch("http://127.0.0.1:3000/api/logout", { credentials: "include" }).then(
+      (res) => {
+        if (res.ok) {
+          setIsLoggedIn(false);
+        }
       }
-    });
+    );
   };
 
   return (
@@ -49,7 +55,7 @@ function App() {
       <Routes>
         <Route path="/" element={<p>Home</p>} />
         <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<p>Login</p>} />
+        <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="logout" element={<p>Logout</p>} />
       </Routes>
     </div>
