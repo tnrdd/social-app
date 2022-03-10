@@ -11,6 +11,11 @@ router.get("/", authController.auth, (req, res) => res.sendStatus(200));
 router.get("/post", postController.posts);
 router.get("/feed", authController.auth, postController.feed);
 router.get("/comment", commentController.comments);
+router.get(
+  "/feed/comment",
+  authController.auth,
+  commentController.feedComments
+);
 router.get("/like", likeController.likes);
 router.get("/profile", profileController.profile);
 router.get("/following", profileController.following);

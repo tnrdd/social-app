@@ -107,8 +107,33 @@ exports.comments = async (req, res, next) => {
       post: req.query.id,
     })
       .sort({ createdAt: -1 })
-      .populate()
+      .populate("user likes", "username user")
+      .limit(512)
       .lean();
+
+    res.status(200).json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.feedComments = async (req, res, next) => {
+  try {
+    const comments = await Comment.find({
+      post: req.query.id,
+    })
+      .sort({ createdAt: -1 })
+      .populate("user likes", "username user")
+      .limit(512)
+      .lean();
+
+    const user = await User.findOne({ username: req.user });
+    for (comment of comments) {
+      for (like of comment.likes) {
+        comment.isLiked = JSON.stringify(like.user).includes(user._id);
+      }
+    }
+
     res.status(200).json(comments);
   } catch (err) {
     next(err);
