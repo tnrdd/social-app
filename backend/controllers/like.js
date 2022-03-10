@@ -24,6 +24,7 @@ exports.like = async (req, res, next) => {
           { _id: req.body.id },
           { $push: { likes: like._id } }
         );
+        await user.updateOne({ $push: { likes: like._id } });
         await like.updateOne({ post: req.body.id });
       } else {
         let like = await Like.findOne({
@@ -34,6 +35,7 @@ exports.like = async (req, res, next) => {
           { _id: { $in: like.post } },
           { $pull: { likes: like._id } }
         );
+        user.updateOne({ $pull: { likes: like._id } });
         await like.delete();
       }
     } else {
@@ -49,6 +51,7 @@ exports.like = async (req, res, next) => {
           { _id: req.body.id },
           { $push: { likes: like._id } }
         );
+        await user.updateOne({ $push: { likes: like._id } });
         await like.updateOne({ comment: req.body.id });
       } else {
         let like = await Like.findOne({
@@ -59,6 +62,7 @@ exports.like = async (req, res, next) => {
           { _id: { $in: like.comment } },
           { $pull: { likes: like._id } }
         );
+        await user.updateOne({ $pull: { likes: like._id } });
         await like.delete();
       }
     }

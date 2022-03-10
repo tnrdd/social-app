@@ -24,10 +24,12 @@ exports.post = [
       }
 
       const user = await User.findOne({ username: req.user });
-      await Post.create({
+      const post = await Post.create({
         user: user._id,
         text: req.body.text,
       });
+      await user.updateOne({ $push: { posts: post._id } });
+
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -76,7 +78,14 @@ exports.deletePost = async (req, res, next) => {
       _id: { $in: post.likes },
     });
 
-    await Promise.all([comments, likes]);
+    const user = User.updateOne(
+      {
+        _id: { $in: post.user },
+      },
+      { $pull: { posts: req.body.id } }
+    );
+
+    await Promise.all([comments, likes, user]);
 
     await Post.deleteOne(post._id);
     res.sendStatus(200);
@@ -121,7 +130,14 @@ exports.feed = async (req, res, next) => {
         },
       },
     ]);
-    res.status(200).json(followingPosts);
+    const user = await User.findOne({ username: req.user });
+    const posts = followingPosts[0].followingPosts;
+    for (post of posts) {
+      for (like of post.likes) {
+        post.isLiked = JSON.stringify(like).includes(user._id);
+      }
+    }
+    res.status(200).json(posts);
   } catch (err) {
     next(err);
   }
@@ -131,7 +147,7 @@ exports.posts = async (req, res, next) => {
   try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate("user", "username avatar")
+      .populate("user likes", "username avatar user")
       .limit(1024)
       .lean();
     res.status(200).json(posts);

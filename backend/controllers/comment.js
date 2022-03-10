@@ -28,8 +28,13 @@ exports.comment = [
         text: req.body.text,
         post: req.body.id,
       });
+
       await Post.updateOne(
         { _id: comment.post },
+        { $push: { comments: comment._id } }
+      );
+      await User.updateOne(
+        { _id: comment.user },
         { $push: { comments: comment._id } }
       );
       res.sendStatus(200);
@@ -78,11 +83,16 @@ exports.deleteComment = async (req, res, next) => {
       { $pull: { comments: comment._id } }
     );
 
+    const user = User.updateOne(
+      { _id: { $in: comment.user } },
+      { $pull: { comments: comment._id } }
+    );
+
     const likes = Like.deleteMany({
       _id: { $in: comment.likes },
     });
 
-    await Promise.all([post, likes]);
+    await Promise.all([post, user, likes]);
 
     await Comment.deleteOne(comment._id);
     res.sendStatus(200);
