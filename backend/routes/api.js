@@ -8,7 +8,8 @@ const likeController = require("../controllers/like");
 const profileController = require("../controllers/profile");
 
 router.get("/", authController.auth, (req, res) => res.sendStatus(200));
-router.get("/post", authController.auth, postController.posts);
+router.get("/post", postController.posts);
+router.get("/feed", authController.auth, postController.feed);
 router.get("/comment", commentController.comments);
 router.get("/like", likeController.likes);
 router.get("/profile", profileController.profile);
