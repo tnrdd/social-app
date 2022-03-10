@@ -5,36 +5,65 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
-exports.comment = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ username: req.user });
-    const comment = await Comment.create({
-      user: user._id,
-      text: req.body.text,
-      post: req.body.id,
-    });
-    await Post.updateOne(
-      { _id: comment.post },
-      { $push: { comments: comment._id } }
-    );
-    res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
+exports.comment = [
+  body("text", "Your comment should have a max length of 80 characters")
+    .isString()
+    .isLength({ min: 1 })
+    .isLength({ max: 80 })
+    .bail()
+    .trim()
+    .escape(),
 
-exports.editComment = (req, res, next) => {
-  Comment.findByIdAndUpdate(
-    req.body.id,
-    { text: req.body.text },
-    (err, comment) => {
-      if (err) {
-        return next(err);
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
+
+      const comment = await Comment.create({
+        user: req.user,
+        text: req.body.text,
+        post: req.body.id,
+      });
+      await Post.updateOne(
+        { _id: comment.post },
+        { $push: { comments: comment._id } }
+      );
       res.sendStatus(200);
+    } catch (err) {
+      next(err);
     }
-  );
-};
+  },
+];
+
+exports.editComment = [
+  body("text", "Your comment should have a max length of 80 characters")
+    .isString()
+    .isLength({ min: 1 })
+    .isLength({ max: 80 })
+    .bail()
+    .trim()
+    .escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    Comment.findByIdAndUpdate(
+      req.body.id,
+      { text: req.body.text },
+      (err, comment) => {
+        if (err) {
+          return next(err);
+        }
+        res.sendStatus(200);
+      }
+    );
+  },
+];
 
 exports.deleteComment = async (req, res, next) => {
   try {

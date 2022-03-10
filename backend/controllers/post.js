@@ -5,27 +5,63 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
-exports.post = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ username: req.user });
-    await Post.create({
-      user: user._id,
-      text: req.body.text,
-    });
-    res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
+const { body, validationResult } = require("express-validator");
 
-exports.editPost = (req, res, next) => {
-  Post.findByIdAndUpdate(req.body.id, { text: req.body.text }, (err, post) => {
-    if (err) {
-      return next(err);
+exports.post = [
+  body("text", "Your post should have a max length of 160 characters")
+    .isString()
+    .isLength({ min: 1 })
+    .isLength({ max: 160 })
+    .bail()
+    .trim()
+    .escape(),
+
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
+
+      const user = await User.findOne({ username: req.user });
+      await Post.create({
+        user: user._id,
+        text: req.body.text,
+      });
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
     }
-    res.sendStatus(200);
-  });
-};
+  },
+];
+
+exports.editPost = [
+  body("text", "Your post should have a max length of 160 characters")
+    .isString()
+    .isLength({ min: 1 })
+    .isLength({ max: 160 })
+    .bail()
+    .trim()
+    .escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    Post.findByIdAndUpdate(
+      req.body.id,
+      { text: req.body.text },
+      (err, post) => {
+        if (err) {
+          return next(err);
+        }
+        res.sendStatus(200);
+      }
+    );
+  },
+];
 
 exports.deletePost = async (req, res, next) => {
   try {
