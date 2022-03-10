@@ -32,7 +32,6 @@ router.put("/post", authController.auth, postController.editPost);
 router.put("/comment", authController.auth, commentController.editComment);
 router.put("/profile", authController.auth, profileController.editProfile);
 router.put("/password", authController.auth, authController.changePassword);
-router.delete("/post", authController.auth, postController.deletePost);
 router.delete("/comment", authController.auth, commentController.deleteComment);
 router.delete("/like", authController.auth, likeController.deleteLike);
 router.delete("/profile", authController.auth, profileController.deleteProfile);

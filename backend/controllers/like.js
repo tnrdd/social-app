@@ -8,9 +8,6 @@ const Like = require("../models/like");
 exports.like = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.user });
-    const like = await Like.create({
-      user: user._id,
-    });
 
     const isPost = await Post.exists({ _id: req.body.id });
 
@@ -20,14 +17,24 @@ exports.like = async (req, res, next) => {
       });
 
       if (!exists) {
+        let like = await Like.create({
+          user: user._id,
+        });
         await Post.updateOne(
           { _id: req.body.id },
           { $push: { likes: like._id } }
         );
         await like.updateOne({ post: req.body.id });
       } else {
-        like.delete();
-        return res.sendStatus(409);
+        let like = await Like.findOne({
+          post: req.body.id,
+        });
+
+        await Post.updateOne(
+          { _id: { $in: like.post } },
+          { $pull: { likes: like._id } }
+        );
+        await like.delete();
       }
     } else {
       let exists = await Like.exists({
@@ -35,43 +42,26 @@ exports.like = async (req, res, next) => {
       });
 
       if (!exists) {
+        let like = await Like.create({
+          user: user._id,
+        });
         await Comment.updateOne(
           { _id: req.body.id },
           { $push: { likes: like._id } }
         );
-        await like.updateOne({ post: req.body.id });
+        await like.updateOne({ comment: req.body.id });
       } else {
-        like.delete();
-        return res.sendStatus(409);
+        let like = await Like.findOne({
+          comment: req.body.id,
+        });
+
+        await Comment.updateOne(
+          { _id: { $in: like.comment } },
+          { $pull: { likes: like._id } }
+        );
+        await like.delete();
       }
     }
-    res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.deleteLike = async (req, res, next) => {
-  try {
-    const like = await Like.findOne({
-      _id: req.body.id,
-    });
-
-    const isPost = await Post.exists({ _id: { $in: like.post } });
-
-    if (isPost) {
-      await Post.updateOne(
-        { _id: { $in: like.post } },
-        { $pull: { likes: like._id } }
-      );
-    } else {
-      await Comment.updateOne(
-        { _id: { $in: like.comment } },
-        { $pull: { likes: like._id } }
-      );
-    }
-
-    await Like.deleteOne(like._id);
     res.sendStatus(200);
   } catch (err) {
     next(err);

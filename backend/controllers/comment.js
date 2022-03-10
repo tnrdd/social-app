@@ -5,6 +5,8 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 
+const { body, validationResult } = require("express-validator");
+
 exports.comment = [
   body("text", "Your comment should have a max length of 80 characters")
     .isString()
@@ -20,9 +22,9 @@ exports.comment = [
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
-
+      const user = await User.findOne({ username: req.user });
       const comment = await Comment.create({
-        user: req.user,
+        user: user._id,
         text: req.body.text,
         post: req.body.id,
       });
