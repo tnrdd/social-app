@@ -47,7 +47,7 @@ exports.profile = async (req, res, next) => {
       "username avatar followers following posts"
     )
       .sort({ createdAt: -1 })
-      .populate("posts")
+      .populate("posts followers following", "text comments likes createdAt username avatar")
       .lean();
     if (profile) {
       res.status(200).json(profile);

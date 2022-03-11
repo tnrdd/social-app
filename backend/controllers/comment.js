@@ -107,7 +107,7 @@ exports.comments = async (req, res, next) => {
       post: req.query.id,
     })
       .sort({ createdAt: -1 })
-      .populate("user likes", "username user")
+      .populate("user likes", "username avatar user")
       .limit(512)
       .lean();
 
@@ -123,7 +123,7 @@ exports.feedComments = async (req, res, next) => {
       post: req.query.id,
     })
       .sort({ createdAt: -1 })
-      .populate("user likes", "username user")
+      .populate("user likes", "username avatar user")
       .limit(512)
       .lean();
 
