@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
@@ -11,7 +11,7 @@ function Login(props) {
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (success) {
       props.setIsLoggedIn(true);
       navigate("/");

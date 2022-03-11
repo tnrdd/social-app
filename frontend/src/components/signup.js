@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEfect} from "react";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -12,7 +12,7 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (success) {
       navigate("/login");
     }

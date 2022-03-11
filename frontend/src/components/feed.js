@@ -2,23 +2,20 @@ import React, { useState, useEffect } from "react";
 
 import Comments from "./comments";
 
-function Posts(props) {
+function Feed(props) {
   const [posts, setPosts] = useState([]);
   const [commentsToggle, setCommentsToggle] = useState(false);
+  const [isFeed, setIsFeed] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-    fetch("http://127.0.0.1:3000/api/post", {
+    fetch("http://127.0.0.1:3000/api/feed", {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((json) => {
-        if (isMounted) {
-          setPosts(json);
-          console.log(json);
-        }
+        setPosts(json);
+        console.log(json);
       });
-    return () => (isMounted = false);
   }, []);
 
   return (
@@ -28,11 +25,11 @@ function Posts(props) {
           <div id={post._id} className="post" key={posts.indexOf(post)}>
             <div className="avatar">
               <img
-                src={`http://127.0.0.1:3000/avatars/${post.user.avatar}`}
+                src={`http://127.0.0.1:3000/avatars/${post.user[0].avatar}`}
                 alt="avatar"
               />
             </div>
-            <div className="username">{post.user.username}</div>
+            <div className="username">{post.user[0].username}</div>
             <div className="text">{post.text}</div>
             <div className="interactions">
               <div className="likes">
@@ -45,6 +42,7 @@ function Posts(props) {
             <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             {commentsToggle ? (
               <Comments
+                isFeed={isFeed}
                 postId={post._id}
                 setCommentsToggle={setCommentsToggle}
               />
@@ -56,4 +54,4 @@ function Posts(props) {
   );
 }
 
-export default Posts;
+export default Feed;
