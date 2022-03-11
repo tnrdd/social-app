@@ -7,6 +7,7 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 import Posts from "./components/posts";
 import Feed from "./components/feed";
+import NotFound from "./components/404";
 
 import "./styles/style.css";
 
@@ -60,6 +61,7 @@ function App() {
         <Route path="/" element={isLoggedIn ? <Feed /> : <Posts />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>
   );
