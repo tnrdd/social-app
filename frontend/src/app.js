@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 
 import Signup from "./components/signup";
 import Login from "./components/login";
+import Posts from "./components/posts";
 
 import "./styles/style.css";
 
@@ -53,10 +54,9 @@ function App() {
         )}
       </header>
       <Routes>
-        <Route path="/" element={<p>Home</p>} />
+        <Route path="/" element={isLoggedIn ? null : <Posts />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="logout" element={<p>Logout</p>} />
       </Routes>
     </div>
   );
