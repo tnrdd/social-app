@@ -1,9 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
   font-family: Calibri, Arial, Courier;
+  background:grey;
 }
 
 header {
@@ -21,6 +20,11 @@ nav {
   margin: auto;
 }
 
+button {
+  width: 100px;
+  margin: auto;
+}
+
 #signup-form,
 #login-form {
   width: 400px;
@@ -31,39 +35,37 @@ nav {
 }
 
 .avatar img {
-  position: relative;
-  right: 60px;
-  top: 60px;
   width: 50px;
   height: auto;
-  border: 2px solid black;
+  border: 2px solid white;
   border-radius: 50%;
 }
-.comment > .avatar img {
-  position: relative;
-  right: 40px;
-  top: 40px;
+/*
+.comment-container > .avatar img {
   width: 30px;
   height: auto;
+  border: 2px solid white;
   border-radius: 50%;
-}
+}*/
 
-button {
-  width: 100px;
+.posts, .comments{
   margin: auto;
-}
-
-.posts {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  width: 500px;
+  width: 540px;
   height: auto;
-  border: 1px solid black;
 }
 .interactions {
   display: flex;
-  gap: 10px;
+  gap: 100px;
+}
+
+.post-container, .comment-container {
+  display: flex;
+  border: 1px solid white;
+  padding: 4px;
+}
+
+.post,
+.comment {
+  text-align: left;
+  padding: 4px;
 }
