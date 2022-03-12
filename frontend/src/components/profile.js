@@ -18,22 +18,40 @@ function Profile(props) {
       .then((json) => {
         if (isMounted) {
           setProfile({
+            id: json._id,
             following: json.following,
             followers: json.followers,
             avatar: json.avatar,
-            isUser: json.isUser,
             isFollowed: json.isFollowed,
+            isUser: json.isUser,
           });
           setPosts(json.posts);
-          console.log(json)
         }
       });
     return () => (isMounted = false);
   }, []);
 
   const handleFollow = () => {
-    
-  }
+    const userId = { id: profile.id };
+    if (!props.isLoggedIn) {
+      navigate("/login");
+    } else {
+      fetch("http://127.0.0.1:3000/api/follow", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(userId),
+      }).then((res) => {
+        if (res.ok && profile.isFollowed) {
+          setProfile({...profile, isFollowed:false})
+        } else if (res.ok && !profile.isFollowed) {
+          setProfile({...profile, isFollowed:true})
+        }
+      });
+    }
+  };
 
   return (
     <div className="posts">
@@ -48,7 +66,12 @@ function Profile(props) {
             }`}
             alt="avatar"
           />
-          <button style={profile.isUser ? {display:"none"} : {display:"block"}} onClick={()=> console.log("S")}>{profile.isFollowed ? "Unfollow" : "Follow"}</button>
+          <button
+            style={profile.isUser ? { display: "none" } : { display: "block" }}
+            onClick={handleFollow}
+          >
+            {profile.isFollowed ? "Unfollow" : "Follow"}
+          </button>
         </div>
         <p>{username}</p>
         <div className="profile-stats">

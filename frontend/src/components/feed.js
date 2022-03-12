@@ -10,13 +10,17 @@ function Feed(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true;
     fetch("http://127.0.0.1:3000/api/feed", {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((json) => {
-        setPosts(json);
+        if (isMounted) {
+          setPosts(json);
+        }
       });
+    return () => (isMounted = false);
   }, []);
 
   return (

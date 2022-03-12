@@ -64,7 +64,7 @@ function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/comment/:postid" element={<Comments setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/:username" element={<Profile setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/:username" element={<Profile isLoggedIn={isLoggedIn} />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>
