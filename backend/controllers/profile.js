@@ -72,14 +72,21 @@ exports.profile = async (req, res, next) => {
           } else {
             profile.isUser = false;
             const followers = profile.followers;
-            for (follower of followers) {
+            for (const follower of followers) {
               profile.isFollowed = JSON.stringify(follower.username).includes(
                 req.user
               );
             }
           }
+          const user = await User.findOne({ username: req.user });
+          for (const post of profile.posts) {
+            for (const like of post.likes) {
+              post.isLiked = JSON.stringify(like).includes(user._id);
+            }
+          }
         }
       }
+
       res.status(200).json(profile);
     } else {
       res.sendStatus(404);
@@ -180,7 +187,6 @@ exports.follow = async (req, res, next) => {
         { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
       );
       await Promise.all([followed, follower]);
-
     } else if (isFollowed) {
       let followed = User.updateOne(
         { _id: req.body.id },

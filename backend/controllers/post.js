@@ -132,8 +132,8 @@ exports.feed = async (req, res, next) => {
     ]);
     const user = await User.findOne({ username: req.user });
     const posts = followingPosts[0].followingPosts;
-    for (post of posts) {
-      for (like of post.likes) {
+    for (const post of posts) {
+      for (const like of post.likes) {
         post.isLiked = JSON.stringify(like).includes(user._id);
       }
     }

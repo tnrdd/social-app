@@ -128,8 +128,8 @@ exports.feedComments = async (req, res, next) => {
       .lean();
 
     const user = await User.findOne({ username: req.user });
-    for (comment of comments) {
-      for (like of comment.likes) {
+    for (const comment of comments) {
+      for (const like of comment.likes) {
         comment.isLiked = JSON.stringify(like.user).includes(user._id);
       }
     }

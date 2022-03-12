@@ -38,6 +38,5 @@ router.put("/password", authController.auth, authController.changePassword);
 router.delete("/comment", authController.auth, commentController.deleteComment);
 router.delete("/post", authController.auth, postController.deletePost);
 router.delete("/profile", authController.auth, profileController.deleteProfile);
-router.delete("/follow", authController.auth, profileController.unfollow);
 
 module.exports = router;
