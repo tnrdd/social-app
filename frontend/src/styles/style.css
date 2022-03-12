@@ -40,13 +40,13 @@ button {
   border: 2px solid white;
   border-radius: 50%;
 }
-/*
-.comment-container > .avatar img {
-  width: 30px;
+
+.profile > .avatar img {
+  width: 90px;
   height: auto;
-  border: 2px solid white;
+  border: 3px solid white;
   border-radius: 50%;
-}*/
+}
 
 .posts, .comments{
   margin: auto;

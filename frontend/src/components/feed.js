@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 
 import Comments from "./comments";
 
@@ -7,7 +7,7 @@ function Feed(props) {
   const [posts, setPosts] = useState([]);
   const [isFeed, setIsFeed] = useState(true);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://127.0.0.1:3000/api/feed", {
@@ -31,7 +31,9 @@ function Feed(props) {
               />
             </div>
             <div className="post">
-              <div className="username">{post.user[0].username}</div>
+              <Link to={`/${post.user[0].username}`}>
+                {post.user[0].username}
+              </Link>
               <div className="text">{post.text}</div>
               <div className="interactions">
                 <div className="likes">

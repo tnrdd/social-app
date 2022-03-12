@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const multer = require("multer");
 const sharp = require("sharp");
+const jwt = require("jsonwebtoken");
 
 const Post = require("../models/post");
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
+
+require("dotenv").config();
 
 const { body, validationResult } = require("express-validator");
 
@@ -47,9 +50,40 @@ exports.profile = async (req, res, next) => {
       "username avatar followers following posts"
     )
       .sort({ createdAt: -1 })
-      .populate("posts followers following", "text comments likes createdAt username avatar")
+      .limit(1024)
+      .populate(
+        "posts",
+        "text comments likes createdAt username avatar"
+      )
+      .populate(
+        "followers following",
+        "username avatar"
+      )
       .lean();
+
     if (profile) {
+      const token = req.cookies.accessToken;
+      if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+          if (err) {
+            return res.sendStatus(403);
+          }
+
+          req.user = user;
+        });
+
+        if (req.user) {
+          if (req.user === profile.username) {
+            profile.isUser = true;
+          } else {
+            const followers = profile.followers;
+            for (follower of followers) {
+              if (JSON.stringify(follower.username).includes(req.user))
+                profile.isFollowed = true;
+            }
+          }
+        }
+      }
       res.status(200).json(profile);
     } else {
       res.sendStatus(404);

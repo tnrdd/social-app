@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Comments from "./comments";
 
-function Posts(props) {
-  const [posts, setPosts] = useState([]);
-
+function Profile(props) {
   const navigate = useNavigate();
+  const { username } = useParams();
+  const [profile, setProfile] = useState({});
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
-    fetch("http://127.0.0.1:3000/api/post", {
+    fetch(`http://127.0.0.1:3000/api/profile?username=${username}`, {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((json) => {
         if (isMounted) {
-          setPosts(json);
+          setProfile({
+            following: json.following,
+            followers: json.followers,
+            avatar: json.avatar,
+          });
+          setPosts(json.posts);
         }
       });
     return () => (isMounted = false);
@@ -24,19 +30,28 @@ function Posts(props) {
 
   return (
     <div className="posts">
+      <div className="profile">
+        <div className="avatar">
+          <img
+            src={`http://127.0.0.1:3000/avatars/${profile.avatar || "default.jpeg"}`}
+            alt="avatar"
+          />
+        </div>
+        {username}
+        {Array(profile.following).length}
+        {Array(profile.followers).length}
+      </div>
       {posts.map((post) => {
         return (
           <div className="post-container" key={posts.indexOf(post)}>
             <div className="avatar">
               <img
-                src={`http://127.0.0.1:3000/avatars/${post.user.avatar}`}
+                src={`http://127.0.0.1:3000/avatars/${profile.avatar|| "default.jpeg"}`}
                 alt="avatar"
               />
             </div>
             <div className="post">
-              <div className="username">
-                <Link to={`/${post.user.username}`}> {post.user.username}</Link>
-              </div>
+              <Link to={`/${username}`}> {username}</Link>
               <div className="text">{post.text}</div>
               <div className="interactions">
                 <div className="likes">
@@ -58,4 +73,4 @@ function Posts(props) {
   );
 }
 
-export default Posts;
+export default Profile;
