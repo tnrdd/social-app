@@ -65,7 +65,7 @@ function App() {
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/comment/:postid" element={<Comments setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/:username" element={<Profile isLoggedIn={isLoggedIn} />} />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

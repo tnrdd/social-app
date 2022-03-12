@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import Like from "../assets/heart.svg";
+
 import Comments from "./comments";
 
 function Feed(props) {
   const [posts, setPosts] = useState([]);
-  const [isFeed, setIsFeed] = useState(true);
+  const [update, setUpdate] = useState(null)
 
   const navigate = useNavigate();
 
@@ -16,12 +18,31 @@ function Feed(props) {
     })
       .then((res) => res.json())
       .then((json) => {
+        console.log(json);
         if (isMounted) {
           setPosts(json);
         }
       });
     return () => (isMounted = false);
-  }, []);
+  }, [update]);
+
+  const handleLike = (id) => {
+    const postId = { id: id };
+    fetch("http://127.0.0.1:3000/api/like", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(postId),
+    }).then((res) => {
+      if (res.ok && update) {
+        setUpdate(0)
+      } else if (res.ok && !update) {
+        setUpdate(1)
+      }
+    });
+  };
 
   return (
     <div className="posts">
@@ -41,6 +62,9 @@ function Feed(props) {
               <div className="text">{post.text}</div>
               <div className="interactions">
                 <div className="likes">
+                  <div onClick={() => handleLike(post._id)}>
+                    <Like fill={post.isLiked ? "red" : "none"} />
+                  </div>
                   {post.likes.length > 0 ? post.likes.length : null}
                 </div>
                 <div

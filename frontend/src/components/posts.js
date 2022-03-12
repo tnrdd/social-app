@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import Like from "../assets/heart.svg";
+
 import Comments from "./comments";
 
 function Posts(props) {
@@ -40,6 +42,7 @@ function Posts(props) {
               <div className="text">{post.text}</div>
               <div className="interactions">
                 <div className="likes">
+                  <Like/>
                   {post.likes.length > 0 ? post.likes.length : null}
                 </div>
                 <div

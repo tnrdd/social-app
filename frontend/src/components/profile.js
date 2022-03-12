@@ -14,7 +14,11 @@ function Profile(props) {
     fetch(`http://127.0.0.1:3000/api/profile?username=${username}`, {
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
       .then((json) => {
         if (isMounted) {
           setProfile({
@@ -27,7 +31,8 @@ function Profile(props) {
           });
           setPosts(json.posts);
         }
-      });
+      })
+      .catch(() => navigate("/"));
     return () => (isMounted = false);
   }, []);
 
@@ -45,9 +50,9 @@ function Profile(props) {
         body: JSON.stringify(userId),
       }).then((res) => {
         if (res.ok && profile.isFollowed) {
-          setProfile({...profile, isFollowed:false})
+          setProfile({ ...profile, isFollowed: false });
         } else if (res.ok && !profile.isFollowed) {
-          setProfile({...profile, isFollowed:true})
+          setProfile({ ...profile, isFollowed: true });
         }
       });
     }

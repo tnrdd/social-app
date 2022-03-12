@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Calibri, Arial, Courier;
-  background:grey;
+  background: grey;
 }
 
 header {
@@ -48,7 +48,8 @@ button {
   border-radius: 50%;
 }
 
-.posts, .comments{
+.posts,
+.comments {
   margin: auto;
   width: 540px;
   height: auto;
@@ -58,7 +59,8 @@ button {
   gap: 100px;
 }
 
-.post-container, .comment-container {
+.post-container,
+.comment-container {
   display: flex;
   border: 1px solid white;
   padding: 4px;
@@ -69,13 +71,19 @@ button {
   text-align: left;
   padding: 4px;
 }
-.profile{
-  border: 1px solid white;;
-  padding:8px;
+.profile {
+  border: 1px solid white;
+  padding: 8px;
 }
 
-.profile > .avatar{
+.profile > .avatar {
   display: flex;
   justify-content: space-between;
-  gap:300px;
+  gap: 300px;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
