@@ -58,6 +58,9 @@ button {
   display: flex;
   gap: 100px;
 }
+.interactions:hover {
+  cursor: pointer;
+}
 
 .post-container,
 .comment-container {
@@ -70,6 +73,7 @@ button {
 .comment {
   text-align: left;
   padding: 4px;
+  line-height: 25px;
 }
 .profile {
   border: 1px solid white;
@@ -82,8 +86,10 @@ button {
   gap: 300px;
 }
 
-.likes {
+.likes,
+.comments {
   display: flex;
   align-items: center;
+  width: 50px;
   gap: 10px;
 }

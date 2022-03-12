@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import Like from "../assets/heart.svg";
+import Message from "../assets/message.svg";
 
 import Comments from "./comments";
 
 function Feed(props) {
   const [posts, setPosts] = useState([]);
-  const [update, setUpdate] = useState(null)
+  const [update, setUpdate] = useState(null);
 
   const navigate = useNavigate();
 
@@ -37,9 +38,9 @@ function Feed(props) {
       body: JSON.stringify(postId),
     }).then((res) => {
       if (res.ok && update) {
-        setUpdate(0)
+        setUpdate(0);
       } else if (res.ok && !update) {
-        setUpdate(1)
+        setUpdate(1);
       }
     });
   };
@@ -54,6 +55,7 @@ function Feed(props) {
                 src={`http://127.0.0.1:3000/avatars/${post.user[0].avatar}`}
                 alt="avatar"
               />
+              <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
             <div className="post">
               <Link to={`/${post.user[0].username}`}>
@@ -71,10 +73,10 @@ function Feed(props) {
                   className="comments"
                   onClick={() => navigate(`/comment/${post._id}`)}
                 >
+                  <Message />
                   {post.comments.length > 0 ? post.comments.length : null}
                 </div>
               </div>
-              <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
           </div>
         );
