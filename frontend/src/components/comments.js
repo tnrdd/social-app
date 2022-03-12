@@ -24,7 +24,7 @@ function Comments(props) {
 
   return (
     <div className="comments">
-      <div id="close">
+      <div className="back">
         <p onClick={() => navigate(-1)}>Back</p>
       </div>
       {comments.map((comment) => {

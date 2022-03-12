@@ -69,3 +69,13 @@ button {
   text-align: left;
   padding: 4px;
 }
+.profile{
+  border: 1px solid white;;
+  padding:8px;
+}
+
+.profile > .avatar{
+  display: flex;
+  justify-content: space-between;
+  gap:300px;
+}

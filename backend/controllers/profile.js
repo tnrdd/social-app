@@ -51,14 +51,8 @@ exports.profile = async (req, res, next) => {
     )
       .sort({ createdAt: -1 })
       .limit(1024)
-      .populate(
-        "posts",
-        "text comments likes createdAt username avatar"
-      )
-      .populate(
-        "followers following",
-        "username avatar"
-      )
+      .populate("posts", "text comments likes createdAt username avatar")
+      .populate("followers following", "username avatar")
       .lean();
 
     if (profile) {
@@ -76,10 +70,12 @@ exports.profile = async (req, res, next) => {
           if (req.user === profile.username) {
             profile.isUser = true;
           } else {
+            profile.isUser = false;
             const followers = profile.followers;
             for (follower of followers) {
-              if (JSON.stringify(follower.username).includes(req.user))
-                profile.isFollowed = true;
+              profile.isFollowed = JSON.stringify(follower.username).includes(
+                req.user
+              );
             }
           }
         }
@@ -176,6 +172,30 @@ exports.follow = async (req, res, next) => {
     const follower = User.updateOne(
       { _id: user._id },
       { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
+    );
+
+    await Promise.all([followed, follower]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.unfollow = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      username: req.user,
+    });
+
+    const followed = User.updateOne(
+      { _id: req.body.id },
+      { $pull: { followers: user._id } }
+    );
+
+    const follower = User.updateOne(
+      { _id: user._id },
+      { $pull: { following: mongoose.Types.ObjectId(req.body.id) } }
     );
 
     await Promise.all([followed, follower]);

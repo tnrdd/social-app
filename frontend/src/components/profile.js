@@ -21,32 +21,49 @@ function Profile(props) {
             following: json.following,
             followers: json.followers,
             avatar: json.avatar,
+            isUser: json.isUser,
+            isFollowed: json.isFollowed,
           });
           setPosts(json.posts);
+          console.log(json)
         }
       });
     return () => (isMounted = false);
   }, []);
 
+  const handleFollow = () => {
+    
+  }
+
   return (
     <div className="posts">
       <div className="profile">
+        <div className="back">
+          <p onClick={() => navigate(-1)}>Back</p>
+        </div>
         <div className="avatar">
           <img
-            src={`http://127.0.0.1:3000/avatars/${profile.avatar || "default.jpeg"}`}
+            src={`http://127.0.0.1:3000/avatars/${
+              profile.avatar || "default.jpeg"
+            }`}
             alt="avatar"
           />
+          <button style={profile.isUser ? {display:"none"} : {display:"block"}} onClick={()=> console.log("S")}>{profile.isFollowed ? "Unfollow" : "Follow"}</button>
         </div>
-        {username}
-        {Array(profile.following).length}
-        {Array(profile.followers).length}
+        <p>{username}</p>
+        <div className="profile-stats">
+          {Array(profile.following).length} <span>following</span>
+          {Array(profile.followers).length} <span>followers</span>
+        </div>
       </div>
       {posts.map((post) => {
         return (
           <div className="post-container" key={posts.indexOf(post)}>
             <div className="avatar">
               <img
-                src={`http://127.0.0.1:3000/avatars/${profile.avatar|| "default.jpeg"}`}
+                src={`http://127.0.0.1:3000/avatars/${
+                  profile.avatar || "default.jpeg"
+                }`}
                 alt="avatar"
               />
             </div>
