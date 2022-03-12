@@ -86,8 +86,7 @@ button {
   gap: 300px;
 }
 
-.likes,
-.comments {
+.likes {
   display: flex;
   align-items: center;
   width: 50px;
