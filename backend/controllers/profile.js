@@ -164,41 +164,35 @@ exports.follow = async (req, res, next) => {
       username: req.user,
     });
 
-    const followed = User.updateOne(
-      { _id: req.body.id },
-      { $push: { followers: user._id } }
-    );
-
-    const follower = User.updateOne(
-      { _id: user._id },
-      { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
-    );
-
-    await Promise.all([followed, follower]);
-
-    res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.unfollow = async (req, res, next) => {
-  try {
-    const user = await User.findOne({
+    const isFollowed = await User.exists({
       username: req.user,
+      following: req.body.id,
     });
 
-    const followed = User.updateOne(
-      { _id: req.body.id },
-      { $pull: { followers: user._id } }
-    );
+    if (!isFollowed) {
+      let followed = User.updateOne(
+        { _id: req.body.id },
+        { $push: { followers: user._id } }
+      );
 
-    const follower = User.updateOne(
-      { _id: user._id },
-      { $pull: { following: mongoose.Types.ObjectId(req.body.id) } }
-    );
+      let follower = User.updateOne(
+        { _id: user._id },
+        { $push: { following: mongoose.Types.ObjectId(req.body.id) } }
+      );
+      await Promise.all([followed, follower]);
 
-    await Promise.all([followed, follower]);
+    } else if (isFollowed) {
+      let followed = User.updateOne(
+        { _id: req.body.id },
+        { $pull: { followers: user._id } }
+      );
+
+      let follower = User.updateOne(
+        { _id: user._id },
+        { $pull: { following: mongoose.Types.ObjectId(req.body.id) } }
+      );
+      await Promise.all([followed, follower]);
+    }
 
     res.sendStatus(200);
   } catch (err) {
