@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const Post = require("../models/post");
 const User = require("../models/user");
@@ -23,20 +24,40 @@ exports.comment = [
         return res.status(422).json({ errors: errors.array() });
       }
       const user = await User.findOne({ username: req.user });
-      const comment = await Comment.create({
-        user: user._id,
-        text: req.body.text,
-        post: req.body.id,
-      });
 
-      await Post.updateOne(
-        { _id: comment.post },
-        { $push: { comments: comment._id } }
-      );
-      await User.updateOne(
-        { _id: comment.user },
-        { $push: { comments: comment._id } }
-      );
+      const isPost = await Post.exists({ _id: req.body.id });
+
+      if (isPost) {
+        let comment = await Comment.create({
+          user: user._id,
+          text: req.body.text,
+          post: req.body.id,
+        });
+
+        await Post.updateOne(
+          { _id: req.body.id },
+          { $push: { comments: comment._id } }
+        );
+        await User.updateOne(
+          { _id: {$in: comment.user } },
+          { $push: { comments: comment._id } }
+        );
+      } else {
+        let comment = await Comment.create({
+          user: user._id,
+          text: req.body.text,
+          comment: req.body.id,
+        });
+
+        await Comment.updateOne(
+          { _id: req.body.id },
+          { $push: { comments: comment._id } }
+        );
+        await User.updateOne(
+          { _id: {$in: comment.user } },
+          { $push: { comments: comment._id } }
+        );
+      }
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -112,27 +133,23 @@ exports.comments = async (req, res, next) => {
       .limit(512)
       .lean();
 
-    res.status(200).json(comments);
-  } catch (err) {
-    next(err);
-  }
-};
+    const token = req.cookies.accessToken;
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          return res.sendStatus(403);
+        }
 
-exports.feedComments = async (req, res, next) => {
-  try {
-    const comments = await Comment.find({
-      post: req.query.id,
-    })
-      .sort({ createdAt: -1 })
-      .populate("user likes", "username avatar user")
-      .populate("post", "username avatar text comments likes createdAt")
-      .limit(512)
-      .lean();
+        req.user = user;
+      });
+    }
 
-    const user = await User.findOne({ username: req.user });
-    for (const comment of comments) {
-      for (const like of comment.likes) {
-        comment.isLiked = JSON.stringify(like.user).includes(user._id);
+    if (req.user) {
+      const user = await User.findOne({ username: req.user });
+      for (const comment of comments) {
+        for (const like of comment.likes) {
+          comment.isLiked = JSON.stringify(like.user).includes(user._id);
+        }
       }
     }
 
