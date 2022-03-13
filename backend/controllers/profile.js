@@ -171,6 +171,11 @@ exports.follow = async (req, res, next) => {
       username: req.user,
     });
 
+    console.log(req.body.id)
+    if (user._id.toString() === req.body.id) {
+      res.sendStatus(405);
+    }
+
     const isFollowed = await User.exists({
       username: req.user,
       following: req.body.id,

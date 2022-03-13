@@ -114,13 +114,24 @@ exports.feed = async (req, res, next) => {
               },
             },
             {
+              $lookup: {
+                from: "likes",
+                localField: "likes",
+                foreignField: "_id",
+                as: "likes",
+              },
+            },
+            {
+              $unwind: "$user",
+            },
+            {
               $project: {
                 text: true,
                 comments: true,
-                likes: true,
                 createdAt: true,
                 "user.username": true,
                 "user.avatar": true,
+                "likes.user": true,
               },
             },
             { $sort: { createdAt: -1 } },

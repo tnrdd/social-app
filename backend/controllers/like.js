@@ -35,7 +35,7 @@ exports.like = async (req, res, next) => {
           { _id: { $in: like.post } },
           { $pull: { likes: like._id } }
         );
-        user.updateOne({ $pull: { likes: like._id } });
+        await user.updateOne({ $pull: { likes: like._id } });
         await like.delete();
       }
     } else {

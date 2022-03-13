@@ -108,6 +108,7 @@ exports.comments = async (req, res, next) => {
     })
       .sort({ createdAt: -1 })
       .populate("user likes", "username avatar user")
+      .populate("post", "username avatar text comments likes createdAt")
       .limit(512)
       .lean();
 
@@ -124,6 +125,7 @@ exports.feedComments = async (req, res, next) => {
     })
       .sort({ createdAt: -1 })
       .populate("user likes", "username avatar user")
+      .populate("post", "username avatar text comments likes createdAt")
       .limit(512)
       .lean();
 
