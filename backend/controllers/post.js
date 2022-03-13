@@ -46,49 +46,58 @@ exports.editPost = [
     .trim()
     .escape(),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    Post.findByIdAndUpdate(
-      req.body.id,
-      { text: req.body.text },
-      (err, post) => {
-        if (err) {
-          return next(err);
-        }
-        res.sendStatus(200);
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
-    );
+
+      const callingUser = await User.findOne({ username: req.user });
+      const post = await Post.findOne({ _id: req.body.id });
+
+      if (post.user.toString() === callingUser._id.toString()) {
+        await post.update({ text: req.body.text });
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(403);
+      }
+    } catch (err) {
+      next(err);
+    }
   },
 ];
 
 exports.deletePost = async (req, res, next) => {
   try {
+    const callingUser = await User.findOne({ username: req.user });
     const post = await Post.findOne({
       _id: req.body.id,
     });
-    const comments = Comment.deleteMany({
-      _id: { $in: post.comments },
-    });
 
-    const likes = Like.deleteMany({
-      _id: { $in: post.likes },
-    });
+    if (post.user.toString() === callingUser._id.toString()) {
+      const comments = Comment.deleteMany({
+        _id: { $in: post.comments },
+      });
 
-    const user = User.updateOne(
-      {
-        _id: { $in: post.user },
-      },
-      { $pull: { posts: req.body.id } }
-    );
+      const likes = Like.deleteMany({
+        _id: { $in: post.likes },
+      });
 
-    await Promise.all([comments, likes, user]);
+      const user = User.updateOne(
+        {
+          _id: { $in: post.user },
+        },
+        { $pull: { posts: req.body.id } }
+      );
 
-    await Post.deleteOne(post._id);
-    res.sendStatus(200);
+      await Promise.all([comments, likes, user]);
+
+      await Post.deleteOne(post._id);
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(403);
+    }
   } catch (err) {
     next(err);
   }

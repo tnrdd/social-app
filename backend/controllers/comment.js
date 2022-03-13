@@ -39,7 +39,7 @@ exports.comment = [
           { $push: { comments: comment._id } }
         );
         await User.updateOne(
-          { _id: {$in: comment.user } },
+          { _id: { $in: comment.user } },
           { $push: { comments: comment._id } }
         );
       } else {
@@ -54,7 +54,7 @@ exports.comment = [
           { $push: { comments: comment._id } }
         );
         await User.updateOne(
-          { _id: {$in: comment.user } },
+          { _id: { $in: comment.user } },
           { $push: { comments: comment._id } }
         );
       }
@@ -74,22 +74,25 @@ exports.editComment = [
     .trim()
     .escape(),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-
-    Comment.findByIdAndUpdate(
-      req.body.id,
-      { text: req.body.text },
-      (err, comment) => {
-        if (err) {
-          return next(err);
-        }
-        res.sendStatus(200);
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
       }
-    );
+
+      const callingUser = await User.findOne({ username: req.user });
+      const comment = await Comment.findOne({ _id: req.body.id });
+
+      if (comment.user.toString() === callingUser._id.toString()) {
+        await comment.update({ text: req.body.text });
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(403);
+      }
+    } catch (err) {
+      next(err);
+    }
   },
 ];
 
@@ -99,24 +102,35 @@ exports.deleteComment = async (req, res, next) => {
       _id: req.body.id,
     });
 
-    const post = Post.updateOne(
-      { _id: { $in: comment.post } },
-      { $pull: { comments: comment._id } }
-    );
+    const callingUser = await User.findOne({ username: req.user });
 
-    const user = User.updateOne(
-      { _id: { $in: comment.user } },
-      { $pull: { comments: comment._id } }
-    );
+    if (comment.user.toString() === callingUser._id.toString()) {
+      const post = Post.updateOne(
+        { _id: { $in: comment.post } },
+        { $pull: { comments: comment._id } }
+      );
 
-    const likes = Like.deleteMany({
-      _id: { $in: comment.likes },
-    });
+      const commentOf = Comment.updateOne(
+        { _id: { $in: comment.comment } },
+        { $pull: { comments: comment._id } }
+      );
 
-    await Promise.all([post, user, likes]);
+      const user = User.updateOne(
+        { _id: { $in: comment.user } },
+        { $pull: { comments: comment._id } }
+      );
 
-    await Comment.deleteOne(comment._id);
-    res.sendStatus(200);
+      const likes = Like.deleteMany({
+        _id: { $in: comment.likes },
+      });
+
+      await Promise.all([post, commentOf, user, likes]);
+
+      await comment.delete();
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(403);
+    }
   } catch (err) {
     next(err);
   }
@@ -124,8 +138,10 @@ exports.deleteComment = async (req, res, next) => {
 
 exports.comments = async (req, res, next) => {
   try {
-    const comments = await Comment.find({
-      post: req.query.id,
+    const isPost = await Post.exists({ _id: req.query.id });
+
+    let comments = await Comment.find({
+      $or: [{ post: req.query.id }, { comment: req.query.id }],
     })
       .sort({ createdAt: -1 })
       .populate("user likes", "username avatar user")
