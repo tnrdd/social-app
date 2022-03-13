@@ -138,17 +138,6 @@ exports.deleteComment = async (req, res, next) => {
 
 exports.comments = async (req, res, next) => {
   try {
-    const isPost = await Post.exists({ _id: req.query.id });
-
-    let comments = await Comment.find({
-      $or: [{ post: req.query.id }, { comment: req.query.id }],
-    })
-      .sort({ createdAt: -1 })
-      .populate("user likes", "username avatar user")
-      .populate("post", "username avatar text comments likes createdAt")
-      .limit(512)
-      .lean();
-
     const token = req.cookies.accessToken;
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -160,16 +149,51 @@ exports.comments = async (req, res, next) => {
       });
     }
 
-    if (req.user) {
-      const user = await User.findOne({ username: req.user });
-      for (const comment of comments) {
-        for (const like of comment.likes) {
-          comment.isLiked = JSON.stringify(like.user).includes(user._id);
+    const isPost = await Post.exists({ _id: req.query.id });
+
+    if (isPost) {
+      let comments = await Comment.find({
+        post: req.query.id,
+      })
+        .sort({ createdAt: -1 })
+        .populate("user likes", "username avatar user")
+        .populate("post", "username avatar text comments likes createdAt")
+        .populate("comments")
+        .limit(512)
+        .lean();
+
+      if (req.user) {
+        const user = await User.findOne({ username: req.user });
+        for (const comment of comments) {
+          for (const like of comment.likes) {
+            comment.isLiked = JSON.stringify(like.user).includes(user._id);
+          }
         }
       }
-    }
 
-    res.status(200).json(comments);
+      res.status(200).json(comments);
+    } else {
+      let comments = await Comment.find({
+        comment: req.query.id,
+      })
+        .sort({ createdAt: -1 })
+        .populate("user likes", "username avatar user")
+        .populate("comment", "username avatar text comments likes createdAt")
+        .populate("comments")
+        .limit(512)
+        .lean();
+
+      if (req.user) {
+        const user = await User.findOne({ username: req.user });
+        for (const comment of comments) {
+          for (const like of comment.likes) {
+            comment.isLiked = JSON.stringify(like.user).includes(user._id);
+          }
+        }
+      }
+
+      res.status(200).json(comments);
+    }
   } catch (err) {
     next(err);
   }
