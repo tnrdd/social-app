@@ -51,8 +51,12 @@ exports.profile = async (req, res, next) => {
     )
       .sort({ createdAt: -1 })
       .limit(1024)
-      .populate("posts", "text comments likes createdAt username avatar")
+      .populate("posts", "text comments createdAt username avatar")
       .populate("followers following", "username avatar")
+      .populate({
+    path: "posts",
+    populate: { path: "likes" }
+  })
       .lean();
 
     if (profile) {
