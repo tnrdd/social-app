@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import Comments from "./comments";
-
 function Profile(props) {
   const navigate = useNavigate();
   const { username } = useParams();

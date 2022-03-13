@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 function useFeed(props) {
   const [messages, setMessages] = useState([]);
   const [toggleLike, setToggleLike] = useState(0);
+  const {isLoggedIn, url} = props;
 
   useEffect(() => {
     let isMounted = true;
-    fetch(`http://127.0.0.1:3000/api/${props}`, {
+    fetch(`http://127.0.0.1:3000/api/${url}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -20,7 +21,7 @@ function useFeed(props) {
         }
       });
     return () => (isMounted = false);
-  }, [toggleLike]);
+  }, [isLoggedIn, toggleLike]);
 
   const handleLike = (id) => {
     const targetId = { id: id };

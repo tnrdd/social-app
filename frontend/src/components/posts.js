@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from "react";
 import useFeed from "../hooks/feed";
-
-import Interactions from "./interactions";
-import Username from "./username";
-import Avatar from "./avatar";
+import Messages from "./messages";
 
 function Posts(props) {
-  const {isLoggedIn} = props;
+  const { isLoggedIn } = props;
   const url = `${isLoggedIn ? "feed" : "post"}`;
-  const [{ messages, toggleLike }, handleLike] = useFeed(url);
+  const [{ messages, toggleLike }, handleLike] = useFeed({isLoggedIn, url});
 
   return (
-    <div className="posts">
-      {messages.map((message) => {
-        return (
-          <div className="post-container" key={messages.indexOf(message)}>
-            <Avatar message={message}/>
-            <div className="post">
-              <Username message={message}/>
-              <div className="text">{message.text}</div>
-              <Interactions message={message} toggleLike={isLoggedIn ? toggleLike : null} handleLike={isLoggedIn ? handleLike : null}/>
-            </div>
-          </div>
-        );
-      })}
+    <div className="messages">
+      <Messages
+        isLoggedIn={isLoggedIn}
+        toggleLike={toggleLike}
+        handleLike={handleLike}
+        messages={messages}
+      />
     </div>
   );
 }
