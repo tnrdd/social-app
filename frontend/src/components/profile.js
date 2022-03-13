@@ -34,12 +34,11 @@ function Profile(props) {
             isUser: json.isUser,
           });
           setPosts(json.posts);
-          console.log(json);
         }
       })
       .catch(() => navigate("/"));
     return () => (isMounted = false);
-  }, []);
+  }, [isLoggedIn, toggleLike]);
 
   const handleFollow = () => {
     const userId = { id: profile.id };
