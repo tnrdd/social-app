@@ -30,6 +30,7 @@ function Profile(props) {
             isUser: json.isUser,
           });
           setPosts(json.posts);
+          console.log(json)
         }
       })
       .catch(() => navigate("/"));
@@ -49,10 +50,8 @@ function Profile(props) {
         },
         body: JSON.stringify(userId),
       }).then((res) => {
-        if (res.ok && profile.isFollowed) {
-          setProfile({ ...profile, isFollowed: false });
-        } else if (res.ok && !profile.isFollowed) {
-          setProfile({ ...profile, isFollowed: true });
+        if (res.ok) {
+          setProfile({ ...profile, isFollowed: !profile.isFollowed});
         }
       });
     }
@@ -94,6 +93,7 @@ function Profile(props) {
                 }`}
                 alt="avatar"
               />
+              <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
             <div className="post">
               <Link to={`/${username}`}> {username}</Link>
@@ -109,7 +109,6 @@ function Profile(props) {
                   {post.comments.length > 0 ? post.comments.length : null}
                 </div>
               </div>
-              <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
           </div>
         );

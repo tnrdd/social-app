@@ -15,7 +15,6 @@ function useFeed(props) {
         }
       })
       .then((json, status) => {
-        console.log(json);
         if (isMounted && json) {
           setMessages(json);
         }

@@ -6,7 +6,6 @@ import { NavLink } from "react-router-dom";
 import Signup from "./components/signup";
 import Login from "./components/login";
 import Posts from "./components/posts";
-import Feed from "./components/feed";
 import Comments from "./components/comments";
 import Profile from "./components/profile";
 import NotFound from "./components/404";
@@ -60,10 +59,13 @@ function App() {
         )}
       </header>
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Feed /> : <Posts />} />
+        <Route path="/" element={<Posts isLoggedIn={isLoggedIn} />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/comment/:postid" element={<Comments isLoggedIn/>} />
+        <Route
+          path="/comment/:postid"
+          element={<Comments isLoggedIn={isLoggedIn} />}
+        />
         <Route
           path="/:username"
           element={<Profile isLoggedIn={isLoggedIn} />}

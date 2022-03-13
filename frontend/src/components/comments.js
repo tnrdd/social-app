@@ -8,24 +8,6 @@ import Like from "../assets/heart.svg";
 function Comments(props) {
   const navigate = useNavigate();
   const { postid } = useParams();
-  /*  const [posts, setComments] = useState([]);
-
-  useEffect(() => {
-    fetch(
-      `http://127.0.0.1:3000/api/${
-        props.isFeed ? "feed/post" : "post"
-      }?id=${postid}`,
-      {
-        credentials: "include",
-      }
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setComments(json);
-        console.log(json);
-      });
-  }, []);
-  */
 
   const url = `${props.isLoggedIn ? "feed/comment" : "comment"}?id=${postid}`;
   const [{ messages, toggleLike }, handleLike] = useFeed(url);
