@@ -7,7 +7,7 @@ function Comments(props) {
   const navigate = useNavigate();
   const { postid } = useParams();
   const url = `comment?id=${postid}`;
-  const [{ messages, toggleLike }, handleLike] = useFeed({isLoggedIn, url});
+  const [ messages, toggleLike, handleLike] = useFeed({isLoggedIn, url});
   const { isLoggedIn } = props;
 
   return (

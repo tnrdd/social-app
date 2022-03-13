@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Comments from "./comments";
+import useLike from "../hooks/like";
+
+import Interactions from "./interactions";
 
 function Profile(props) {
   const navigate = useNavigate();
   const { username } = useParams();
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
+  const [toggleLike, handleLike] = useLike([]);
+  const { isLoggedIn } = props;
 
   useEffect(() => {
     let isMounted = true;
@@ -28,7 +34,7 @@ function Profile(props) {
             isUser: json.isUser,
           });
           setPosts(json.posts);
-          console.log(json)
+          console.log(json);
         }
       })
       .catch(() => navigate("/"));
@@ -37,7 +43,7 @@ function Profile(props) {
 
   const handleFollow = () => {
     const userId = { id: profile.id };
-    if (!props.isLoggedIn) {
+    if (!isLoggedIn) {
       navigate("/login");
     } else {
       fetch("http://127.0.0.1:3000/api/follow", {
@@ -49,14 +55,14 @@ function Profile(props) {
         body: JSON.stringify(userId),
       }).then((res) => {
         if (res.ok) {
-          setProfile({ ...profile, isFollowed: !profile.isFollowed});
+          setProfile({ ...profile, isFollowed: !profile.isFollowed });
         }
       });
     }
   };
 
   return (
-    <div className="posts">
+    <div className="messages">
       <div className="profile">
         <div className="back">
           <p onClick={() => navigate(-1)}>Back</p>
@@ -83,7 +89,7 @@ function Profile(props) {
       </div>
       {posts.map((post) => {
         return (
-          <div className="post-container" key={posts.indexOf(post)}>
+          <div className="message-container" key={posts.indexOf(post)}>
             <div className="avatar">
               <img
                 src={`http://127.0.0.1:3000/avatars/${
@@ -93,20 +99,14 @@ function Profile(props) {
               />
               <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
-            <div className="post">
-              <Link to={`/${username}`}> {username}</Link>
+            <div className="message">
+              {username}
               <div className="text">{post.text}</div>
-              <div className="interactions">
-                <div className="likes">
-                  {post.likes.length > 0 ? post.likes.length : null}
-                </div>
-                <div
-                  className="comments"
-                  onClick={() => navigate(`/comment/${post._id}`)}
-                >
-                  {post.comments.length > 0 ? post.comments.length : null}
-                </div>
-              </div>
+              <Interactions
+                message={post}
+                toggleLike={isLoggedIn ? toggleLike : null}
+                handleLike={isLoggedIn ? handleLike : null}
+              />
             </div>
           </div>
         );

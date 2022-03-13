@@ -5,7 +5,7 @@ import Messages from "./messages";
 function Posts(props) {
   const { isLoggedIn } = props;
   const url = `${isLoggedIn ? "feed" : "post"}`;
-  const [{ messages, toggleLike }, handleLike] = useFeed({isLoggedIn, url});
+  const [ messages, toggleLike , handleLike] = useFeed({isLoggedIn, url});
 
   return (
     <div className="messages">
