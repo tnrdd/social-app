@@ -48,8 +48,7 @@ button {
   border-radius: 50%;
 }
 
-.posts,
-.comments {
+.messages {
   margin: auto;
   width: 540px;
   height: auto;
@@ -62,15 +61,14 @@ button {
   cursor: pointer;
 }
 
-.post-container,
-.comment-container {
+.message-container{
   display: flex;
   border: 1px solid white;
   padding: 4px;
 }
 
-.post,
-.comment {
+.message
+ {
   text-align: left;
   padding: 4px;
   line-height: 25px;
@@ -86,7 +84,7 @@ button {
   gap: 300px;
 }
 
-.likes {
+.likes, .comments{
   display: flex;
   align-items: center;
   width: 50px;

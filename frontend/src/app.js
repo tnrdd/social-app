@@ -32,6 +32,7 @@ function App() {
       (res) => {
         if (res.ok) {
           setIsLoggedIn(false);
+          navigate("/")
         }
       }
     );
