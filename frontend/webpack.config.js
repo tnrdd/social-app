@@ -10,7 +10,7 @@ module.exports = {
 
     new HtmlWebpackPlugin({
 
-      title: "Idea",
+      title: "Social Media App",
 			template: "./src/index.html",
 
     }),
@@ -37,10 +37,15 @@ module.exports = {
       },
 			{
 
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|jpg|jpeg|gif)$/i,
 
         type: "asset/resource",
 
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
       },
       { test: /\.(js|jsx)$/,
         
