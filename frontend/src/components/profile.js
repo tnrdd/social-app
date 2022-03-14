@@ -4,6 +4,7 @@ import Comments from "./comments";
 import useLike from "../hooks/like";
 
 import Interactions from "./interactions";
+import Username from "./username";
 
 function Profile(props) {
   const navigate = useNavigate();
@@ -96,10 +97,11 @@ function Profile(props) {
                 }`}
                 alt="avatar"
               />
-              <div className="timestamp">{post.createdAt.slice(0, 10)}</div>
             </div>
             <div className="message">
-              {username}
+              <Username username={username}/>
+              <span className="timestamp"/>
+                {post.createdAt.slice(0, 10)}
               <div className="text">{post.text}</div>
               <Interactions
                 message={post}

@@ -9,7 +9,6 @@ function Avatar(props) {
         src={`http://127.0.0.1:3000/avatars/${message.user.avatar}`}
         alt="avatar"
       />
-      <div className="timestamp">{message.createdAt.slice(0, 10)}</div>
     </div>
   );
 }

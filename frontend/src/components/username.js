@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Username(props) {
-  const { message } = props;
+  const { username } = props;
 
   return (
     <div className="username">
-      <Link to={`/${message.user.username}`}>{message.user.username}</Link>
+      <Link to={`/${username}`}>{username}</Link>
     </div>
   );
 }
