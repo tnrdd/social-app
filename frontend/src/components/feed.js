@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useFeed from "../hooks/feed";
+import Message from "./message";
 import Messages from "./messages";
 
 function Posts(props) {
@@ -9,6 +10,7 @@ function Posts(props) {
 
   return (
     <div className="messages">
+      <Message/>
       <Messages
         isLoggedIn={isLoggedIn}
         toggleLike={toggleLike}

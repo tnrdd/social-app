@@ -10,11 +10,12 @@ function Login(props) {
   });
   const resource = "login";
   const redirect =  "/";
-  const [errors, handleChange, handleSubmit] = useForm({formData, setFormData, resource, redirect})
+  const {setIsLoggedIn} = props;
+  const [errors, handleChange, handleSubmit] = useForm({setIsLoggedIn, formData, setFormData, resource, redirect})
 
   return (
     <div id="login">
-      <h4>Log in</h4>
+      <h1>Log in</h1>
       <form id="login-form" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -25,6 +25,19 @@ button {
   margin: auto;
 }
 
+#signup,
+#login {
+  margin: auto;
+  background: darkgrey;
+  width: 600px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
 #signup-form,
 #login-form {
   width: 400px;
@@ -32,6 +45,15 @@ button {
   display: flex;
   flex-direction: column;
   margin: auto;
+  gap: 10px;
+}
+input {
+  border: 0;
+  border-radius: 4px;
+}
+textarea,
+input:focus {
+  outline: none;
 }
 
 .avatar img {
@@ -57,6 +79,8 @@ button {
 .interactions {
   display: flex;
   gap: 100px;
+  position:relative;
+  top:5px;
 }
 
 .interactions:hover {
@@ -69,10 +93,30 @@ button {
   padding: 4px;
 }
 
+.message-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: right;
+  text-align: left;
+  background: white;
+  border-radius: 4px 4px 0 0;
+}
+.message-form button{
+  margin-left:400px;
+}
+
+.new-message textarea {
+  resize: none;
+  border: 0;
+  border-radius: 4px 4px 0 0;
+  height: 50px;
+}
+
 .message {
   text-align: left;
-  padding: 4px;
-  line-height: 25px;
+  padding: 8px;
 }
 
 .profile {
@@ -107,18 +151,18 @@ button {
 .likes,
 .comments {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
+  justify-content: flex-start;
   width: 50px;
 }
+
 .likes-count,
 .comments-count {
   margin-left: 10px;
 }
 
-.likes:hover,
-.comments:hover {
-  border-radius: 4px;
-  background: darkgrey;
+.like-icon:hover {
+  color:red;
+}
+.comment-icon:hover {
+  color:skyblue;
 }

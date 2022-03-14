@@ -6,9 +6,17 @@ function Like(props) {
   const { message, handleLike } = props;
 
   return (
-    <div onClick={() => (handleLike ? handleLike(message._id) : null)} className="likes">
+    <div
+      onClick={() => (handleLike ? handleLike(message._id) : null)}
+      className="likes"
+    >
+      <span className="like-icon">
+        {" "}
         <FiHeart size={17} fill={message.isLiked ? "red" : "none"} />
-      <span className="likes-count" >{message.likes.length > 0 ? message.likes.length : null}</span>
+      </span>
+      <span className="likes-count">
+        {message.likes.length > 0 ? message.likes.length : null}
+      </span>
     </div>
   );
 }
