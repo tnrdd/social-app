@@ -11,11 +11,6 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (success) {
-    }
-  });
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
