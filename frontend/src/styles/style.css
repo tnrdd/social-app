@@ -41,7 +41,7 @@ button {
   border-radius: 50%;
 }
 
-.profile > .avatar img {
+.profile > .follow img {
   width: 90px;
   height: auto;
   border: 3px solid white;
@@ -78,7 +78,7 @@ button {
   padding: 8px;
 }
 
-.profile > .avatar {
+.profile > .follow {
   display: flex;
   justify-content: space-between;
   gap: 300px;

@@ -5,6 +5,7 @@ import useLike from "../hooks/like";
 
 import Interactions from "./interactions";
 import Username from "./username";
+import Avatar from "./avatar";
 
 function Profile(props) {
   const navigate = useNavigate();
@@ -67,13 +68,8 @@ function Profile(props) {
         <div className="back">
           <p onClick={() => navigate(-1)}>Back</p>
         </div>
-        <div className="avatar">
-          <img
-            src={`http://127.0.0.1:3000/avatars/${
-              profile.avatar || "default.jpeg"
-            }`}
-            alt="avatar"
-          />
+        <div className="follow">
+          <Avatar avatar={profile.avatar || "default.jpeg"}/>
           <button
             style={profile.isUser ? { display: "none" } : { display: "block" }}
             onClick={handleFollow}
@@ -90,18 +86,11 @@ function Profile(props) {
       {posts.map((post) => {
         return (
           <div className="message-container" key={posts.indexOf(post)}>
-            <div className="avatar">
-              <img
-                src={`http://127.0.0.1:3000/avatars/${
-                  profile.avatar || "default.jpeg"
-                }`}
-                alt="avatar"
-              />
-            </div>
+            <Avatar avatar={profile.avatar}/>
             <div className="message">
               <Username username={username}/>
-              <span className="timestamp"/>
-                {post.createdAt.slice(0, 10)}
+              <span className="timestamp">
+                {post.createdAt.slice(0, 10)}</span>
               <div className="text">{post.text}</div>
               <Interactions
                 message={post}
