@@ -1,41 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useForm from "../hooks/form"
 
 function Login(props) {
-  const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch("http://127.0.0.1:3000/api/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(formData),
-    }).then((res) => {
-      if (res.ok) {
-        props.setIsLoggedIn(true);
-        navigate("/");
-      } else {
-        Promise.resolve(res.json()).then((result) => {
-          if (result) {
-            setErrors(result.errors);
-          }
-        });
-      }
-    });
-  };
+  const resource = "login";
+  const redirect =  "/";
+  const [errors, handleChange, handleSubmit] = useForm({formData, setFormData, resource, redirect})
 
   return (
     <div id="login">

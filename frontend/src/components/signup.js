@@ -1,38 +1,17 @@
 import React, { useState, useEfect } from "react";
 import { useNavigate } from "react-router-dom";
+import useForm from "../hooks/form"
 
 function Signup() {
-  const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmation: "",
   });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch("http://127.0.0.1:3000/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(formData),
-    }).then((res) => {
-      if (res.ok) {
-        navigate("/login");
-      } else {
-        Promise.resolve(res.json()).then((result) => {
-          setErrors(result.errors);
-        });
-      }
-    });
-  };
+  const resource = "signup";
+  const redirect =  "/login";
+  const [errors, handleChange, handleSubmit] = useForm({formData, setFormData, resource, redirect})
 
   return (
     <div id="signup">
