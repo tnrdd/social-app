@@ -90,7 +90,7 @@ input:focus {
 .message-container {
   display: flex;
   border: 1px solid white;
-  padding: 4px;
+  padding: 8px;
 }
 
 .message-form {
@@ -98,10 +98,11 @@ input:focus {
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  align-items: right;
   text-align: left;
   background: white;
-  border-radius: 4px 4px 0 0;
+  border:1px solid white;
+  gap:5px;
+  padding:8px;
 }
 .message-form button{
   margin-left:400px;
@@ -110,13 +111,14 @@ input:focus {
 .new-message textarea {
   resize: none;
   border: 0;
-  border-radius: 4px 4px 0 0;
   height: 50px;
+  border-bottom:1px solid grey;
+  font-family: Calibri, Arial, Courier;
 }
 
 .message {
   text-align: left;
-  padding: 8px;
+  padding-left: 8px;
 }
 
 .profile {

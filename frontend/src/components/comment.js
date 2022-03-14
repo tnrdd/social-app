@@ -9,9 +9,7 @@ function Comment(props) {
   return (
     <div
       className="comments"
-      onClick={() =>
-        message.comments.length > 0 ? navigate(`/comment/${message._id}`) : null
-      }
+      onClick={() => navigate(`/comment/${message._id}`)}
     >
       <span className="comment-icon">
         <FaRegComment />

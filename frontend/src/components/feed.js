@@ -10,7 +10,7 @@ function Posts(props) {
 
   return (
     <div className="messages">
-      <Message/>
+      {isLoggedIn ? <Message/> : null}
       <Messages
         isLoggedIn={isLoggedIn}
         toggleLike={toggleLike}

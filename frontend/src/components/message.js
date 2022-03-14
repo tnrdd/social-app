@@ -2,13 +2,15 @@ import React, { useState, useEfect } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/form";
 
-function Message() {
+function Message(props) {
   const navigate = useNavigate();
+  const { isComment, id} = props;
   const [formData, setFormData] = useState({
     text: "",
+    id: isComment ? id : "",
   });
-  const resource = "post";
-  const redirect = "/";
+  const resource = isComment ? "comment" : "post";
+  const redirect = isComment ? -1 : "/";
   const [errors, handleChange, handleSubmit] = useForm({
     formData,
     setFormData,
@@ -21,12 +23,14 @@ function Message() {
       <form className="message-form" onSubmit={handleSubmit}>
         <textarea
           name="text"
-          placeholder="What's on your mind?"
+          placeholder={isComment ? "Reply" : "What's on your mind?"}
           maxLength="160"
           value={formData.username}
           onChange={handleChange}
         ></textarea>
-        <div>        <button>Post</button></div>
+        <div>
+          <button>Post</button>
+        </div>
       </form>
       {errors.length > 0 ? (
         <div id="validation-errors">

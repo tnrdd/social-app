@@ -58,14 +58,12 @@ function App() {
           </nav>
         )}
       </header>
-      <div className="new-post-button">
-      </div>
       <Routes>
         <Route path="/" element={<Feed isLoggedIn={isLoggedIn} />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route
-          path="/comment/:postid"
+          path="/comment/:id"
           element={<Comments isLoggedIn={isLoggedIn} />}
         />
         <Route
