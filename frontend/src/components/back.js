@@ -1,12 +1,13 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import {IoMdArrowRoundBack} from "react-icons/io"
 
 function Back() {
   const navigate = useNavigate();
 
   return (
     <div className="back">
-      <p onClick={() => navigate(-1)}>Back</p>
+      <IoMdArrowRoundBack className="back-icon" size={25} onClick={() => navigate(-1)}/>
     </div>
   );
 }

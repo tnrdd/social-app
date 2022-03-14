@@ -168,3 +168,12 @@ input:focus {
 .comment-icon:hover {
   color:skyblue;
 }
+
+.back{
+  color:white;
+}
+.back-icon:hover{
+  cursor:pointer;
+  background: darkgrey;
+  border-radius:50%;
+}
