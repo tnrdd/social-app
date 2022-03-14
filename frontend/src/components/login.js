@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
-  const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
@@ -10,13 +9,6 @@ function Login(props) {
   });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (success) {
-      props.setIsLoggedIn(true);
-      navigate("/");
-    }
-  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,7 +25,8 @@ function Login(props) {
       body: JSON.stringify(formData),
     }).then((res) => {
       if (res.ok) {
-        setSuccess(true);
+        props.setIsLoggedIn(true);
+        navigate("/");
       } else {
         Promise.resolve(res.json()).then((result) => {
           if (result) {

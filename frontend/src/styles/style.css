@@ -48,7 +48,7 @@ button {
   border-radius: 50%;
 }
 
-.messages{
+.messages {
   margin: auto;
   width: 540px;
   height: auto;
@@ -84,8 +84,8 @@ button {
 }
 .profile-stats {
   display: flex;
-  gap:20px;
-  padding-top :2px;
+  gap: 20px;
+  padding-top: 2px;
 }
 
 .timestamp {
@@ -112,11 +112,13 @@ button {
   align-content: center;
   width: 50px;
 }
-.likes-count, .comments-count{
-  margin-left:10px;
+.likes-count,
+.comments-count {
+  margin-left: 10px;
 }
 
-.likes:hover, .comments:hover {
+.likes:hover,
+.comments:hover {
   border-radius: 4px;
   background: darkgrey;
 }
