@@ -37,15 +37,10 @@ module.exports = {
       },
 			{
 
-        test: /\.(png|jpg|jpeg|gif)$/i,
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
 
         type: "asset/resource",
 
-      },
-      {
-        test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        use: ['@svgr/webpack'],
       },
       { test: /\.(js|jsx)$/,
         

@@ -48,34 +48,54 @@ button {
   border-radius: 50%;
 }
 
-.messages {
+.messages{
   margin: auto;
   width: 540px;
   height: auto;
 }
+
 .interactions {
   display: flex;
   gap: 100px;
 }
+
 .interactions:hover {
   cursor: pointer;
 }
 
-.message-container{
+.message-container {
   display: flex;
   border: 1px solid white;
   padding: 4px;
 }
 
-.message
- {
+.message {
   text-align: left;
   padding: 4px;
   line-height: 25px;
 }
+
 .profile {
+  margin: auto;
   border: 1px solid white;
   padding: 8px;
+  width: 522px;
+  height: auto;
+}
+.profile-stats {
+  display: flex;
+  gap:20px;
+  padding-top :2px;
+}
+
+.timestamp {
+  color: lightgrey;
+  font-size: 0.7rem;
+}
+
+.profile > span {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .profile > .follow {
@@ -84,9 +104,19 @@ button {
   gap: 300px;
 }
 
-.likes, .comments{
+.likes,
+.comments {
   display: flex;
   align-items: center;
+  justify-content: center;
+  align-content: center;
   width: 50px;
-  gap: 10px;
+}
+.likes-count, .comments-count{
+  margin-left:10px;
+}
+
+.likes:hover, .comments:hover {
+  border-radius: 4px;
+  background: darkgrey;
 }

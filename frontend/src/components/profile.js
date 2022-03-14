@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Comments from "./comments";
+import { useNavigate, useParams } from "react-router-dom";
 import useLike from "../hooks/like";
-
 import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
@@ -64,7 +62,7 @@ function Profile(props) {
   };
 
   return (
-    <div className="messages">
+    <div>
       <div className="profile">
         <Back />
         <div className="follow">
@@ -76,29 +74,31 @@ function Profile(props) {
             {profile.isFollowed ? "Unfollow" : "Follow"}
           </button>
         </div>
-        <Username username={username} />
+        <span>{username}</span>
         <div className="profile-stats">
-          {Array(profile.following).length} <span>following</span>
-          {Array(profile.followers).length} <span>followers</span>
+          <span>{Array(profile.following).length} following</span>
+          <span> {Array(profile.followers).length} followers</span>
         </div>
       </div>
-      {posts.map((post) => {
-        return (
-          <div className="message-container" key={posts.indexOf(post)}>
-            <Avatar avatar={profile.avatar} />
-            <div className="message">
-              <Username username={username} />
-              <span className="timestamp">{post.createdAt.slice(0, 10)}</span>
-              <div className="text">{post.text}</div>
-              <Interactions
-                message={post}
-                toggleLike={isLoggedIn ? toggleLike : null}
-                handleLike={isLoggedIn ? handleLike : null}
-              />
+      <div className="messages">
+        {posts.map((post) => {
+          return (
+            <div className="message-container" key={posts.indexOf(post)}>
+              <Avatar avatar={profile.avatar} />
+              <div className="message">
+                <Username username={username} />
+                <span className="timestamp">{post.createdAt.slice(0, 10)}</span>
+                <div className="text">{post.text}</div>
+                <Interactions
+                  message={post}
+                  toggleLike={isLoggedIn ? toggleLike : null}
+                  handleLike={isLoggedIn ? handleLike : null}
+                />
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
