@@ -3,9 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Comments from "./comments";
 import useLike from "../hooks/like";
 
-import Interactions from "./interactions";
 import Username from "./username";
 import Avatar from "./avatar";
+import Interactions from "./interactions";
+import Back from "./back";
 
 function Profile(props) {
   const navigate = useNavigate();
@@ -65,11 +66,9 @@ function Profile(props) {
   return (
     <div className="messages">
       <div className="profile">
-        <div className="back">
-          <p onClick={() => navigate(-1)}>Back</p>
-        </div>
+        <Back />
         <div className="follow">
-          <Avatar avatar={profile.avatar || "default.jpeg"}/>
+          <Avatar avatar={profile.avatar || "default.jpeg"} />
           <button
             style={profile.isUser ? { display: "none" } : { display: "block" }}
             onClick={handleFollow}
@@ -77,7 +76,7 @@ function Profile(props) {
             {profile.isFollowed ? "Unfollow" : "Follow"}
           </button>
         </div>
-        <p>{username}</p>
+        <Username username={username} />
         <div className="profile-stats">
           {Array(profile.following).length} <span>following</span>
           {Array(profile.followers).length} <span>followers</span>
@@ -86,11 +85,10 @@ function Profile(props) {
       {posts.map((post) => {
         return (
           <div className="message-container" key={posts.indexOf(post)}>
-            <Avatar avatar={profile.avatar}/>
+            <Avatar avatar={profile.avatar} />
             <div className="message">
-              <Username username={username}/>
-              <span className="timestamp">
-                {post.createdAt.slice(0, 10)}</span>
+              <Username username={username} />
+              <span className="timestamp">{post.createdAt.slice(0, 10)}</span>
               <div className="text">{post.text}</div>
               <Interactions
                 message={post}
