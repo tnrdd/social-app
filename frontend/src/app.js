@@ -11,6 +11,7 @@ import Likes from "./components/likes";
 import Following from "./components/following";
 import Followers from "./components/followers";
 import Profile from "./components/profile";
+import Settings from "./components/settings";
 import NotFound from "./components/404";
 import "./styles/style.css";
 
@@ -73,6 +74,7 @@ function App() {
         />
         <Route path="/:username/following" element={<Following />} />
         <Route path="/:username/followers" element={<Followers />} />
+        <Route path="/:username/settings" element={<Settings />} />
         <Route
           path="/comment/:id"
           element={<Comments isLoggedIn={isLoggedIn} />}

@@ -79,7 +79,13 @@ function Profile(props) {
               {profile.isFollowed ? "Unfollow" : "Follow"}
             </button>
           )}
-          {profile.isUser ? <span className="settings-icon" ><FiSettings size={30} /></span> : null}
+          {profile.isUser ? (
+            <span className="settings-icon">
+              <Link to={`/${username}/settings`}>
+                <FiSettings size={30} />
+              </Link>
+            </span>
+          ) : null}
         </div>
         <span className="username">{username}</span>
         <div className="profile-stats">
