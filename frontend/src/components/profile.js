@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useLike from "../hooks/like";
 import Username from "./username";
 import Avatar from "./avatar";
@@ -20,9 +20,10 @@ function Profile(props) {
       credentials: "include",
     })
       .then((res) => {
-        if (res.ok) {
-          return res.json();
+        if (!res.ok) {
+          throw new Error(res.status);
         }
+        return res.json();
       })
       .then((json) => {
         if (isMounted) {
@@ -37,7 +38,12 @@ function Profile(props) {
           setPosts(json.posts);
         }
       })
-      .catch(() => navigate("/"));
+      .catch((err) => {
+        if (err.message === "404") {
+          navigate("*");
+        }
+      });
+
     return () => (isMounted = false);
   }, [isLoggedIn, toggleLike]);
 
@@ -76,16 +82,17 @@ function Profile(props) {
         </div>
         <span className="username">{username}</span>
         <div className="profile-stats">
-          <div>
-            <span id="following-count">{Array(profile.following).length}</span>
-            <span> following</span>
+          <div className="follow-count">
+            <Link to={`/${username}/following`}>
+              {Array(profile.following).length}
+              <span>Following</span>
+            </Link>
           </div>
-          <div>
-            <span id="following-count">
-              {" "}
-              {Array(profile.followers).length}{" "}
-            </span>
-            <span>followers</span>
+          <div className="follow-count">
+            <Link to={`/${username}/followers`}>
+              {Array(profile.followers).length}
+              <span>Followers</span>
+            </Link>
           </div>
         </div>
       </div>

@@ -103,17 +103,19 @@ input:focus {
   width: 540px;
   height: auto;
 }
-.like-list {
+.like-list,
+.follow-list {
   margin: auto;
   width: 240px;
   height: auto;
 }
 
-.like-container {
+.like-container,
+.follow-container {
   display: flex;
   justify-content: space-around;
-  align-items:center;
-  padding-top:6px;
+  align-items: center;
+  padding-top: 6px;
   border: 1px solid #d0cfcf;
 }
 .username {
@@ -185,10 +187,18 @@ input:focus {
   color: #c1bdb3;
 }
 
-#following-count,
-#followers-count {
+.follow-count,
+.follow-count {
   color: #fbfbfb;
   font-weight: bold;
+}
+.follow-count span {
+  font-weight: normal;
+  color: #c1bdb3;
+  padding-left: 4px;
+}
+.follow-count a:hover {
+  border-bottom: 1px solid #fbfbfb;
 }
 
 .timestamp {
@@ -233,4 +243,10 @@ input:focus {
   cursor: pointer;
   background: #3d3b3c;
   border-radius: 50%;
+}
+.user {
+  display: flex;
+  align-items: center;
+  gap:10px;
+  justify-content: center;
 }

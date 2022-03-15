@@ -8,6 +8,8 @@ import Login from "./components/login";
 import Feed from "./components/feed";
 import Comments from "./components/comments";
 import Likes from "./components/likes";
+import Following from "./components/following";
+import Followers from "./components/followers";
 import Profile from "./components/profile";
 import NotFound from "./components/404";
 import "./styles/style.css";
@@ -69,6 +71,8 @@ function App() {
           path="/:username"
           element={<Profile isLoggedIn={isLoggedIn} />}
         />
+        <Route path="/:username/following" element={<Following />} />
+        <Route path="/:username/followers" element={<Followers />} />
         <Route
           path="/comment/:id"
           element={<Comments isLoggedIn={isLoggedIn} />}
