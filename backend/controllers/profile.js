@@ -49,14 +49,14 @@ exports.profile = async (req, res, next) => {
       { username: req.query.username },
       "username avatar followers following posts"
     )
-      .sort({ createdAt: -1 })
       .limit(1024)
       .populate("posts", "text comments createdAt username avatar")
-      .populate("followers following", "username avatar")
+      .populate("following followers", "username")
       .populate({
-    path: "posts",
-    populate: { path: "likes" }
-  })
+        path: "posts",
+        options: { sort: { createdAt: -1 } },
+        populate: { path: "likes" },
+      })
       .lean();
 
     if (profile) {
@@ -209,6 +209,53 @@ exports.follow = async (req, res, next) => {
     }
 
     res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.following = async (req, res, next) => {
+  try {
+    const following = await User.findOne(
+      { username: req.query.username },
+      "username avatar following"
+    )
+      .populate({
+        path: "following",
+        select: "username avatar",
+        options: { sort: { username: 1 } },
+      })
+      .lean();
+
+    if (following) {
+      res.status(200).json(following);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.followers = async (req, res, next) => {
+  try {
+    const followers = await User.findOne(
+      { username: req.query.username },
+      "username avatar followers"
+    )
+      .sort({ username: 1 })
+      .populate({
+        path: "followers",
+        select: "username avatar",
+        options: { sort: { username: 1 } },
+      })
+      .lean();
+
+    if (followers) {
+      res.status(200).json(followers);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (err) {
     next(err);
   }
