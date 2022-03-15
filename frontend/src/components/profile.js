@@ -5,6 +5,7 @@ import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
 import Back from "./back";
+import { FiSettings } from "react-icons/fi";
 
 function Profile(props) {
   const navigate = useNavigate();
@@ -73,12 +74,12 @@ function Profile(props) {
         <Back />
         <div className="follow">
           <Avatar avatar={profile.avatar || "default.jpeg"} />
-          <button
-            style={profile.isUser ? { display: "none" } : { display: "block" }}
-            onClick={handleFollow}
-          >
-            {profile.isFollowed ? "Unfollow" : "Follow"}
-          </button>
+          {profile.isUser ? null : (
+            <button onClick={handleFollow}>
+              {profile.isFollowed ? "Unfollow" : "Follow"}
+            </button>
+          )}
+          {profile.isUser ? <span className="settings-icon" ><FiSettings size={30} /></span> : null}
         </div>
         <span className="username">{username}</span>
         <div className="profile-stats">

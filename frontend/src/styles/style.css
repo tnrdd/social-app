@@ -158,6 +158,8 @@ input:focus {
 }
 .message-form button {
   margin-left: 400px;
+  background: #ff5a5f;
+  color: #fbfbfb;
 }
 
 .new-message textarea {
@@ -247,6 +249,13 @@ input:focus {
 .user {
   display: flex;
   align-items: center;
-  gap:10px;
+  gap: 10px;
   justify-content: center;
+}
+.settings-icon {
+  margin: auto;
+}
+.settings-icon:hover {
+  cursor: pointer;
+  opacity: 90%;
 }
