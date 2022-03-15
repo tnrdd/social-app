@@ -20,8 +20,8 @@ function Messages(props) {
               </span>
               <div className="text">{message.text}</div>
               <Interactions
+                isLoggedIn={isLoggedIn}
                 message={message}
-                toggleLike={isLoggedIn ? toggleLike : null}
                 handleLike={isLoggedIn ? handleLike : null}
               />
             </div>

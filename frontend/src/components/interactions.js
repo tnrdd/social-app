@@ -3,12 +3,12 @@ import Comment from "./comment";
 import LikeIcon from "./like";
 
 function Interactions(props) {
-  const { message, handleLike } = props;
+  const { isLoggedIn, message, handleLike } = props;
 
   return (
     <div className="interactions">
       <LikeIcon message={message} handleLike={handleLike} />
-      <Comment message={message}/>
+      <Comment isLoggedIn={isLoggedIn} message={message}/>
     </div>
   );
 }

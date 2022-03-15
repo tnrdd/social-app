@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { FaRegComment } from "react-icons/fa";
 
 function Comment(props) {
-  const { message } = props;
+  const { isLoggedIn, message } = props;
   const navigate = useNavigate();
 
   return (
     <div
       className="comments"
-      onClick={() => navigate(`/comment/${message._id}`)}
+      onClick={() =>
+        isLoggedIn || message.comments.length > 0
+          ? navigate(`/comment/${message._id}`)
+          : null
+      }
     >
       <span className="comment-icon">
         <FaRegComment />
