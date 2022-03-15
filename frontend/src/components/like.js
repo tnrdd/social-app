@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import useFeed from "../hooks/feed";
 import { FiHeart } from "react-icons/fi";
 
@@ -11,11 +12,21 @@ function Like(props) {
       className="likes"
     >
       <span className="like-icon">
-        {" "}
-        <FiHeart size={17} fill={message.isLiked ? "#ff5a5f" : "none"}color={message.isLiked ? "#ff5a5f" : null} />
+        <FiHeart
+          size={17}
+          fill={message.isLiked ? "#ff5a5f" : "none"}
+          color={message.isLiked ? "#ff5a5f" : null}
+        />
       </span>
       <span className="likes-count">
-        {message.likes.length > 0 ? message.likes.length : null}
+        {message.likes.length > 0 ? (
+          <Link
+            onClick={(e) => e.stopPropagation()}
+            to={`/likes/${message._id}`}
+          >
+            {message.likes.length}
+          </Link>
+        ) : null}
       </span>
     </div>
   );

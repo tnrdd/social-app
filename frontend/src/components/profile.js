@@ -74,14 +74,17 @@ function Profile(props) {
             {profile.isFollowed ? "Unfollow" : "Follow"}
           </button>
         </div>
-        <span>{username}</span>
+        <span className="username">{username}</span>
         <div className="profile-stats">
           <div>
             <span id="following-count">{Array(profile.following).length}</span>
             <span> following</span>
           </div>
           <div>
-            <span id="following-count"> {Array(profile.followers).length} </span>
+            <span id="following-count">
+              {" "}
+              {Array(profile.followers).length}{" "}
+            </span>
             <span>followers</span>
           </div>
         </div>

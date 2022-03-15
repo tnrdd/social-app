@@ -7,6 +7,7 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 import Feed from "./components/feed";
 import Comments from "./components/comments";
+import Likes from "./components/likes";
 import Profile from "./components/profile";
 import NotFound from "./components/404";
 import "./styles/style.css";
@@ -44,7 +45,9 @@ function App() {
         {isLoggedIn ? (
           <nav>
             <NavLink to="/">
-              <button id="logout-btn" onClick={handleLogOut}>Log out</button>
+              <button id="logout-btn" onClick={handleLogOut}>
+                Log out
+              </button>
             </NavLink>
           </nav>
         ) : (
@@ -63,13 +66,14 @@ function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route
-          path="/comment/:id"
-          element={<Comments isLoggedIn={isLoggedIn} />}
-        />
-        <Route
           path="/:username"
           element={<Profile isLoggedIn={isLoggedIn} />}
         />
+        <Route
+          path="/comment/:id"
+          element={<Comments isLoggedIn={isLoggedIn} />}
+        />
+        <Route path="/likes/:id" element={<Likes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
