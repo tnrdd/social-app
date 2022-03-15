@@ -44,16 +44,16 @@ function App() {
         {isLoggedIn ? (
           <nav>
             <NavLink to="/">
-              <button onClick={handleLogOut}>Log out</button>
+              <button id="logout-btn" onClick={handleLogOut}>Log out</button>
             </NavLink>
           </nav>
         ) : (
           <nav>
-            <NavLink to="signup">
-              <p>Sign up</p>
+            <NavLink id="signup-btn" to="signup">
+              <button onClick={handleLogOut}>Sign up</button>
             </NavLink>
-            <NavLink to="login">
-              <p>Log in</p>
+            <NavLink id="login-btn" to="login">
+              <button onClick={handleLogOut}>Log in</button>
             </NavLink>
           </nav>
         )}

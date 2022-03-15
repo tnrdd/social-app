@@ -76,8 +76,14 @@ function Profile(props) {
         </div>
         <span>{username}</span>
         <div className="profile-stats">
-          <span>{Array(profile.following).length} following</span>
-          <span> {Array(profile.followers).length} followers</span>
+          <div>
+            <span id="following-count">{Array(profile.following).length}</span>
+            <span> following</span>
+          </div>
+          <div>
+            <span id="following-count"> {Array(profile.followers).length} </span>
+            <span>followers</span>
+          </div>
         </div>
       </div>
       <div className="messages">

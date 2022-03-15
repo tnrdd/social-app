@@ -2,7 +2,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: Calibri, Arial, Courier;
-  background: grey;
+  color: #fbfbfb;
+  background: #201e1f;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 header {
@@ -10,25 +16,38 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: center;
+  padding: 10px;
 }
 
 nav {
   width: 20vw;
   display: flex;
-  justify-content: right;
+  justify-content: center;
+  margin-left: 100px;
   gap: 20px;
-  margin: auto;
 }
 
 button {
   width: 100px;
   margin: auto;
+  border: 0;
+  border-radius: 16px;
+  height: 30px;
+  color:#201e1f;
+  font-family: Calibri, Arial, Courier;
+  font-weight: bold;
+}
+
+button:hover {
+  cursor: pointer;
+  opacity: 90%;
 }
 
 #signup,
 #login {
   margin: auto;
-  background: darkgrey;
+  background: #3d3b3c;
   width: 600px;
   height: 300px;
   display: flex;
@@ -36,6 +55,14 @@ button {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+}
+
+#signup-btn button{
+  background: #ff5a5f;
+  color:#fbfbfb;
+}
+#login-btn button{
+  color:#;
 }
 
 #signup-form,
@@ -59,14 +86,14 @@ input:focus {
 .avatar img {
   width: 50px;
   height: auto;
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 50%;
 }
 
 .profile > .follow img {
   width: 90px;
   height: auto;
-  border: 3px solid white;
+  border: 2px solid white;
   border-radius: 50%;
 }
 
@@ -76,11 +103,16 @@ input:focus {
   height: auto;
 }
 
+.username a:hover {
+  border-bottom: 2px solid #fbfbfb;
+}
+
 .interactions {
   display: flex;
   gap: 100px;
-  position:relative;
-  top:5px;
+  position: relative;
+  top: 5px;
+  color: #c1bdb3;
 }
 
 .interactions:hover {
@@ -89,7 +121,7 @@ input:focus {
 
 .message-container {
   display: flex;
-  border: 1px solid white;
+  border: 1px solid #d0cfcf;
   padding: 8px;
 }
 
@@ -100,19 +132,18 @@ input:focus {
   align-content: center;
   text-align: left;
   background: white;
-  border:1px solid white;
-  gap:5px;
-  padding:8px;
+  gap: 5px;
+  padding: 8px;
 }
-.message-form button{
-  margin-left:400px;
+.message-form button {
+  margin-left: 400px;
 }
 
 .new-message textarea {
   resize: none;
   border: 0;
   height: 50px;
-  border-bottom:1px solid grey;
+  border-bottom: 1px solid #d0cfcf;
   font-family: Calibri, Arial, Courier;
 }
 
@@ -123,7 +154,7 @@ input:focus {
 
 .profile {
   margin: auto;
-  border: 1px solid white;
+  border: 1px solid #d0cfcf;
   padding: 8px;
   width: 522px;
   height: auto;
@@ -132,10 +163,17 @@ input:focus {
   display: flex;
   gap: 20px;
   padding-top: 2px;
+  color: #c1bdb3;
+}
+
+#following-count,
+#followers-count {
+  color: #fbfbfb;
+  font-weight: bold;
 }
 
 .timestamp {
-  color: lightgrey;
+  color: #c1bdb3;
   font-size: 0.7rem;
 }
 
@@ -162,18 +200,18 @@ input:focus {
   margin-left: 10px;
 }
 
-.like-icon:hover {
-  color:red;
+.likes:hover {
+  color: #ff5a5f;
 }
-.comment-icon:hover {
-  color:skyblue;
+.comments:hover {
+  color: #b1e5f2;
 }
 
-.back{
-  color:white;
+.back {
+  color: #d0cfcf;
 }
-.back-icon:hover{
-  cursor:pointer;
-  background: darkgrey;
-  border-radius:50%;
+.back-icon:hover {
+  cursor: pointer;
+  background: #3d3b3c;
+  border-radius: 50%;
 }

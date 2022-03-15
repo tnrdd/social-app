@@ -12,7 +12,7 @@ function Like(props) {
     >
       <span className="like-icon">
         {" "}
-        <FiHeart size={17} fill={message.isLiked ? "red" : "none"} />
+        <FiHeart size={17} fill={message.isLiked ? "#ff5a5f" : "none"}color={message.isLiked ? "#ff5a5f" : null} />
       </span>
       <span className="likes-count">
         {message.likes.length > 0 ? message.likes.length : null}
