@@ -34,14 +34,15 @@ exports.signup = [
     .trim()
     .escape()
     .custom((username, { req, res, next }) => {
-      return User.exists({ username: username }).then((exists) => {
-        if (exists) {
-          return Promise.reject();
-        }
-      });
-    })
-    .catch((err) => {
-      next(err);
+      return User.exists({ username: username })
+        .then((exists) => {
+          if (exists) {
+            return Promise.reject();
+          }
+        })
+        .catch((err) => {
+          next(err);
+        });
     })
     .withMessage("This username is not avaible"),
   body(
