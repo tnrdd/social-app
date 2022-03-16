@@ -33,21 +33,20 @@ exports.signup = [
     .bail()
     .trim()
     .escape()
-    .custom((username) => {
-      return User.exists({ username: username })
-        .then((exists) => {
-          if (exists) {
-            return Promise.reject();
-          }
-        })
-        .catch((err) => {
-          next(err);
-        });
+    .custom((username, { req, res, next }) => {
+      return User.exists({ username: username }).then((exists) => {
+        if (exists) {
+          return Promise.reject();
+        }
+      });
+    })
+    .catch((err) => {
+      next(err);
     })
     .withMessage("This username is not avaible"),
   body(
     "password",
-    "Insert a valid password (at least 8 character, one uppercase and a number)"
+    "Insert a valid password (at least 8 mixed case characters and a number)"
   )
     .isString()
     .isLength({ min: 8 })
@@ -76,8 +75,8 @@ exports.signup = [
       } else {
         return false;
       }
-    }).withMessage("Password and confirmation do not match"),
-
+    })
+    .withMessage("Password and confirmation do not match"),
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
@@ -147,7 +146,33 @@ exports.logout = (req, res) => {
 };
 
 exports.changePassword = [
-  body("password", "Insert a valid password (at least 8 character and a number")
+  body("current", "Wrong current password")
+    .isString()
+    .isLength({ min: 8 })
+    .isLength({ max: 32 })
+    .bail()
+    .trim()
+    .escape()
+    .custom((current, { req, res, next }) => {
+      return User.findOne({ username: req.user })
+        .then((user, next) => {
+          if (user) {
+            return bcrypt.compare(req.body.current, user.password);
+          }
+        })
+        .then((result) => {
+          if (!result) {
+            return Promise.reject();
+          }
+        })
+        .catch((err) => {
+          next(err);
+        });
+    }),
+  body(
+    "password",
+    "Insert a valid password (at least 8 mixed case characters and a number"
+  )
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
@@ -162,7 +187,7 @@ exports.changePassword = [
     .isAlpha()
     .trim()
     .escape(),
-  body("confirmation", "Password and confirmation do not match")
+  body("confirmation", "Insert a valid password confirmation")
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
@@ -175,7 +200,8 @@ exports.changePassword = [
       } else {
         return false;
       }
-    }),
+    })
+    .withMessage("Password and confirmation do not match"),
 
   async (req, res, next) => {
     try {
