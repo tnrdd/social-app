@@ -30,9 +30,11 @@ function Settings(props) {
     <div className="settings">
       <form onSubmit={handleSubmit}>
         <label htmlFor="file">Change profile picture</label>
-      {preview ? <div className="avatar">
-        <img style={{marginLeft:"20px"}} src={preview}></img>
-      </div> : null}
+        {preview ? (
+          <div className="avatar">
+            <img style={{ marginLeft: "20px" }} src={preview}></img>
+          </div>
+        ) : null}
         <input
           id="file"
           className="file"

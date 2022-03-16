@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Interactions from "./interactions";
 import Username from "./username";
 import Avatar from "./avatar";
 
 function Messages(props) {
-  const { isLoggedIn, messages, toggleLike, handleLike } = props;
+  const { isLoggedIn, messages, toggleLike, handleLike, username } = props;
 
   return (
     <div className="messages">
@@ -14,7 +14,7 @@ function Messages(props) {
           <div className="message-container" key={messages.indexOf(message)}>
             <Avatar avatar={message.user.avatar} />
             <div className="message">
-              <Username username={message.user.username} />
+              <Username username={message.user.username || username} />
               <span className="timestamp">
                 {message.createdAt.slice(0, 10)}
               </span>

@@ -4,7 +4,7 @@ import Avatar from "./avatar";
 import Username from "./username";
 import Back from "./back";
 
-function Followers(props) {
+function Followers() {
   const [user, setUser] = useState({});
   const [followers, setFollowing] = useState([]);
   const navigate = useNavigate();

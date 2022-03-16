@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-
 import Signup from "./components/signup";
 import Login from "./components/login";
 import Feed from "./components/feed";
@@ -13,7 +12,7 @@ import Followers from "./components/followers";
 import Profile from "./components/profile";
 import Settings from "./components/settings";
 import NotFound from "./components/404";
-import "./styles/style.css";
+import "./styles/general.css"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,7 +47,7 @@ function App() {
         {isLoggedIn ? (
           <nav>
             <NavLink to="/">
-              <button id="logout-btn" onClick={handleLogOut}>
+              <button onClick={handleLogOut}>
                 Log out
               </button>
             </NavLink>
@@ -56,10 +55,10 @@ function App() {
         ) : (
           <nav>
             <NavLink id="signup-btn" to="signup">
-              <button onClick={handleLogOut}>Sign up</button>
+              <button>Sign up</button>
             </NavLink>
-            <NavLink id="login-btn" to="login">
-              <button onClick={handleLogOut}>Log in</button>
+            <NavLink to="login">
+              <button >Log in</button>
             </NavLink>
           </nav>
         )}

@@ -1,10 +1,9 @@
-import React, { useState, useEfect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function useForm(props) {
   const [errors, setErrors] = useState([]);
   const { setIsLoggedIn, formData, setFormData, resource, redirect } = props;
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {

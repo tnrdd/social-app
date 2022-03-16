@@ -4,7 +4,7 @@ import Avatar from "./avatar";
 import Username from "./username";
 import Back from "./back";
 
-function Following(props) {
+function Following() {
   const [user, setUser] = useState({});
   const [following, setFollowing] = useState([]);
   const navigate = useNavigate();
@@ -47,8 +47,7 @@ function Following(props) {
         );
       })}
     </div>
-  
-  )
+  );
 }
 
 export default Following;

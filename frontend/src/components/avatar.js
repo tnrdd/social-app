@@ -5,10 +5,7 @@ function Avatar(props) {
 
   return (
     <div className="avatar">
-      <img
-        src={`http://127.0.0.1:3000/avatars/${avatar}`}
-        alt="avatar"
-      />
+      <img src={`http://127.0.0.1:3000/avatars/${avatar || "default.jpeg"}`} alt="avatar" />
     </div>
   );
 }

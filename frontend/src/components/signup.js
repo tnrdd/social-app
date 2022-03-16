@@ -1,7 +1,8 @@
-import React, { useState, useEfect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/form";
 import { FiAlertCircle } from "react-icons/fi";
+import "../styles/auth.css";
 
 function Signup() {
   const navigate = useNavigate();

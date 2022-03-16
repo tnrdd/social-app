@@ -19,7 +19,7 @@ function useLike(props) {
     });
   };
 
-  return [ toggleLike, handleLike];
+  return [toggleLike, handleLike];
 }
 
 export default useLike;

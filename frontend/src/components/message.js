@@ -1,10 +1,11 @@
-import React, { useState, useEfect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/form";
+import "../styles/messages.css";
 
 function Message(props) {
   const navigate = useNavigate();
-  const { isComment, id} = props;
+  const { isComment, id } = props;
   const [formData, setFormData] = useState({
     text: "",
     id: isComment ? id : "",

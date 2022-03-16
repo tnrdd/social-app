@@ -8,7 +8,7 @@ function Interactions(props) {
   return (
     <div className="interactions">
       <LikeIcon message={message} handleLike={handleLike} />
-      <Comment isLoggedIn={isLoggedIn} message={message}/>
+      <Comment isLoggedIn={isLoggedIn} message={message} />
     </div>
   );
 }

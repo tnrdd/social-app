@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import useLike from "../hooks/like";
+import Messages from "./messages"
 import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
 import Back from "./back";
 import { FiSettings } from "react-icons/fi";
+import "../styles/profile.css";
+import "../styles/messages.css";
 
 function Profile(props) {
   const navigate = useNavigate();
@@ -73,7 +76,7 @@ function Profile(props) {
       <div className="profile">
         <Back />
         <div className="follow">
-          <Avatar avatar={profile.avatar || "default.jpeg"} />
+          <Avatar avatar={profile.avatar} />
           {profile.isUser ? null : (
             <button onClick={handleFollow}>
               {profile.isFollowed ? "Unfollow" : "Follow"}
@@ -103,25 +106,13 @@ function Profile(props) {
           </div>
         </div>
       </div>
-      <div className="messages">
-        {posts.map((post) => {
-          return (
-            <div className="message-container" key={posts.indexOf(post)}>
-              <Avatar avatar={profile.avatar} />
-              <div className="message">
-                <Username username={username} />
-                <span className="timestamp">{post.createdAt.slice(0, 10)}</span>
-                <div className="text">{post.text}</div>
-                <Interactions
-                  message={post}
-                  toggleLike={isLoggedIn ? toggleLike : null}
-                  handleLike={isLoggedIn ? handleLike : null}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <Messages
+        isLoggedIn={isLoggedIn}
+        messages={posts}
+        toggleLike={toggleLike}
+        handleLike={handleLike}
+        username={username}
+      />
     </div>
   );
 }

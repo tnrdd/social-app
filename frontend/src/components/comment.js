@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaRegComment } from "react-icons/fa";
+import "../styles/messages.css";
 
 function Comment(props) {
   const { isLoggedIn, message } = props;
