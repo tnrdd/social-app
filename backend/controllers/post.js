@@ -157,6 +157,18 @@ exports.feed = async (req, res, next) => {
         post.isLiked = JSON.stringify(like).includes(user._id);
       }
     }
+
+    if (posts.length < 10) {
+      const nonFollowingPosts = await Post.find()
+        .sort({ createdAt: -1 })
+        .populate("user likes", "username avatar user")
+        .limit(10 - posts.length)
+        .lean();
+
+      nonFollowingPosts.forEach((post) => {
+        posts.push(post);
+      });
+    }
     res.status(200).json(posts);
   } catch (err) {
     next(err);
