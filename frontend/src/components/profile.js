@@ -20,7 +20,7 @@ function Profile(props) {
 
   useEffect(() => {
     let isMounted = true;
-    fetch(`http://127.0.0.1:3000/api/profile?username=${username}`, {
+    fetch(`${process.env.BASE_URL}/api/profile?username=${username}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -56,7 +56,7 @@ function Profile(props) {
     if (!isLoggedIn) {
       navigate("/login");
     } else {
-      fetch("http://127.0.0.1:3000/api/follow", {
+      fetch(`${process.env.BASE_URL}/api/follow`, {
         method: "POST",
         credentials: "include",
         headers: {

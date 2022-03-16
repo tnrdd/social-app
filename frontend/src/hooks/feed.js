@@ -8,7 +8,7 @@ function useFeed(props) {
 
   useEffect(() => {
     let isMounted = true;
-    fetch(`http://127.0.0.1:3000/api/${resource}`, {
+    fetch(`${process.env.BASE_URL}/api/${resource}`, {
       credentials: "include",
     })
       .then((res) => {

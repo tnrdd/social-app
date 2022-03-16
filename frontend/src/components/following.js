@@ -11,7 +11,7 @@ function Following() {
   const { username } = useParams();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:3000/api/following?username=${username}`)
+    fetch(`${process.env.BASE_URL}/api/following?username=${username}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.status);

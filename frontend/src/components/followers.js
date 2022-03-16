@@ -11,7 +11,7 @@ function Followers() {
   const { username } = useParams();
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:3000/api/followers?username=${username}`)
+    fetch(`${process.env.BASE_URL}/api/followers?username=${username}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.status);

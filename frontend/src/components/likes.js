@@ -8,7 +8,7 @@ function Likes(props) {
   const [likes, setLikes] = useState([]);
   const { id } = useParams();
   useEffect(() => {
-    fetch(`http://127.0.0.1:3000/api/like?id=${id}`)
+    fetch(`${process.env.BASE_URL}/api/like?id=${id}`)
       .then((res) => res.json())
       .then((json) => {
         setLikes(json);

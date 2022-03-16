@@ -13,7 +13,7 @@ function Settings(props) {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    fetch("http://127.0.0.1:3000/api/avatar", {
+    fetch(`${process.env.BASE_URL}/api/avatar`, {
       credentials: "include",
       method: "POST",
       body: formData,

@@ -5,7 +5,7 @@ function useLike(props) {
 
   const handleLike = (id) => {
     const targetId = { id: id };
-    fetch("http://127.0.0.1:3000/api/like", {
+    fetch(`${process.env.BASE_URL}/api/like`, {
       method: "POST",
       credentials: "include",
       headers: {

@@ -20,7 +20,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:3000/api/", { credentials: "include" }).then(
+    fetch(`${process.env.BASE_URL}/api`, { credentials: "include" }).then(
       (res) => {
         if (res.ok) {
           setIsLoggedIn(true);
@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   const handleLogOut = () => {
-    fetch("http://127.0.0.1:3000/api/logout", { credentials: "include" }).then(
+    fetch(`${process.env.API_URL}/logout`, { credentials: "include" }).then(
       (res) => {
         if (res.ok) {
           setIsLoggedIn(false);
