@@ -130,6 +130,7 @@ exports.deleteProfile = async (req, res, next) => {
 exports.editProfile = [
   body("username", "Insert a valid username (at least 4 characters)")
     .isLength({ min: 4 })
+    .isLength({ max: 32 })
     .bail()
     .trim()
     .escape()

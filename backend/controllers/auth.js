@@ -47,11 +47,12 @@ exports.signup = [
     .withMessage("This username is not avaible"),
   body(
     "password",
-    "Insert a valid password (at least 8 character and a number)"
+    "Insert a valid password (at least 8 character, one uppercase and a number)"
   )
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
+    .bail()
     .not()
     .isLowercase()
     .not()
@@ -66,6 +67,7 @@ exports.signup = [
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
+    .bail()
     .trim()
     .escape()
     .custom((confirmation, { req }) => {
@@ -112,6 +114,7 @@ exports.login = [
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
+    .bail()
     .trim()
     .escape(),
 
@@ -126,7 +129,6 @@ exports.login = [
         const result = await bcrypt.compare(req.body.password, user.password);
         if (result) {
           const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
-          //res.cookie("accessToken", token).status(200).json({ accessToken: token });
           res.cookie("accessToken", token).sendStatus(200);
         } else {
           res.status(401).json({ message: "Incorrect password" });
@@ -149,6 +151,7 @@ exports.changePassword = [
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
+    .bail()
     .not()
     .isLowercase()
     .not()
@@ -163,6 +166,7 @@ exports.changePassword = [
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
+    .bail()
     .trim()
     .escape()
     .custom((confirmation, { req }) => {
