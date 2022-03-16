@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Calibri, Arial, Courier;
+  color: #fbfbfb;
+  background: #201e1f;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 10px;
+}
+
+nav {
+  width: 20vw;
+  display: flex;
+  justify-content: center;
+  margin-left: 100px;
+  gap: 20px;
+}
+
+button {
+  width: 100px;
+  margin: auto;
+  border: 0;
+  border-radius: 16px;
+  height: 30px;
+  color: #201e1f;
+  font-family: Calibri, Arial, Courier;
+  font-weight: bold;
+}
+
+button:hover {
+  cursor: pointer;
+  opacity: 90%;
+}
+input {
+  height: 30px;
+  border: 0;
+  border-radius: 4px;
+  font-family: Calibri, Arial, Courier;
+}
+
+textarea,
+input:focus {
+  outline: none;
+}
+

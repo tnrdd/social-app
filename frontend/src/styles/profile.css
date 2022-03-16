@@ -1,0 +1,105 @@
+.profile {
+  margin: auto;
+  border: 1px solid #d0cfcf;
+  padding: 8px;
+  width: 522px;
+  height: auto;
+}
+.profile-stats {
+  display: flex;
+  gap: 20px;
+  padding-top: 2px;
+  color: #c1bdb3;
+}
+
+
+.profile > .follow img {
+  width: 90px;
+  height: auto;
+  border: 2px solid #ff5a5f;
+  border-radius: 50%;
+}
+.follow-count,
+.follow-count {
+  color: #fbfbfb;
+  font-weight: bold;
+}
+.follow-count span {
+  font-weight: normal;
+  color: #c1bdb3;
+  padding-left: 4px;
+}
+.follow-count a:hover {
+  border-bottom: 1px solid #fbfbfb;
+}
+
+.profile > span {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.profile > .follow {
+  display: flex;
+  justify-content: space-between;
+  gap: 300px;
+}
+.profile > .username {
+  font-size: 1.5rem;
+}
+.username a:hover {
+  border-bottom: 2px solid #fbfbfb;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+.settings {
+  margin: auto;
+  width: 400px;
+  background: #3d3b3c;
+  border-radius: 8px;
+  height: 100px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.settings form {
+  display: flex;
+}
+.settings-icon {
+  margin: auto;
+}
+.settings-icon:hover {
+  cursor: pointer;
+  opacity: 90%;
+}
+
+.file {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.settings label {
+  display: block;
+  position: relative;
+  width: 190px;
+  height: 50px;
+  border-radius: 25px;
+  color: #fbfbfb;
+  font-weight: bold;
+  cursor: pointer;
+  background: #ff5a5f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.settings label:hover {
+  cursor: pointer;
+  opacity: 90%;
+}

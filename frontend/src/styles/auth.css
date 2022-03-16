@@ -1,0 +1,35 @@
+#signup,
+#login {
+  margin: auto;
+  background: #3d3b3c;
+  width: 600px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+#login{
+  height:200px;
+}
+
+#signup-btn button {
+  background: #ff5a5f;
+}
+
+#signup-form,
+#login-form {
+  width: 400px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 10px;
+}
+
+.validation-errors {
+  color: #ff5a5f;
+  margin-left: 250px;
+}
