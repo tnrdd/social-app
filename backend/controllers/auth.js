@@ -63,7 +63,7 @@ exports.signup = [
     .isAlpha()
     .trim()
     .escape(),
-  body("confirmation", "Password and confirmation do not match")
+  body("confirmation", "Insert a valid confirmation password")
     .isString()
     .isLength({ min: 8 })
     .isLength({ max: 32 })
@@ -76,7 +76,7 @@ exports.signup = [
       } else {
         return false;
       }
-    }),
+    }).withMessage("Password and confirmation do not match"),
 
   async (req, res, next) => {
     try {
