@@ -12,11 +12,16 @@ exports.like = async (req, res, next) => {
     const isPost = await Post.exists({ _id: req.body.id });
 
     if (isPost) {
-      let exists = await Like.exists({
-        post: req.body.id,
+      let like = await Like.findOne({
+        $and: [
+          { post: req.body.id },
+          {
+            user: user._id,
+          },
+        ],
       });
 
-      if (!exists) {
+      if (!like) {
         let like = await Like.create({
           user: user._id,
         });
@@ -27,9 +32,6 @@ exports.like = async (req, res, next) => {
         await user.updateOne({ $push: { likes: like._id } });
         await like.updateOne({ post: req.body.id });
       } else {
-        let like = await Like.findOne({
-          post: req.body.id,
-        });
 
         await Post.updateOne(
           { _id: { $in: like.post } },
@@ -39,11 +41,18 @@ exports.like = async (req, res, next) => {
         await like.delete();
       }
     } else {
-      let exists = await Like.exists({
-        comment: req.body.id,
+      let like = await Like.findOne({
+        $and: [
+          {
+            comment: req.body.id,
+          },
+          {
+            user: user._id,
+          },
+        ],
       });
 
-      if (!exists) {
+      if (!like) {
         let like = await Like.create({
           user: user._id,
         });
@@ -54,9 +63,6 @@ exports.like = async (req, res, next) => {
         await user.updateOne({ $push: { likes: like._id } });
         await like.updateOne({ comment: req.body.id });
       } else {
-        let like = await Like.findOne({
-          comment: req.body.id,
-        });
 
         await Comment.updateOne(
           { _id: { $in: like.comment } },
@@ -78,6 +84,7 @@ exports.likes = async (req, res, next) => {
     const isPost = await Post.exists({
       _id: req.query.id,
     });
+
     if (isPost) {
       likes = await Like.find({ post: req.query.id })
         .populate("user", "username avatar")
