@@ -152,6 +152,7 @@ exports.feed = async (req, res, next) => {
     ]);
 
     const posts = followingPosts[0].followingPosts;
+    
     if (posts.length < 10) {
       const nonFollowingPosts = await Post.find()
         .sort({ createdAt: -1 })
@@ -165,9 +166,14 @@ exports.feed = async (req, res, next) => {
     }
 
     const user = await User.findOne({ username: req.user });
+    
     for (const post of posts) {
+      post.isLiked = false;
       for (const like of post.likes) {
-        post.isLiked = JSON.stringify(like).includes(user._id);
+        if (JSON.stringify(like).includes(user._id)) {
+          post.isLiked = true;
+          break;
+        }
       }
     }
     res.status(200).json(posts);
