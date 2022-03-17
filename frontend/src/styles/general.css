@@ -13,11 +13,11 @@ a {
 
 header {
   width: 100vw;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   align-content: center;
-  padding: 10px;
 }
 
 nav {
@@ -30,19 +30,20 @@ nav {
 
 button {
   width: 100px;
+  height: 30px;
+  font-family: Calibri, Arial, Courier;
+  font-weight: bold;
   margin: auto;
   border: 0;
   border-radius: 16px;
-  height: 30px;
   color: #201e1f;
-  font-family: Calibri, Arial, Courier;
-  font-weight: bold;
 }
 
 button:hover {
   cursor: pointer;
   opacity: 90%;
 }
+
 input {
   height: 30px;
   border: 0;
@@ -54,4 +55,3 @@ textarea,
 input:focus {
   outline: none;
 }
-

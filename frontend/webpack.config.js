@@ -13,6 +13,7 @@ module.exports = {
 
       title: "Social Media App",
 			template: "./src/index.html",
+      favicon: "./src/assets/favicon.ico",
 
     }),
     new Dotenv(),

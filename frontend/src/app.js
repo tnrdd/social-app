@@ -12,7 +12,8 @@ import Followers from "./components/followers";
 import Profile from "./components/profile";
 import Settings from "./components/settings";
 import NotFound from "./components/404";
-import "./styles/general.css"
+import Logo from "./assets/logo.svg";
+import "./styles/general.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -43,13 +44,13 @@ function App() {
   return (
     <div>
       <header>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/">
+          <img src={Logo} alt="logo" />
+        </NavLink>
         {isLoggedIn ? (
           <nav>
             <NavLink to="/">
-              <button onClick={handleLogOut}>
-                Log out
-              </button>
+              <button onClick={handleLogOut}>Log out</button>
             </NavLink>
           </nav>
         ) : (
@@ -58,7 +59,7 @@ function App() {
               <button>Sign up</button>
             </NavLink>
             <NavLink to="login">
-              <button >Log in</button>
+              <button>Log in</button>
             </NavLink>
           </nav>
         )}
