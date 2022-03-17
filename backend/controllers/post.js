@@ -150,14 +150,8 @@ exports.feed = async (req, res, next) => {
         },
       },
     ]);
-    const user = await User.findOne({ username: req.user });
-    const posts = followingPosts[0].followingPosts;
-    for (const post of posts) {
-      for (const like of post.likes) {
-        post.isLiked = JSON.stringify(like).includes(user._id);
-      }
-    }
 
+    const posts = followingPosts[0].followingPosts;
     if (posts.length < 10) {
       const nonFollowingPosts = await Post.find()
         .sort({ createdAt: -1 })
@@ -168,6 +162,13 @@ exports.feed = async (req, res, next) => {
       nonFollowingPosts.forEach((post) => {
         posts.push(post);
       });
+    }
+
+    const user = await User.findOne({ username: req.user });
+    for (const post of posts) {
+      for (const like of post.likes) {
+        post.isLiked = JSON.stringify(like).includes(user._id);
+      }
     }
     res.status(200).json(posts);
   } catch (err) {
