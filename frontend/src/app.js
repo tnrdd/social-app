@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   const handleLogOut = () => {
-    fetch(`${process.env.API_URL}/api/logout`, { credentials: "include" }).then(
+    fetch(`${process.env.BASE_URL}/api/logout`, { credentials: "include" }).then(
       (res) => {
         if (res.ok) {
           setIsLoggedIn(false);
