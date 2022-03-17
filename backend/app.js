@@ -19,12 +19,6 @@ mongoose.connect(process.env.DB, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: true,
-};
-
 const corsOptions = {
   origin: true,
   credentials: true,
@@ -42,7 +36,7 @@ app.use(
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cookieParser(cookieOptions));
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use("/api", apiRouter);
 

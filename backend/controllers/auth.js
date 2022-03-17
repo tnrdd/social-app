@@ -8,6 +8,11 @@ const User = require("../models/user");
 require("dotenv").config();
 
 const salt = parseInt(process.env.SALT);
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
 
 exports.auth = (req, res, next) => {
   const token = req.cookies.accessToken;
@@ -129,7 +134,7 @@ exports.login = [
         const result = await bcrypt.compare(req.body.password, user.password);
         if (result) {
           const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
-          res.cookie("accessToken", token).sendStatus(200);
+          res.cookie("accessToken", token, cookieOptions).sendStatus(200);
         } else {
           res.status(401).json({ message: "Incorrect password" });
         }
@@ -143,7 +148,7 @@ exports.login = [
 ];
 
 exports.logout = (req, res) => {
-  res.clearCookie("accessToken").sendStatus(200);
+  res.clearCookie("accessToken", cookieOptions).sendStatus(200);
 };
 
 exports.changePassword = [
