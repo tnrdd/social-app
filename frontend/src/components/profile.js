@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import useLike from "../hooks/like";
-import Messages from "./messages"
+import Messages from "./messages";
 import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
@@ -33,8 +33,8 @@ function Profile(props) {
         if (isMounted) {
           setProfile({
             id: json._id,
-            following: json.following,
-            followers: json.followers,
+            following: json.following.length,
+            followers: json.followers.length,
             avatar: json.avatar,
             isFollowed: json.isFollowed,
             isUser: json.isUser,
@@ -94,13 +94,13 @@ function Profile(props) {
         <div className="profile-stats">
           <div className="follow-count">
             <Link to={`/${username}/following`}>
-              {Array(profile.following).length}
+              {profile.following}
               <span>Following</span>
             </Link>
           </div>
           <div className="follow-count">
             <Link to={`/${username}/followers`}>
-              {Array(profile.followers).length}
+              {profile.followers}
               <span>Followers</span>
             </Link>
           </div>
