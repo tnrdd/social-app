@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Avatar from "./avatar";
 import Username from "./username";
 import Back from "./back";
+import "../styles/messages.css";
 
 function Following() {
   const [user, setUser] = useState({});
