@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Signup from "./components/signup";
 import Login from "./components/login";
 import Feed from "./components/feed";
@@ -44,23 +44,21 @@ function App() {
   return (
     <div>
       <header>
-        <NavLink to="/">
+        <Link to="/">
           <img src={Logo} alt="logo" />
-        </NavLink>
+        </Link>
         {isLoggedIn ? (
-          <nav>
-            <NavLink to="/">
-              <button onClick={handleLogOut}>Log out</button>
-            </NavLink>
-          </nav>
+          <Link to="/">
+            <button onClick={handleLogOut}>Log out</button>
+          </Link>
         ) : (
           <nav>
-            <NavLink id="signup-btn" to="signup">
+            <Link id="signup-btn" to="signup">
               <button>Sign up</button>
-            </NavLink>
-            <NavLink to="login">
+            </Link>
+            <Link to="login">
               <button>Log in</button>
-            </NavLink>
+            </Link>
           </nav>
         )}
       </header>
