@@ -9,7 +9,7 @@ function Posts(props) {
   const [messages, toggleLike, handleLike] = useFeed({ isLoggedIn, resource });
 
   return (
-    <div className="messages">
+    <div>
       {isLoggedIn ? <Message /> : null}
       <Messages
         isLoggedIn={isLoggedIn}
