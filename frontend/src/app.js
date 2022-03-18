@@ -31,14 +31,14 @@ function App() {
   }, []);
 
   const handleLogOut = () => {
-    fetch(`${process.env.BASE_URL}/api/logout`, { credentials: "include" }).then(
-      (res) => {
-        if (res.ok) {
-          setIsLoggedIn(false);
-          navigate("/");
-        }
+    fetch(`${process.env.BASE_URL}/api/logout`, {
+      credentials: "include",
+    }).then((res) => {
+      if (res.ok) {
+        setIsLoggedIn(false);
+        navigate("/");
       }
-    );
+    });
   };
 
   return (

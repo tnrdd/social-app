@@ -8,13 +8,18 @@ import Back from "./back";
 function Comments(props) {
   const { id } = useParams();
   const resource = `comment?id=${id}`;
-  const [messages, toggleLike, handleLike] = useFeed({ isLoggedIn, resource });
+  const [messages, setNewMessage, toggleLike, handleLike] = useFeed({
+    isLoggedIn,
+    resource,
+  });
   const { isLoggedIn } = props;
 
   return (
     <div className="messages">
       <Back />
-      {isLoggedIn ? <Message isComment={true} id={id} /> : null}
+      {isLoggedIn ? (
+        <Message isComment={true} id={id} setNewMessage={setNewMessage} />
+      ) : null}
       <Messages
         isLoggedIn={isLoggedIn}
         toggleLike={toggleLike}

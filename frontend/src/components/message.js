@@ -1,22 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/form";
 import "../styles/messages.css";
 
 function Message(props) {
-  const navigate = useNavigate();
-  const { isComment, id } = props;
+  const { isComment, id, setNewMessage } = props;
   const [formData, setFormData] = useState({
     text: "",
     id: isComment ? id : "",
   });
   const resource = isComment ? "comment" : "post";
-  const redirect = isComment ? -1 : "/";
   const [errors, handleChange, handleSubmit] = useForm({
     formData,
     setFormData,
     resource,
-    redirect,
+    setNewMessage,
   });
 
   return (
@@ -26,7 +23,7 @@ function Message(props) {
           name="text"
           placeholder={isComment ? "Reply" : "What's on your mind?"}
           maxLength="160"
-          value={formData.username}
+          value={formData.text}
           onChange={handleChange}
         ></textarea>
         <div>

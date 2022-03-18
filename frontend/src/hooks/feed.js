@@ -3,6 +3,7 @@ import useLike from "./like";
 
 function useFeed(props) {
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState();
   const [toggleLike, handleLike] = useLike();
   const { isLoggedIn, resource } = props;
 
@@ -22,9 +23,9 @@ function useFeed(props) {
         }
       });
     return () => (isMounted = false);
-  }, [isLoggedIn, toggleLike]);
+  }, [isLoggedIn, toggleLike, newMessage]);
 
-  return [messages, toggleLike, handleLike];
+  return [messages, setNewMessage, toggleLike, handleLike];
 }
 
 export default useFeed;

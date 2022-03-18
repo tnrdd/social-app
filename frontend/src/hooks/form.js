@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 function useForm(props) {
   const [errors, setErrors] = useState([]);
-  const { setIsLoggedIn, formData, setFormData, resource, redirect } = props;
+  const {
+    setIsLoggedIn,
+    formData,
+    setFormData,
+    resource,
+    redirect,
+    setNewMessage,
+  } = props;
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -13,7 +20,7 @@ function useForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(`${process.env.BASE_URL}/api/${resource}`, {
-      credentials:"include",
+      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -22,9 +29,10 @@ function useForm(props) {
     }).then((res) => {
       if (res.ok) {
         if (resource === "login") {
-          setIsLoggedIn(true)
+          setIsLoggedIn(true);
         }
-        navigate(redirect);
+        redirect ? navigate(redirect) : null;
+        setNewMessage ? setNewMessage({}) : null;
       } else {
         Promise.resolve(res.json()).then((result) => {
           setErrors(result.errors);
@@ -33,7 +41,7 @@ function useForm(props) {
     });
   };
 
-  return [errors, handleChange, handleSubmit]
+  return [errors, handleChange, handleSubmit];
 }
 
 export default useForm;

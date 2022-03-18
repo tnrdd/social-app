@@ -6,11 +6,14 @@ import Messages from "./messages";
 function Posts(props) {
   const { isLoggedIn } = props;
   const resource = `${isLoggedIn ? "feed" : "post"}`;
-  const [messages, toggleLike, handleLike] = useFeed({ isLoggedIn, resource });
+  const [messages, setNewMessage, toggleLike, handleLike] = useFeed({
+    isLoggedIn,
+    resource,
+  });
 
   return (
     <div>
-      {isLoggedIn ? <Message /> : null}
+      {isLoggedIn ? <Message setNewMessage={setNewMessage} /> : null}
       <Messages
         isLoggedIn={isLoggedIn}
         toggleLike={toggleLike}
