@@ -151,22 +151,27 @@ exports.feed = async (req, res, next) => {
       },
     ]);
 
-    const posts = followingPosts[0].followingPosts;
-    
+    let posts = followingPosts[0].followingPosts;
+    const user = await User.findOne({ username: req.user });
+    const lastPost = await Post.findOne({ user: user._id })
+      .sort({ createdAt: -1 })
+      .populate("user likes", "username avatar user")
+      .lean();
+    posts.unshift(lastPost);
+    posts.sort((a, b) => b.createdAt - a.createdAt);
+
     if (posts.length < 10) {
       const nonFollowingPosts = await Post.find()
+        .where({ _id: { $nin: posts } })
         .sort({ createdAt: -1 })
         .populate("user likes", "username avatar user")
         .limit(10 - posts.length)
         .lean();
-
       nonFollowingPosts.forEach((post) => {
         posts.push(post);
       });
     }
 
-    const user = await User.findOne({ username: req.user });
-    
     for (const post of posts) {
       post.isLiked = false;
       for (const like of post.likes) {
