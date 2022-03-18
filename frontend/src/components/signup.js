@@ -21,44 +21,45 @@ function Signup() {
   });
 
   return (
-    <div>
+    <div id="signup">
       {errors.length > 0 ? (
         <div className="validation-errors">
           {errors.map((error) => {
             return (
-              <p key={errors.indexOf(error)}>
-                <FiAlertCircle /> {error.msg}
-              </p>
+              <div className="error-message" key={errors.indexOf(error)}>
+                <span>
+                  <FiAlertCircle />
+                </span>
+                <span>{error.msg}</span>
+              </div>
             );
           })}
         </div>
       ) : null}
-      <div id="signup">
-        <form id="signup-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            name="confirmation"
-            placeholder="Password confirmation"
-            value={formData.confirmation}
-            onChange={handleChange}
-          />
-          <button>Sign Up</button>
-        </form>
-      </div>
+      <form id="signup-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="confirmation"
+          placeholder="Password confirmation"
+          value={formData.confirmation}
+          onChange={handleChange}
+        />
+        <button>Sign Up</button>
+      </form>
     </div>
   );
 }
