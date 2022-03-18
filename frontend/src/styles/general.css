@@ -13,16 +13,17 @@ a {
 
 header {
   width: 100vw;
-  padding: 10px;
+  background: #201e1f;
+  position: sticky;
+  top:0;
   display: flex;
   justify-content: center;
-  gap:100px;
+  gap: 100px;
   align-items: center;
   align-content: center;
 }
 
 nav {
-  width: 20vw;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -54,4 +55,13 @@ input {
 textarea,
 input:focus {
   outline: none;
+}
+@media (max-width: 600px) {
+  header {
+    justify-content: space-between;
+    gap: 0;
+  }
+  nav {
+    gap: 10px;
+  }
 }

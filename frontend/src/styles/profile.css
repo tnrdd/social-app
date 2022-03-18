@@ -12,7 +12,6 @@
   color: #c1bdb3;
 }
 
-
 .profile > .follow img {
   width: 90px;
   height: auto;
@@ -86,7 +85,6 @@
 }
 
 .settings label {
-  display: block;
   position: relative;
   width: 190px;
   height: 50px;
@@ -102,4 +100,17 @@
 .settings label:hover {
   cursor: pointer;
   opacity: 90%;
+}
+
+@media (max-width: 600px) {
+  .profile {
+    width: 95vw;
+    margin: 0;
+  }
+  .profile > .follow {
+    gap: 20px;
+  }
+  .settings {
+    width: 90vw;
+  }
 }

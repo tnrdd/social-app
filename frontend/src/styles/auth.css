@@ -2,17 +2,18 @@
 #login {
   margin: auto;
   background: #3d3b3c;
-  width: 600px;
+  width: 700px;
   height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   border-radius: 8px;
 }
 
-#login{
-  height:200px;
+#login {
+  height: 250px;
 }
 
 #signup-btn button {
@@ -21,15 +22,36 @@
 
 #signup-form,
 #login-form {
-  width: 400px;
+  width: 500px;
   height: auto;
   display: flex;
   flex-direction: column;
-  margin: auto;
   gap: 10px;
 }
 
 .validation-errors {
   color: #ff5a5f;
-  margin-left: 250px;
+  justify-content: space-around;
+  width: 500px;
+}
+
+.error-message {
+  display: flex;
+  gap: 5px;
+}
+
+@media (max-width: 600px) {
+  #signup,
+  #login {
+    width: 100vw;
+    height: 300px;
+  }
+
+  #login-form,
+  #signup-form {
+    width: 90vw;
+  }
+  .validation-errors {
+    width: 90vw;
+  }
 }

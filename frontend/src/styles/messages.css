@@ -8,6 +8,7 @@
   display: flex;
   border: 1px solid #d0cfcf;
   padding: 8px;
+  padding-bottom:0;
 }
 
 .message-form {
@@ -25,7 +26,7 @@
   background: #ff5a5f;
 }
 
-.new-message textarea {
+.messages textarea {
   resize: none;
   border: 0;
   height: 50px;
@@ -67,9 +68,8 @@
 .interactions {
   display: flex;
   gap: 100px;
-  position: relative;
-  top: 5px;
   color: #c1bdb3;
+  margin-top:5px;
 }
 
 .interactions:hover {
@@ -109,4 +109,15 @@
   align-items: center;
   padding-top: 6px;
   border: 1px solid #d0cfcf;
+}
+
+@media (max-width: 600px) {
+  .messages {
+    width: 100vw;
+    height: auto;
+  }
+
+  .message-form button {
+    margin-left: 220px;
+  }
 }

@@ -20,7 +20,7 @@ function Message(props) {
   });
 
   return (
-    <div className="new-message">
+    <div className="messages">
       <form className="message-form" onSubmit={handleSubmit}>
         <textarea
           name="text"
