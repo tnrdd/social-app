@@ -23,6 +23,11 @@ header {
   align-content: center;
 }
 
+header img {
+  width: 133px;
+  height: 38px;
+}
+
 nav {
   display: flex;
   justify-content: center;

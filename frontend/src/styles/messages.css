@@ -51,7 +51,7 @@
 
 .avatar img {
   width: 50px;
-  height: auto;
+  height: 50px;
   border: 1px solid #ff5a5f;
   border-radius: 50%;
 }
