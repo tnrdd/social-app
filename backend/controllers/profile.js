@@ -33,7 +33,7 @@ exports.processAvatar = async (req, res, next) => {
   const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}.jpeg`;
 
   await sharp(req.file.buffer)
-    .resize({ width: 300, height: 300 })
+    .resize({ width: 90, height: 90 })
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
     .toFile(`./public/avatars/${filename}`);
