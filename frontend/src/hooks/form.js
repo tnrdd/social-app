@@ -31,6 +31,12 @@ function useForm(props) {
         if (resource === "login") {
           setIsLoggedIn(true);
         }
+
+        const cleared = Object.keys(formData).reduce((accumulator, key) => {
+          return { ...accumulator, [key]: "" };
+        }, {});
+        setFormData(cleared);
+
         redirect ? navigate(redirect) : null;
         setNewMessage ? setNewMessage({}) : null;
       } else {
