@@ -5,14 +5,14 @@ import Username from "./username";
 import Avatar from "./avatar";
 
 function Messages(props) {
-  const { isLoggedIn, messages, toggleLike, handleLike, username } = props;
+  const { isLoggedIn, messages, toggleLike, handleLike, username, avatar } = props;
 
   return (
     <div className="messages">
       {messages.map((message) => {
         return (
           <div className="message-container" key={messages.indexOf(message)}>
-            <Avatar avatar={message.user.avatar} />
+            <Avatar avatar={message.user.avatar || avatar} />
             <div className="message">
               <Username username={message.user.username || username} />
               <span className="timestamp">

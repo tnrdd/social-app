@@ -112,6 +112,7 @@ function Profile(props) {
         toggleLike={toggleLike}
         handleLike={handleLike}
         username={username}
+        avatar={profile.avatar}
       />
     </div>
   );
