@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Back from "./back";
 
 function Settings(props) {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function Settings(props) {
 
   return (
     <div className="settings">
+      <Back />
       <form onSubmit={handleSubmit}>
         <label htmlFor="file">Change profile picture</label>
         {preview && (
