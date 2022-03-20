@@ -81,18 +81,24 @@ exports.like = async (req, res, next) => {
 exports.likes = async (req, res, next) => {
   try {
     let likes;
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const isPost = await Post.exists({
       _id: req.query.id,
     });
 
     if (isPost) {
       likes = await Like.find({ post: req.query.id })
+        .skip(skip)
+        .limit(limit)
         .populate("user", "username avatar")
         .lean();
     } else {
       likes = await Like.find({
         comment: req.query.id,
       })
+        .skip(skip)
+        .limit(limit)
         .populate("user", "username avatar")
         .lean();
     }
