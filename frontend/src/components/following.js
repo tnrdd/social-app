@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Avatar from "./avatar";
 import Username from "./username";
 import Back from "./back";
+import useScrollHandler from "../hooks/scroll";
 import "../styles/messages.css";
 
 function Following() {
@@ -10,9 +11,14 @@ function Following() {
   const [following, setFollowing] = useState([]);
   const navigate = useNavigate();
   const { username } = useParams();
+  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
 
   useEffect(() => {
-    fetch(`${process.env.BASE_URL}/api/following?username=${username}`)
+    let isMounted = true;
+    setIsLoading(true);
+    fetch(
+      `${process.env.BASE_URL}/api/following?username=${username}&batch=${batch}`
+    )
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.status);
@@ -21,15 +27,22 @@ function Following() {
         }
       })
       .then((json) => {
-        setUser({ username: json.username, avatar: json.avatar });
-        setFollowing(json.following);
+        if (isMounted) {
+          if (json.length === 0) {
+            setAllLoaded(true);
+          }
+          setUser({ username: json.username, avatar: json.avatar });
+          setFollowing(following.concat(json.following));
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         if (err.message === "404") {
           navigate("*");
         }
       });
-  }, []);
+    return () => (isMounted = false);
+  }, [batch]);
 
   return (
     <div className="follow-list">
@@ -47,6 +60,7 @@ function Following() {
           </div>
         );
       })}
+      {isLoading && <div className="loader"></div>}
     </div>
   );
 }

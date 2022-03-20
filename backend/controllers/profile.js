@@ -218,6 +218,8 @@ exports.follow = async (req, res, next) => {
 
 exports.following = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const following = await User.findOne(
       { username: req.query.username },
       "username avatar following"
@@ -225,7 +227,7 @@ exports.following = async (req, res, next) => {
       .populate({
         path: "following",
         select: "username avatar",
-        options: { sort: { username: 1 } },
+        options: { sort: { username: 1 }, skip: skip, limit: limit },
       })
       .lean();
 
@@ -241,6 +243,8 @@ exports.following = async (req, res, next) => {
 
 exports.followers = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const followers = await User.findOne(
       { username: req.query.username },
       "username avatar followers"
@@ -249,7 +253,7 @@ exports.followers = async (req, res, next) => {
       .populate({
         path: "followers",
         select: "username avatar",
-        options: { sort: { username: 1 } },
+        options: { sort: { username: 1 }, skip: skip, limit: limit },
       })
       .lean();
 
