@@ -12,7 +12,7 @@ router.get("/post", postController.posts);
 router.get("/feed", authController.auth, postController.feed);
 router.get("/comment", commentController.comments);
 router.get("/like", likeController.likes);
-router.get("/profile", profileController.profile);
+router.get("/profile/:username", profileController.profile);
 router.get("/following", profileController.following);
 router.get("/followers", profileController.followers);
 router.get("/logout", authController.auth, authController.logout);

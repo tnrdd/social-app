@@ -6,11 +6,13 @@ import Messages from "./messages";
 import Back from "./back";
 
 function Comments(props) {
+  const isComment = true;
   const { id } = useParams();
   const resource = `comment?id=${id}`;
   const [messages, setNewMessage, toggleLike, handleLike] = useFeed({
     isLoggedIn,
     resource,
+    isComment
   });
   const { isLoggedIn } = props;
 
@@ -18,7 +20,7 @@ function Comments(props) {
     <div className="messages">
       <Back />
       {isLoggedIn ? (
-        <Message isComment={true} id={id} setNewMessage={setNewMessage} />
+        <Message isComment={isComment} id={id} setNewMessage={setNewMessage} />
       ) : null}
       <Messages
         isLoggedIn={isLoggedIn}

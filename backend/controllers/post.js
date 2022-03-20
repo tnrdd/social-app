@@ -105,6 +105,8 @@ exports.deletePost = async (req, res, next) => {
 
 exports.feed = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const followingPosts = await mongoose.model("User").aggregate([
       { $match: { username: `${req.user}` } },
       { $project: { username: true, following: true } },
@@ -144,7 +146,8 @@ exports.feed = async (req, res, next) => {
               },
             },
             { $sort: { createdAt: -1 } },
-            { $limit: 1024 },
+            { $skip: skip },
+            { $limit: limit },
           ],
           as: "followingPosts",
         },
@@ -152,20 +155,22 @@ exports.feed = async (req, res, next) => {
     ]);
 
     let posts = followingPosts[0].followingPosts;
-    const user = await User.findOne({ username: req.user });
-    const lastPost = await Post.findOne({ user: user._id })
-      .sort({ createdAt: -1 })
-      .populate("user likes", "username avatar user")
-      .lean();
-    posts.unshift(lastPost);
-    posts.sort((a, b) => b.createdAt - a.createdAt);
+    if (skip === 0) {
+      const user = await User.findOne({ username: req.user });
+      const lastPost = await Post.findOne({ user: user._id })
+        .sort({ createdAt: -1 })
+        .populate("user likes", "username avatar user")
+        .lean();
+      posts.unshift(lastPost);
+      posts.sort((a, b) => b.createdAt - a.createdAt);
+    }
 
-    if (posts.length < 10) {
+    if (posts.length < limit) {
       const nonFollowingPosts = await Post.find()
         .where({ _id: { $nin: posts } })
         .sort({ createdAt: -1 })
         .populate("user likes", "username avatar user")
-        .limit(10 - posts.length)
+        .limit(limit - posts.length)
         .lean();
       nonFollowingPosts.forEach((post) => {
         posts.push(post);
@@ -189,10 +194,13 @@ exports.feed = async (req, res, next) => {
 
 exports.posts = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const posts = await Post.find()
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .populate("user likes", "username avatar user")
-      .limit(1024)
       .lean();
     res.status(200).json(posts);
   } catch (err) {

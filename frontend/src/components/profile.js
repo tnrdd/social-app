@@ -7,20 +7,25 @@ import Avatar from "./avatar";
 import Interactions from "./interactions";
 import Back from "./back";
 import { FiSettings } from "react-icons/fi";
+import debounce from "../utils/debounce";
 import "../styles/profile.css";
 import "../styles/messages.css";
 
 function Profile(props) {
   const navigate = useNavigate();
   const { username } = useParams();
+  const [toggleLike, handleLike] = useLike([]);
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
-  const [toggleLike, handleLike] = useLike([]);
+  const [batch, setBatch] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [allLoaded, setAllLoaded] = useState(false);
   const { isLoggedIn } = props;
 
   useEffect(() => {
     let isMounted = true;
-    fetch(`${process.env.BASE_URL}/api/profile?username=${username}`, {
+    setIsLoading(true);
+    fetch(`${process.env.BASE_URL}/api/profile/${username}?batch=${batch}`, {
       credentials: "include",
     })
       .then((res) => {
@@ -31,6 +36,9 @@ function Profile(props) {
       })
       .then((json) => {
         if (isMounted) {
+          if (json.posts.length === 0) {
+            setAllLoaded(true);
+          }
           setProfile({
             id: json._id,
             following: json.following.length,
@@ -39,7 +47,8 @@ function Profile(props) {
             isFollowed: json.isFollowed,
             isUser: json.isUser,
           });
-          setPosts(json.posts);
+          setPosts(posts.concat(json.posts));
+          setIsLoading(false);
         }
       })
       .catch((err) => {
@@ -47,9 +56,8 @@ function Profile(props) {
           navigate("*");
         }
       });
-
     return () => (isMounted = false);
-  }, [isLoggedIn, toggleLike]);
+  }, [isLoggedIn, toggleLike, batch]);
 
   const handleFollow = () => {
     const userId = { id: profile.id };
@@ -70,6 +78,19 @@ function Profile(props) {
       });
     }
   };
+
+  window.onscroll = debounce(() => {
+    if (isLoading || allLoaded) {
+      return;
+    }
+
+    if (
+      window.innerHeight + window.pageYOffset ===
+      document.body.scrollHeight
+    ) {
+      setBatch(batch + 1);
+    }
+  }, 100);
 
   return (
     <div>

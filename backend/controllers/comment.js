@@ -138,6 +138,8 @@ exports.deleteComment = async (req, res, next) => {
 
 exports.comments = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const token = req.cookies.accessToken;
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -156,10 +158,11 @@ exports.comments = async (req, res, next) => {
         post: req.query.id,
       })
         .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .populate("user likes", "username avatar user")
         .populate("post", "username avatar text comments likes createdAt")
         .populate("comments")
-        .limit(512)
         .lean();
 
       if (req.user) {
@@ -177,10 +180,11 @@ exports.comments = async (req, res, next) => {
         comment: req.query.id,
       })
         .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .populate("user likes", "username avatar user")
         .populate("comment", "username avatar text comments likes createdAt")
         .populate("comments")
-        .limit(512)
         .lean();
 
       if (req.user) {

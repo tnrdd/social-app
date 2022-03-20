@@ -45,16 +45,17 @@ exports.processAvatar = async (req, res, next) => {
 
 exports.profile = async (req, res, next) => {
   try {
+    const limit = 10;
+    const skip = req.query.batch * limit;
     const profile = await User.findOne(
-      { username: req.query.username },
+      { username: req.params.username },
       "username avatar followers following posts"
     )
-      .limit(1024)
       .populate("posts", "text comments createdAt username avatar")
       .populate("following followers", "username")
       .populate({
         path: "posts",
-        options: { sort: { createdAt: -1 } },
+        options: { sort: { createdAt: -1 }, skip: skip, limit: limit },
         populate: { path: "likes" },
       })
       .lean();
