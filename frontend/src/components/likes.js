@@ -3,13 +3,11 @@ import { useParams } from "react-router-dom";
 import Avatar from "./avatar";
 import Username from "./username";
 import Back from "./back";
-import debounce from "../utils/debounce"
+import useScrollHandler from "../hooks/scroll";
 
 function Likes(props) {
   const [likes, setLikes] = useState([]);
-  const [batch, setBatch] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [allLoaded, setAllLoaded] = useState(false);
+  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
   const { id } = useParams();
 
   useEffect(() => {
@@ -29,19 +27,6 @@ function Likes(props) {
     return () => (isMounted = false);
   }, [batch]);
 
-  window.onscroll = debounce(() => {
-    if (isLoading || allLoaded) {
-      return;
-    }
-
-    if (
-      window.innerHeight + window.pageYOffset ===
-      document.body.scrollHeight
-    ) {
-      setBatch(batch + 1);
-    }
-  }, 100);
-
   return (
     <div className="like-list">
       <Back />
@@ -53,6 +38,7 @@ function Likes(props) {
           </div>
         );
       })}
+      {isLoading && <div className="loader"></div>}
     </div>
   );
 }

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import useLike from "./like";
-import debounce from "../utils/debounce";
+import useScrollHandler from "./scroll";
 
 function useFeed(props) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState();
-  const [batch, setBatch] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [allLoaded, setAllLoaded] = useState(false);
   const [toggleLike, handleLike] = useLike();
+  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
   const { isLoggedIn, resource, isComment } = props;
 
   useEffect(() => {
@@ -38,19 +36,6 @@ function useFeed(props) {
       });
     return () => (isMounted = false);
   }, [isLoggedIn, toggleLike, newMessage, batch]);
-
-  window.onscroll = debounce(() => {
-    if (isLoading || allLoaded) {
-      return;
-    }
-
-    if (
-      window.innerHeight + window.pageYOffset ===
-      document.body.scrollHeight
-    ) {
-      setBatch(batch + 1);
-    }
-  }, 100);
 
   return [messages, setNewMessage, isLoading, toggleLike, handleLike];
 }

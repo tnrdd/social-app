@@ -6,8 +6,8 @@ import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
 import Back from "./back";
+import useScrollHandler from "../hooks/scroll"
 import { FiSettings } from "react-icons/fi";
-import debounce from "../utils/debounce";
 import "../styles/profile.css";
 import "../styles/messages.css";
 
@@ -17,9 +17,7 @@ function Profile(props) {
   const [toggleLike, handleLike] = useLike([]);
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
-  const [batch, setBatch] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [allLoaded, setAllLoaded] = useState(false);
+  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
   const { isLoggedIn } = props;
 
   useEffect(() => {
@@ -78,19 +76,6 @@ function Profile(props) {
       });
     }
   };
-
-  window.onscroll = debounce(() => {
-    if (isLoading || allLoaded) {
-      return;
-    }
-
-    if (
-      window.innerHeight + window.pageYOffset ===
-      document.body.scrollHeight
-    ) {
-      setBatch(batch + 1);
-    }
-  }, 100);
 
   return (
     <div>
