@@ -105,9 +105,8 @@
 .like-container,
 .follow-container {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding-top: 6px;
+  padding: 6px;
+  gap:50px;
   border: 1px solid #d0cfcf;
 }
 
