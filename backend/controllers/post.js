@@ -155,8 +155,8 @@ exports.feed = async (req, res, next) => {
     ]);
 
     let posts = followingPosts[0].followingPosts;
+    const user = await User.findOne({ username: req.user });
     if (skip === 0) {
-      const user = await User.findOne({ username: req.user });
       const lastPost = await Post.findOne({ user: user._id })
         .sort({ createdAt: -1 })
         .populate("user likes", "username avatar user")
@@ -165,7 +165,7 @@ exports.feed = async (req, res, next) => {
       posts.sort((a, b) => b.createdAt - a.createdAt);
     }
 
-    if (posts.length < limit) {
+    if (posts.length < limit && skip === 0) {
       const nonFollowingPosts = await Post.find()
         .where({ _id: { $nin: posts } })
         .sort({ createdAt: -1 })

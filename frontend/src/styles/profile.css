@@ -107,9 +107,11 @@
     width: 95vw;
     margin: 0;
   }
+
   .profile > .follow {
     gap: 20px;
   }
+
   .settings {
     width: 90vw;
   }

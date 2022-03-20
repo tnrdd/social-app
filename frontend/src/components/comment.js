@@ -20,7 +20,7 @@ function Comment(props) {
         <FaRegComment />
       </span>
       <span className="comments-count">
-        {message.comments.length > 0 ? message.comments.length : null}
+        {message.comments.length > 0 && message.comments.length}
       </span>
     </div>
   );

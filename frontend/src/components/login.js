@@ -23,7 +23,7 @@ function Login(props) {
 
   return (
     <div id="login">
-      {errors.length > 0 ? (
+      {errors.length > 0 && (
         <div className="validation-errors">
           {errors.map((error) => {
             return (
@@ -36,7 +36,7 @@ function Login(props) {
             );
           })}
         </div>
-      ) : null}
+      )}
       <form id="login-form" onSubmit={handleSubmit}>
         <input
           type="text"

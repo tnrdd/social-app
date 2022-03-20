@@ -98,18 +98,18 @@ function Profile(props) {
         <Back />
         <div className="follow">
           <Avatar avatar={profile.avatar} />
-          {profile.isUser ? null : (
+          {profile.isUser || (
             <button onClick={handleFollow}>
               {profile.isFollowed ? "Unfollow" : "Follow"}
             </button>
           )}
-          {profile.isUser ? (
+          {profile.isUser && (
             <span className="settings-icon">
               <Link to={`/${username}/settings`}>
                 <FiSettings size={30} />
               </Link>
             </span>
-          ) : null}
+          )}
         </div>
         <span className="username">{username}</span>
         <div className="profile-stats">

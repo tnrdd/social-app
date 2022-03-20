@@ -30,13 +30,13 @@ function Message(props) {
           <button>Post</button>
         </div>
       </form>
-      {errors.length > 0 ? (
+      {errors.length > 0 && (
         <div id="validation-errors">
           {errors.map((error) => {
             return <p key={errors.indexOf(error)}>{error.msg}</p>;
           })}
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

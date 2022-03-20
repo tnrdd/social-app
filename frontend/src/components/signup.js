@@ -22,7 +22,7 @@ function Signup() {
 
   return (
     <div id="signup">
-      {errors.length > 0 ? (
+      {errors.length > 0 && (
         <div className="validation-errors">
           {errors.map((error) => {
             return (
@@ -35,7 +35,7 @@ function Signup() {
             );
           })}
         </div>
-      ) : null}
+      )}
       <form id="signup-form" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -13,7 +13,7 @@ function Posts(props) {
 
   return (
     <div>
-      {isLoggedIn ? <Message setNewMessage={setNewMessage} /> : null}
+      {isLoggedIn && <Message setNewMessage={setNewMessage} />}
       <Messages
         isLoggedIn={isLoggedIn}
         toggleLike={toggleLike}
