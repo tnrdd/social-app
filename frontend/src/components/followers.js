@@ -8,7 +8,7 @@ import "../styles/messages.css";
 
 function Followers() {
   const [user, setUser] = useState({});
-  const [followers, setFollowing] = useState([]);
+  const [followers, setFollowers] = useState([]);
   const navigate = useNavigate();
   const { username } = useParams();
   const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
@@ -32,7 +32,7 @@ function Followers() {
             setAllLoaded(true);
           }
           setUser({ username: json.username, avatar: json.avatar });
-          setFollowing(following.concat(json.following));
+          setFollowers(followers.concat(json.followers));
           setIsLoading(false);
         }
       })
