@@ -130,6 +130,7 @@ function Profile(props) {
       <Messages
         isLoggedIn={isLoggedIn}
         messages={posts}
+        isLoading={isLoading}
         toggleLike={toggleLike}
         handleLike={handleLike}
         username={username}

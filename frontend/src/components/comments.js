@@ -9,7 +9,7 @@ function Comments(props) {
   const isComment = true;
   const { id } = useParams();
   const resource = `comment?id=${id}`;
-  const [messages, setNewMessage, toggleLike, handleLike] = useFeed({
+  const [messages, setNewMessage, isLoading, toggleLike, handleLike] = useFeed({
     isLoggedIn,
     resource,
     isComment
@@ -27,6 +27,7 @@ function Comments(props) {
         toggleLike={toggleLike}
         handleLike={handleLike}
         messages={messages}
+        isLoading={isLoading}
       />
     </div>
   );

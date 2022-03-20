@@ -15,7 +15,7 @@ header {
   width: 100%;
   background: #201e1f;
   position: sticky;
-  top:0;
+  top: 0;
   display: flex;
   justify-content: center;
   gap: 100px;
@@ -61,6 +61,7 @@ textarea,
 input:focus {
   outline: none;
 }
+
 @media (max-width: 600px) {
   header {
     justify-content: space-between;

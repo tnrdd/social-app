@@ -6,7 +6,7 @@ import Messages from "./messages";
 function Posts(props) {
   const { isLoggedIn } = props;
   const resource = `${isLoggedIn ? "feed" : "post"}`;
-  const [messages, setNewMessage, toggleLike, handleLike] = useFeed({
+  const [messages, setNewMessage, isLoading, toggleLike, handleLike] = useFeed({
     isLoggedIn,
     resource,
   });
@@ -19,6 +19,7 @@ function Posts(props) {
         toggleLike={toggleLike}
         handleLike={handleLike}
         messages={messages}
+        isLoading={isLoading}
       />
     </div>
   );

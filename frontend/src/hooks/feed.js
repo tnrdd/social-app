@@ -52,7 +52,7 @@ function useFeed(props) {
     }
   }, 100);
 
-  return [messages, setNewMessage, toggleLike, handleLike];
+  return [messages, setNewMessage, isLoading, toggleLike, handleLike];
 }
 
 export default useFeed;

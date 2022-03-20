@@ -5,7 +5,8 @@ import Username from "./username";
 import Avatar from "./avatar";
 
 function Messages(props) {
-  const { isLoggedIn, messages, toggleLike, handleLike, username, avatar } = props;
+  const { isLoggedIn, messages, isLoading, toggleLike, handleLike, username, avatar } =
+    props;
 
   return (
     <div className="messages">
@@ -28,6 +29,7 @@ function Messages(props) {
           </div>
         );
       })}
+      {isLoading && <div className="loader"></div>}
     </div>
   );
 }
