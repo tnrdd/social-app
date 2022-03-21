@@ -11,7 +11,8 @@ function Followers() {
   const [followers, setFollowers] = useState([]);
   const navigate = useNavigate();
   const { username } = useParams();
-  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
+  const [batch, setBatch, isLoading, setIsLoading, setAllLoaded] =
+    useScrollHandler();
 
   useEffect(() => {
     let isMounted = true;

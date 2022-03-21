@@ -8,7 +8,7 @@
   display: flex;
   border: 1px solid #d0cfcf;
   padding: 8px;
-  padding-bottom:0;
+  padding-bottom: 0;
 }
 
 .message-form {
@@ -21,6 +21,7 @@
   background: #fbfbfb;
   padding: 0 10px 0 10px;
 }
+
 .message-form button {
   margin-left: 400px;
   background: #ff5a5f;
@@ -69,7 +70,7 @@
   display: flex;
   gap: 100px;
   color: #c1bdb3;
-  margin-top:5px;
+  margin-top: 5px;
 }
 
 .interactions:hover {
@@ -98,6 +99,7 @@
 .likes:hover {
   color: #ff5a5f;
 }
+
 .comments:hover {
   color: #b1e5f2;
 }
@@ -106,17 +108,17 @@
 .follow-container {
   display: flex;
   padding: 6px;
-  gap:50px;
+  gap: 50px;
   border: 1px solid #d0cfcf;
 }
 
 .loader {
-  margin:auto;
+  margin: auto;
   margin-top: 50px;
   margin-bottom: 50px;
   border: 4px solid #d0cfcf;
   border-top: 4px solid #ff5a5f;
-  border-radius:50%;
+  border-radius: 50%;
   width: 30px;
   height: 30px;
   animation: spin 2s linear infinite;
@@ -126,8 +128,9 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
