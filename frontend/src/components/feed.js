@@ -16,9 +16,9 @@ function Posts(props) {
       {isLoggedIn && <Message setNewMessage={setNewMessage} />}
       <Messages
         isLoggedIn={isLoggedIn}
+        messages={messages}
         toggleLike={toggleLike}
         handleLike={handleLike}
-        messages={messages}
         isLoading={isLoading}
       />
     </div>

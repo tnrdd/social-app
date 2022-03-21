@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function useLike(props) {
-  const [toggleLike, setToggleLike] = useState(0);
+  const [toggleLike, setToggleLike] = useState({ toggle: false, id: "" });
 
   const handleLike = (id) => {
     const targetId = { id: id };
@@ -14,7 +14,7 @@ function useLike(props) {
       body: JSON.stringify(targetId),
     }).then((res) => {
       if (res.ok) {
-        setToggleLike(!toggleLike);
+        setToggleLike({ toggle: !toggleLike.toggle, id: id });
       }
     });
   };

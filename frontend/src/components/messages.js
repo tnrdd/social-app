@@ -1,11 +1,10 @@
 import React from "react";
-
 import Interactions from "./interactions";
 import Username from "./username";
 import Avatar from "./avatar";
 
 function Messages(props) {
-  const { isLoggedIn, messages, isLoading, toggleLike, handleLike, username, avatar } =
+  const { isLoggedIn, messages, isLoading, handleLike, username, avatar } =
     props;
 
   return (

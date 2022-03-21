@@ -36,9 +36,9 @@ function useForm(props) {
           return { ...accumulator, [key]: "" };
         }, {});
         setFormData(cleared);
+        setNewMessage ? setNewMessage({}) : null;
 
         redirect ? navigate(redirect) : null;
-        setNewMessage ? setNewMessage({}) : null;
       } else {
         Promise.resolve(res.json()).then((result) => {
           setErrors(result.errors);

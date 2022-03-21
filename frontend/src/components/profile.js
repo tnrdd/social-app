@@ -6,7 +6,7 @@ import Username from "./username";
 import Avatar from "./avatar";
 import Interactions from "./interactions";
 import Back from "./back";
-import useScrollHandler from "../hooks/scroll"
+import useScrollHandler from "../hooks/scroll";
 import { FiSettings } from "react-icons/fi";
 import "../styles/profile.css";
 import "../styles/messages.css";
@@ -17,7 +17,8 @@ function Profile(props) {
   const [toggleLike, handleLike] = useLike([]);
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
-  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
+  const [batch, setBatch, isLoading, setIsLoading, setAllLoaded] =
+    useScrollHandler();
   const { isLoggedIn } = props;
 
   useEffect(() => {
@@ -55,7 +56,24 @@ function Profile(props) {
         }
       });
     return () => (isMounted = false);
-  }, [isLoggedIn, toggleLike, batch]);
+  }, [isLoggedIn, batch]);
+
+  useEffect(() => {
+    setPosts(
+      posts.map((post) => {
+        if (post._id === toggleLike.id) {
+          if (post.isLiked) {
+            post.isLiked = false;
+            post.likes.pop();
+          } else {
+            post.isLiked = true;
+            post.likes.push({});
+          }
+        }
+        return post;
+      })
+    );
+  }, [toggleLike]);
 
   const handleFollow = () => {
     const userId = { id: profile.id };

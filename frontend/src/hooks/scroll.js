@@ -19,7 +19,7 @@ function useScrollHandler(props) {
     }
   }, 100);
 
-  return [batch, isLoading, setIsLoading, setAllLoaded];
+  return [batch, setBatch, isLoading, setIsLoading, setAllLoaded];
 }
 
 export default useScrollHandler;

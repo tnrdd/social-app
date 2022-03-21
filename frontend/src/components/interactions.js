@@ -1,13 +1,13 @@
 import React from "react";
 import Comment from "./comment";
-import LikeIcon from "./like";
+import Like from "./like";
 
 function Interactions(props) {
   const { isLoggedIn, message, handleLike } = props;
 
   return (
     <div className="interactions">
-      <LikeIcon message={message} handleLike={handleLike} />
+      <Like message={message} handleLike={handleLike} />
       <Comment isLoggedIn={isLoggedIn} message={message} />
     </div>
   );
