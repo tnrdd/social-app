@@ -57,7 +57,7 @@ exports.editPost = [
       const post = await Post.findOne({ _id: req.body.id });
 
       if (post.user.toString() === callingUser._id.toString()) {
-        await post.update({ text: req.body.text });
+        await post.updateOne({ text: req.body.text });
         res.sendStatus(200);
       } else {
         res.sendStatus(403);

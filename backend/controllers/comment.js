@@ -85,7 +85,7 @@ exports.editComment = [
       const comment = await Comment.findOne({ _id: req.body.id });
 
       if (comment.user.toString() === callingUser._id.toString()) {
-        await comment.update({ text: req.body.text });
+        await comment.updateOne({ text: req.body.text });
         res.sendStatus(200);
       } else {
         res.sendStatus(403);

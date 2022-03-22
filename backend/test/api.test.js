@@ -1,9 +1,8 @@
 const request = require("supertest");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
-const cookieParser = require("cookie-parser");
-
 const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
@@ -24,8 +23,8 @@ describe("Api", () => {
     const mongoUri = mongoServer.getUri();
     connection = await mongoose.connect(mongoUri);
     User.create({
-      username: "a",
-      password: "$2a$12$1KTvtu9NiN1fesMr3z8uYO/vVrlI5rR8DXqxorU.QAY81GW1yFuJe",
+      username: "test",
+      password: "$2b$08$WWGOrUJ0GKPA9OsXc2SqFOtwswIbvUmQ6Z2Y9wbxuw7SLEqo09nLa",
     });
   });
 
@@ -42,7 +41,7 @@ describe("Api", () => {
     request(app)
       .post("/api/login")
       .type("form")
-      .send({ username: "a", password: "a" })
+      .send({ username: "test", password: "TestTest1" })
       .expect(200, done);
   });
 
@@ -51,7 +50,7 @@ describe("Api", () => {
       .post("/api/login")
       .type("json")
       .send({ username: "a", password: "b" })
-      .expect(401, done);
+      .expect(422, done);
   });
 
   it("New post", (done) => {
@@ -59,11 +58,10 @@ describe("Api", () => {
       .post("/api/post")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
-        user: "a",
         text: "test",
       })
       .expect(200, done);
@@ -74,7 +72,6 @@ describe("Api", () => {
       .post("/api/post")
       .type("form")
       .send({
-        user: "a",
         text: "test",
       })
       .expect(401, done);
@@ -86,7 +83,7 @@ describe("Api", () => {
       .put("/api/post")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
@@ -102,7 +99,7 @@ describe("Api", () => {
       .post("/api/like")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
@@ -117,7 +114,7 @@ describe("Api", () => {
       .post("/api/comment")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
@@ -133,7 +130,7 @@ describe("Api", () => {
       .post("/api/like")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
@@ -148,7 +145,7 @@ describe("Api", () => {
       .put("/api/comment")
       .set(
         "Cookie",
-        "accessToken=eyJhbGciOiJIUzI1NiJ9.YQ.eGifFhQf3hAZL6Ovf_bPr6Fp9m0IE9k_4CYoQxS_uBA"
+        "accessToken=eyJhbGciOiJIUzI1NiJ9.dGVzdA.CyrHxdRnI5aJPxLNtWlTBdCebP65_yD4wXDDpfdxxfs"
       )
       .type("form")
       .send({
