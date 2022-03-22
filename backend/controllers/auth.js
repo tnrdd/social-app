@@ -136,10 +136,10 @@ exports.login = [
           const token = jwt.sign(req.body.username, process.env.JWT_SECRET);
           res.cookie("accessToken", token, cookieOptions).sendStatus(200);
         } else {
-          res.status(401).json({ message: "Incorrect password" });
+          res.status(401).json({ errors: [{ msg: "Incorrect password" }] });
         }
       } else {
-        res.status(401).json({ message: "Incorrect username" });
+        res.status(401).json({ errors: [{ msg: "Incorrect username" }] });
       }
     } catch (err) {
       next(err);
