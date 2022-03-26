@@ -4,9 +4,8 @@
   "description": "Social media app",
   "private": true,
   "scripts": {
-    "test": "jest --watch",
     "watch": "webpack --watch",
-    "build": "mkdir -p ./dist & webpack --mode production"
+    "build": "mkdir -p ./dist & webpack"
   },
   "keywords": [],
   "author": "tnrdd",
@@ -19,7 +18,6 @@
     "css-loader": "^6.6.0",
     "dotenv-webpack": "^7.1.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.68.0",
