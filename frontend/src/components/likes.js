@@ -7,7 +7,7 @@ import useScrollHandler from "../hooks/scroll";
 
 function Likes(props) {
   const [likes, setLikes] = useState([]);
-  const [batch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
+  const [batch, setBatch, isLoading, setIsLoading, setAllLoaded] = useScrollHandler();
   const { id } = useParams();
 
   useEffect(() => {
