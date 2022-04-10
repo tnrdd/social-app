@@ -55,7 +55,7 @@ function Following() {
       </div>
       {following.map((follow) => {
         return (
-          <div className="follow-container" key={following.indexOf(follow)}>
+          <div className="follow-container" key={follow._id}>
             <Avatar avatar={follow.avatar} />
             <Username username={follow.username} />
           </div>

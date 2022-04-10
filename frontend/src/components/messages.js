@@ -11,7 +11,7 @@ function Messages(props) {
     <div className="messages">
       {messages.map((message) => {
         return (
-          <div className="message-container" key={messages.indexOf(message)}>
+          <div className="message-container" key={message._id}>
             <Avatar avatar={message.user.avatar || avatar} />
             <div className="message">
               <Username username={message.user.username || username} />
